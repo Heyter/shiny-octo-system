@@ -1,4 +1,3 @@
-
 backgrounds/*
 bin/*
 cfg/*
@@ -17,3 +16,7 @@ scenes/*
 settings/*
 steam.inf
 *.gma
+*.pack
+*.cached
+*.db
+/*.txt
