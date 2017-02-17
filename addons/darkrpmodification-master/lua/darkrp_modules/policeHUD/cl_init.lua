@@ -31,6 +31,7 @@ function drawmarkers()
 	
 	for i,pos in ipairs(ply.markers) do
 		dist = pos:Distance(EyePos())
+		pos.z = pos.z + 40
 		pos = pos:ToScreen()
 		surface.SetDrawColor(255,255,255)
 		surface.SetMaterial( Material( "materials/Waypoint.png" ) )
