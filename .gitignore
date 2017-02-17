@@ -17,7 +17,7 @@ settings/*
 steam.inf
 *.gma
 *.pack
-*.cached
+*.cache
 *.db
 /*.txt
 data/*
