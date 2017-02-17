@@ -48,31 +48,31 @@ GM.Config.chiefjailpos                  = true
 -- cit_propertytax - Enable/disable property tax that is exclusive only for citizens.
 GM.Config.cit_propertytax               = false
 -- copscanunfreeze - Enable/disable the ability of cops to unfreeze other people's props.
-GM.Config.copscanunfreeze               = true
+GM.Config.copscanunfreeze               = false
 -- copscanunweld - Enable/disable the ability of cops to unweld other people's props.
 GM.Config.copscanunweld                 = false
 -- cpcanarrestcp - Allow/Disallow CPs to arrest other CPs.
-GM.Config.cpcanarrestcp                 = true
+GM.Config.cpcanarrestcp                 = false
 -- currencyLeft - The position of the currency symbol. true for left, false for right.
 GM.Config.currencyLeft                  = true
 -- customjobs - Enable/disable the /job command (personalized job names).
-GM.Config.customjobs                    = true
+GM.Config.customjobs                    = false
 -- customspawns - Enable/disable whether custom spawns should be used.
 GM.Config.customspawns                  = true
 -- deathblack - Whether or not a player sees black on death.
 GM.Config.deathblack                    = false
 -- showdeaths - Display kill information in the upper right corner of everyone's screen.
-GM.Config.showdeaths                    = true
+GM.Config.showdeaths                    = false
 -- deadtalk - Enable/disable whether people talk and use commands while dead.
-GM.Config.deadtalk                      = true
+GM.Config.deadtalk                      = false
 -- deadvoice - Enable/disable whether people talk through the microphone while dead.
-GM.Config.deadvoice                     = true
+GM.Config.deadvoice                     = false
 -- deathpov - Enable/disable whether people see their death in first person view.
 GM.Config.deathpov                      = false
 -- decalcleaner - Enable/Disable clearing ever players decals.
 GM.Config.decalcleaner                  = false
 -- disallowClientsideScripts - Clientside scripts can be very useful for customizing the HUD or to aid in building. This option bans those scripts.
-GM.Config.disallowClientsideScripts     = false
+GM.Config.disallowClientsideScripts     = true
 -- doorwarrants - Enable/disable Warrant requirement to enter property.
 GM.Config.doorwarrants                  = true
 -- dropmoneyondeath - Enable/disable whether people drop money on death.
@@ -84,7 +84,7 @@ GM.Config.droppocketdeath               = true
 -- dropweapondeath - Enable/disable whether people drop their current weapon when they die.
 GM.Config.dropweapondeath               = false
 -- Whether players can drop the weapons they spawn with.
-GM.Config.dropspawnedweapons            = true
+GM.Config.dropspawnedweapons            = false
 -- dynamicvoice - Enable/disable whether only people in the same room as you can hear your mic.
 GM.Config.dynamicvoice                  = true
 -- earthquakes - Enable/disable earthquakes.
@@ -174,28 +174,28 @@ GM.Config.weaponCheckerHideNoLicense    = false
 Value settings
 ]]
 -- adminnpcs - Whether or not NPCs should be admin only. 0 = everyone, 1 = admin or higher, 2 = superadmin or higher, 3 = rcon only
-GM.Config.adminnpcs                     = 3
+GM.Config.adminnpcs                     = 2
 -- adminsents - Whether or not SENTs should be admin only. 0 = everyone, 1 = admin or higher, 2 = superadmin or higher, 3 = rcon only
-GM.Config.adminsents                    = 1
+GM.Config.adminsents                    = 2
 -- adminvehicles - Whether or not vehicles should be admin only. 0 = everyone, 1 = admin or higher, 2 = superadmin or higher, 3 = rcon only
-GM.Config.adminvehicles                 = 3
+GM.Config.adminvehicles                 = 2
 -- adminweapons - Who can spawn weapons: 0: admins only, 1: supadmins only, 2: no one
 GM.Config.adminweapons                  = 1
 -- arrestspeed - Sets the max arrest speed.
 GM.Config.arrestspeed                   = 120
 -- babygodtime - How long the babygod lasts.
-GM.Config.babygodtime                   = 5
+GM.Config.babygodtime                   = 8
 -- chatsoundsdelay - How long to wait before letting a player emit a sound from their chat again.
 -- Leave this on at least a few seconds to prevent people from spamming sounds. Set to 0 to disable.
 GM.Config.chatsoundsdelay               = 5
 -- deathfee - the amount of money someone drops when dead.
-GM.Config.deathfee                      = 30
+GM.Config.deathfee                      = 200
 -- decaltimer - Sets the time to clear clientside decals (in seconds).
 GM.Config.decaltimer                    = 120
 -- demotetime - Number of seconds before a player can rejoin a team after demotion from that team.
-GM.Config.demotetime                    = 120
+GM.Config.demotetime                    = 300
 -- doorcost - Sets the cost of a door.
-GM.Config.doorcost                      = 30
+GM.Config.doorcost                      = 50
 -- entremovedelay - how long to wait before removing a bought entity after disconnect.
 GM.Config.entremovedelay                = 0
 -- gunlabweapon - The weapon that the gunlab spawns.
@@ -205,9 +205,9 @@ GM.Config.jailtimer                     = 120
 -- lockdowndelay - The amount of time a mayor must wait before starting the next lockdown.
 GM.Config.lockdowndelay                 = 120
 -- maxadvertbillboards - The maximum number of /advert billboards a player can place.
-GM.Config.maxadvertbillboards           = 3
+GM.Config.maxadvertbillboards           = 1
 -- maxdoors - Sets the max amount of doors one can own.
-GM.Config.maxdoors                      = 20
+GM.Config.maxdoors                      = 6
 -- maxdrugs - Sets max drugs.
 GM.Config.maxdrugs                      = 2
 -- maxfoods - Sets the max food cartons per Microwave owner.
@@ -331,6 +331,7 @@ GM.Config.DisallowDrop = {
     ["weapon_physcannon"] = true,
     ["weapon_physgun"] = true,
     ["weaponchecker"] = true,
+    ["selfportrait_camera"] = true,
 }
 
 -- The list of weapons people spawn with.
@@ -341,6 +342,7 @@ GM.Config.DefaultWeapons = {
     "gmod_tool",
     "pocket",
     "weapon_physgun",
+    "selfportrait_camera",
 }
 
 -- Override categories.

@@ -48,6 +48,20 @@ TEAM_CITIZEN = DarkRP.createJob("Безработный", {
     category = "Citizens",
 })
 
+TEAM_ADMIN = DarkRP.createJob("Администратор", {
+    color = Color(25, 25, 200, 255),
+    model = "models/player/combine_super_soldier.mdl",
+    description = [[Тот, кто должен работать.]],
+    weapons = {},
+    command = "admin",
+    max = 10,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 1,
+    vote = false,
+    hasLicense = true,
+    category = "Citizens",
+})
+
 TEAM_POLICE = DarkRP.createJob("Офицер полиции", {
     color = Color(25, 25, 170, 255),
     model = {
@@ -252,6 +266,8 @@ if not DarkRP.disabledDefaults["modules"]["hungermod"] then
         hasLicense = false,
         cook = true
     })
+
+
 end
 
 --[[---------------------------------------------------------------------------
