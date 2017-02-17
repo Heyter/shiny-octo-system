@@ -48,18 +48,20 @@ TEAM_CITIZEN = DarkRP.createJob("Безработный", {
     category = "Citizens",
 })
 
-TEAM_ADMIN = DarkRP.createJob("Администратор", {
-    color = Color(25, 25, 200, 255),
+TEAM_ADMINONDUTY = DarkRP.createJob("Администратор", {
+    color = Color(255, 10, 10, 255),
     model = "models/player/combine_super_soldier.mdl",
     description = [[Тот, кто должен работать.]],
     weapons = {},
-    command = "admin",
+    command = "adminonduty",
     max = 10,
     salary = GAMEMODE.Config.normalsalary,
-    admin = 1,
+    admin = 0,
     vote = false,
     hasLicense = true,
     category = "Citizens",
+    customCheck = function(ply) return ply:GetUserGroup() == "premium" or ply:GetUserGroup() == "admin" end,
+    CustomCheckFailMsg = function(a,b) return "govno" end
 })
 
 TEAM_POLICE = DarkRP.createJob("Офицер полиции", {

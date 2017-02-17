@@ -42,7 +42,6 @@ function meta:changeTeam(t, force, suppressNotification)
 
     local TEAM = RPExtraTeams[t]
     if not TEAM then return false end
-
     if TEAM.customCheck and not TEAM.customCheck(self) and (not force or force and not GAMEMODE.Config.adminBypassJobRestrictions) then
         local message = isfunction(TEAM.CustomCheckFailMsg) and TEAM.CustomCheckFailMsg(self, TEAM) or
             TEAM.CustomCheckFailMsg or
