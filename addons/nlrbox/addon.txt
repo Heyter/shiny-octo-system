@@ -1,0 +1,10 @@
+"AddonInfo"
+{
+        "name"              "Respawn Box"
+        "version"           "v1"
+        "up_date"           "07.02.2017"
+        "author_name"       "Zhopa"
+        "author_email"      "zhopa"
+        "info"              "This create a pop up box on the screen when you die."
+        "override"          "0"
+}
