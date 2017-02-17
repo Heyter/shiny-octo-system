@@ -1,6 +1,7 @@
 local ply = LocalPlayer()
 local plyMeta = FindMetaTable("Player")
 plyMeta.markers = {["foo"] = "bar"}
+
 net.Receive( "CombineRequest", 
 	function()
 	local ply = LocalPlayer()
