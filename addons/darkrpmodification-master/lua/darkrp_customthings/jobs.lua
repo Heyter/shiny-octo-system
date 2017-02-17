@@ -224,7 +224,7 @@ TEAM_HOBO = DarkRP.createJob("Бомж", {
     category = "Citizens",
 })
 
-TEAM_MEDIC = DarkRP.createJob("Охранник", {
+TEAM_GUARD = DarkRP.createJob("Охранник", {
     color = Color(25, 25, 200, 255),
     model = "models/player/odessa.mdl",
     description = [[Тот, кто вас охраняет.]],
@@ -268,6 +268,7 @@ GAMEMODE.CivilProtection = {
 	[TEAM_POLICE] = true,
 	[TEAM_CHIEF] = true,
 	[TEAM_MAYOR] = true,
+    [TEAM_DETECTIVE] = true,
 }
 
 --[[---------------------------------------------------------------------------
