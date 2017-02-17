@@ -18,12 +18,241 @@ http://wiki.darkrp.com/index.php/DarkRP:CustomJobFields
 Add jobs under the following line:
 ---------------------------------------------------------------------------]]
 
+TEAM_CITIZEN = DarkRP.createJob("Безработный", {
+    color = Color(20, 150, 20, 255),
+    model = {
+        "models/player/Group01/Male_05.mdl",
+        "models/player/Group01/Female_01.mdl",
+        "models/player/Group01/Female_02.mdl",
+        "models/player/Group01/Female_03.mdl",
+        "models/player/Group01/Female_04.mdl",
+        "models/player/Group01/Female_06.mdl",
+        "models/player/group01/male_01.mdl",
+        "models/player/Group01/Male_02.mdl",
+        "models/player/Group01/male_03.mdl",
+        "models/player/Group01/Male_04.mdl",
+        "models/player/Group01/Male_06.mdl",
+        "models/player/Group01/Male_07.mdl",
+        "models/player/Group01/Male_08.mdl",
+        "models/player/Group01/Male_09.mdl"
+    },
+    description = [[Тот, кто не приносит пользы обществу.]],
+    weapons = {},
+    command = "citizen",
+    max = 0,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    candemote = false,
+    category = "Citizens",
+})
 
+TEAM_POLICE = DarkRP.createJob("Офицер полиции", {
+    color = Color(25, 25, 170, 255),
+    model = {
+		"models/humans/nypd1940/male_02.mdl",
+		"models/humans/nypd1940/male_03.mdl",
+		"models/humans/nypd1940/male_04.mdl",
+		"models/humans/nypd1940/male_05.mdl",
+		"models/humans/nypd1940/male_06.mdl",
+        "models/humans/nypd1940/male_01.mdl",
+		"models/humans/nypd1940/male_07.mdl",
+		"models/humans/nypd1940/male_08.mdl",
+		"models/humans/nypd1940/male_09.mdl"},
+	description = [[Тот, кто сохраняет порядок в городе.]],
+    weapons = {"arrest_stick", "unarrest_stick", "m9k_colt1911", "stunstick", "door_ram", "weaponchecker"},
+    command = "cp",
+    max = 10,
+    salary = GAMEMODE.Config.normalsalary * 1.45,
+    admin = 0,
+    vote = true,
+    hasLicense = true,
+    ammo = {
+        ["m9k_ammo_pistol"] = 30,
+    },
+    category = "Civil Protection",
+})
 
+TEAM_DETECTIVE = DarkRP.createJob("Детектив", {
+    color = Color(56,38,22,255),
+    model = "models/sirgibs/ragdolls/detective_magnusson_player.mdl",
+    description = [[Тот, кто ведет расследования.]],
+    weapons = {"m9k_model627"},
+    command = "detective",
+    max = 2,
+    salary = GAMEMODE.Config.normalsalary * 2,
+    admin = 0,
+    vote = true,
+    hasLicense = true,
+    category = "Civil Protection",
+})
 
+TEAM_CHIEF = DarkRP.createJob("Шериф полиции", {
+    color = Color(20, 20, 255, 255),
+    model = {
+        "models/humans/nypd1940/male_02.mdl",
+        "models/humans/nypd1940/male_03.mdl",
+        "models/humans/nypd1940/male_04.mdl",
+        "models/humans/nypd1940/male_05.mdl",
+        "models/humans/nypd1940/male_06.mdl",
+        "models/humans/nypd1940/male_07.mdl",
+        "models/humans/nypd1940/male_08.mdl",
+        "models/humans/nypd1940/male_09.mdl",
+        "models/humans/nypd1940/male_01.mdl"},
+    description = [[Тот, кто руководит полицией.]],
+    weapons = {"arrest_stick", "unarrest_stick", "m9k_coltpython", "stunstick", "door_ram", "weaponchecker"},
+    command = "chief",
+    max = 1,
+    salary = GAMEMODE.Config.normalsalary * 1.67,
+    admin = 0,
+    vote = false,
+    hasLicense = true,
+    chief = true,
+    NeedToChangeFrom = TEAM_POLICE,
+    ammo = {
+        ["pistol"] = 60,
+    },
+    category = "Civil Protection",
+})
 
+TEAM_GANG = DarkRP.createJob("Бандит", {
+    color = Color(75, 75, 75, 255),
+    model = {
+        "models/humans/mafia/male_02.mdl",
+        "models/humans/mafia/male_04.mdl",
+        "models/humans/mafia/male_06.mdl",
+        "models/humans/mafia/male_07.mdl",
+        "models/humans/mafia/male_08.mdl",
+        "models/humans/mafia/male_09.mdl"},
+    description = [[Тот, кто грабит и убивает.]],
+    weapons = {},
+    command = "gangster",
+    max = 10,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    category = "Gangsters",
+})
 
+TEAM_THIEF = DarkRP.createJob("Вор", {
+    color = Color(50, 50, 50, 255),
+    model = "models/player/group01/cookies114.mdl",
+    description = [[Тот, кто обворовывает людей.]],
+    weapons = {"lockpick"},
+    command = "thief",
+    max = 5,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    category = "Gangsters",
+})
 
+TEAM_MOB = DarkRP.createJob("Босс мафии", {
+    color = Color(25, 25, 25, 255),
+    model = "models/vito.mdl",
+    description = [[Тот, кто руководит бандитами.]],
+    weapons = {"lockpick", "unarrest_stick"},
+    command = "mobboss",
+    max = 1,
+    salary = GAMEMODE.Config.normalsalary * 1.34,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    category = "Gangsters",
+})
+
+TEAM_GUN = DarkRP.createJob("Оружейник", {
+    color = Color(255, 140, 0, 255),
+    model = "models/player/monk.mdl",
+    description = [[Тот, кто продает гражданам оружие.]],
+    weapons = {},
+    command = "gundealer",
+    max = 4,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    category = "Citizens",
+})
+
+TEAM_MEDIC = DarkRP.createJob("Доктор", {
+    color = Color(47, 79, 79, 255),
+    model = "models/player/hostage/hostage_04.mdl",
+    description = [[Тот, кто лечит граждан.]],
+    weapons = {"med_kit"},
+    command = "medic",
+    max = 4,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    medic = true,
+    category = "Citizens",
+})
+
+TEAM_MAYOR = DarkRP.createJob("Мэр", {
+    color = Color(150, 20, 20, 255),
+    model = "models/player/breen.mdl",
+    description = [[Тот, кто управляет городом.]],
+    weapons = {},
+    command = "mayor",
+    max = 1,
+    salary = GAMEMODE.Config.normalsalary * 1.89,
+    admin = 0,
+    vote = true,
+    hasLicense = false,
+    mayor = true,
+    category = "Civil Protection",
+})
+
+TEAM_HOBO = DarkRP.createJob("Бомж", {
+    color = Color(80, 45, 0, 255),
+    model = "models/player/corpse1.mdl",
+    description = [[Тот, кому негде жить.]],
+    weapons = {"weapon_bugbait"},
+    command = "hobo",
+    max = 0,
+    salary = 0,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    candemote = false,
+    hobo = true,
+    category = "Citizens",
+})
+
+TEAM_MEDIC = DarkRP.createJob("Охранник", {
+    color = Color(25, 25, 200, 255),
+    model = "models/player/odessa.mdl",
+    description = [[Тот, кто вас охраняет.]],
+    weapons = {"stunstick"},
+    command = "guard",
+    max = 6,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    category = "Citizens",
+})
+
+if not DarkRP.disabledDefaults["modules"]["hungermod"] then
+    TEAM_COOK = DarkRP.createJob("Повар", {
+        color = Color(238, 99, 99, 255),
+        model = "models/player/mossman.mdl",
+        description = [[Тот, кто продает еду гражданам.]],
+        weapons = {},
+        command = "cook",
+        max = 4,
+        salary = 45,
+        admin = 0,
+        vote = false,
+        hasLicense = false,
+        cook = true
+    })
+end
 
 --[[---------------------------------------------------------------------------
 Define which team joining players spawn into and what team you change to if demoted
