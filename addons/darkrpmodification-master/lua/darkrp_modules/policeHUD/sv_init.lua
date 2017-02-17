@@ -1,0 +1,1 @@
+resource.AddFile("materials/Waypoint.png")
