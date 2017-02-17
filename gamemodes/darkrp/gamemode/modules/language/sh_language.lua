@@ -1,5 +1,5 @@
 local rp_languages = {}
-local selectedLanguage = GetConVar("gmod_language"):GetString() -- Switch language by setting gmod_language to another language
+local selectedLanguage = "ru" -- Switch language by setting gmod_language to another language
 
 function DarkRP.addLanguage(name, tbl)
     local old = rp_languages[name] or {}
