@@ -20,3 +20,6 @@ steam.inf
 *.cached
 *.db
 /*.txt
+data/*
+download/*
+downloadlists/*
