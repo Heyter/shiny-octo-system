@@ -16,3 +16,59 @@ http://wiki.darkrp.com/index.php/DarkRP:CustomEntityFields
 
 Add entities under the following line:
 ---------------------------------------------------------------------------]]
+
+DarkRP.createEntity("Принтер первого уровня", {
+    ent = "k_printer_t1",
+    model = "models/props_lab/reciever01a.mdl",
+    price = 1000,
+    max = 3,
+    cmd = "buymoneyprinter1"
+})
+
+DarkRP.createEntity("Принтер второго уровня", {
+    ent = "k_printer_t2",
+    model = "models/props_lab/reciever01a.mdl",
+    price = 2000,
+    max = 2,
+    cmd = "buymoneyprinter2"
+})
+
+DarkRP.createEntity("Принтер третьего уровня", {
+    ent = "k_printer_t3",
+    model = "models/props_lab/reciever01a.mdl",
+    price = 3000,
+    max = 2,
+    cmd = "buymoneyprinter3"
+})
+
+DarkRP.createEntity("Принтер четвертого уровня", {
+    ent = "k_printer_t4",
+    model = "models/props_lab/reciever01a.mdl",
+    price = 5000,
+    max = 1,
+    cmd = "buymoneyprinter4"
+})
+
+DarkRP.createEntity("Принтер пятого уровня", {
+    ent = "k_printer_t5",
+    model = "models/props_lab/reciever01a.mdl",
+    price = 10000,
+    max = 1,
+    cmd = "buymoneyprinter5"
+})
+
+DarkRP.createEntity("Улучшение принтера", {
+    ent = "k_printer_upgrade",
+    model = "models/props_lab/box01a.mdl",
+    price = 2000,
+    max = 1,
+    cmd = "buyprinterupgrade"
+})
+
+DarkRP.createEntity("Охладитель", {
+    ent = "k_coolant_cell",
+    model = "models/Items/battery.mdl",
+    price = 500,
+    max = 5,
+    cmd = "buycoolantcell"
+})
