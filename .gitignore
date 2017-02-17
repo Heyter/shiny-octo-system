@@ -1,0 +1,6 @@
+*
+!addons/*
+!lua/*
+!cfg_example/*
+!gamemodes/*
+!materials/*
