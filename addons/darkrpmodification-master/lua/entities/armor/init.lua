@@ -3,7 +3,7 @@ AddCSLuaFile("shared.lua")
 include('shared.lua')
 
 function ENT:Initialize()
-	self.Entity:SetModel("models/items/healthkit.mdl")
+	self.Entity:SetModel("models/weapons/w_defuser.mdl")
 	self.Entity:PhysicsInit(SOLID_VPHYSICS)
 	self.Entity:SetMoveType(MOVETYPE_VPHYSICS)
 	self.Entity:SetSolid(SOLID_VPHYSICS)

@@ -84,7 +84,7 @@ DarkRP.createEntity("Бронежилет", {
 
 DarkRP.createEntity("Аптечка", {
     ent = "health_pack",
-    model = "models/healthvial.mdl",
+    model = "models/weapons/w_defuser.mdl",
     price = 1000,
     max = 10,
     cmd = "buyhealthpack",
