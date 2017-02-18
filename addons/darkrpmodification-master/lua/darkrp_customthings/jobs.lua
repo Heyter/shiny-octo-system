@@ -206,7 +206,7 @@ TEAM_MOB = DarkRP.createJob("Босс мафии", {
     category = "Gangsters",
 })
 
-TEAM_GUN = DarkRP.createJob("Оружейник", {
+TEAM_GUN = DarkRP.createJob("Продавец оружия", {
     color = Color(255, 140, 0, 255),
     model = "models/player/monk.mdl",
     description = [[Тот, кто продает гражданам оружие.]],
@@ -220,9 +220,28 @@ TEAM_GUN = DarkRP.createJob("Оружейник", {
     category = "Citizens",
 })
 
+TEAM_ILLEGALDEALER = DarkRP.createJob("Продавец нелегального оборудования", {
+    color = Color(255, 190, 0, 255),
+    model = "models/player/guerilla.mdl",
+    description = [[Тот, кто продает нелегальные вещи.]],
+    weapons = {},
+    command = "illegaldealer",
+    max = 3,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    category = "Citizens",
+})
+
 TEAM_MEDIC = DarkRP.createJob("Доктор", {
     color = Color(47, 79, 79, 255),
-    model = "models/player/hostage/hostage_04.mdl",
+    model = {
+        "models/player/hostage/hostage_04.mdl",
+        "models/player/hostage/hostage_03.mdl",
+        "models/player/hostage/hostage_02.mdl",
+        "models/player/hostage/hostage_01.mdl",
+        "models/player/kleiner.mdl"},
     description = [[Тот, кто лечит граждан.]],
     weapons = {"med_kit"},
     command = "medic",

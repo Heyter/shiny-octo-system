@@ -72,3 +72,21 @@ DarkRP.createEntity("Охладитель", {
     max = 5,
     cmd = "buycoolantcell"
 })
+
+DarkRP.createEntity("Бронежилет", {
+    ent = "armor",
+    model = "models/Items/battery.mdl",
+    price = 2000,
+    max = 10,
+    cmd = "buyarmor",
+    allowed = {TEAM_ILLEGALDEALER},
+})
+
+DarkRP.createEntity("Аптечка", {
+    ent = "health_pack",
+    model = "models/healthvial.mdl",
+    price = 1000,
+    max = 10,
+    cmd = "buyhealthpack",
+    allowed = {TEAM_MEDIC},
+})
