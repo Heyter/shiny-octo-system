@@ -120,9 +120,12 @@ TEAM_DETECTIVE = DarkRP.createJob("Детектив", {
     max = 2,
     salary = GAMEMODE.Config.normalsalary * 2,
     admin = 0,
-    vote = true,
+    vote = false,
     hasLicense = true,
     category = "Civil Protection",
+    customCheck = isDonator,
+    isDonator = true,
+    CustomCheckFailMsg = "Извините, только для Премиум игроков",
 })
 
 TEAM_CHIEF = DarkRP.createJob("Шериф полиции", {

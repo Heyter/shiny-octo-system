@@ -17,3 +17,4 @@ resource.AddWorkshop("128093075") -- M9K Small Arms
 resource.AddWorkshop("108176967") -- Sit Anywhere
 resource.AddWorkshop("182758912") -- Thief Playermodel
 resource.AddWorkshop("248302805") -- DARKRP
+resource.AddWorkshop("108424005") -- Keypad
