@@ -10,20 +10,25 @@
 local TCB = {}
 local TCB_F4Frame
 local TCB_F4Menu = vgui.GetControlTable(TCB_F4Menu)
+local isModelsFixed = false
+function FixmePlease()
 
-for i, job in ipairs(RPExtraTeams) do
-
-	if istable(job.model) then
-		mod = table.Random(job.model)
-		
-	else
-		mod = job.model
+	if isModelsFixed then return end
+	print("zhopa")
+	isModelsFixed = true 
+	for i, job in pairs(RPExtraTeams) do
+		if istable(job.model) then
+			mod = table.Random(job.model)
+			
+		else
+			mod = job.model
+		end
+		DarkRP.setPreferredJobModel(job.team, mod)
 	end
-	DarkRP.setPreferredJobModel(job.team, mod)
 end
-
 -- Menu (Open/Create)
 function TCB:OpenF4Menu()
+	FixmePlease()
 	if TCB_F4Frame and ValidPanel( TCB_F4Frame ) then
 		
 		-- Open
