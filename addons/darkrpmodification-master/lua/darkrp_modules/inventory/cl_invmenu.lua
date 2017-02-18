@@ -250,7 +250,7 @@ local function showmenu()
 	sheets["Items"] = sheet:AddSheet( "Items", list1, "icon16/plugin.png", false, false, "General Items" )
 	sheets["Weapons"] = sheet:AddSheet( "Weapons", list2, "icon16/bomb.png", false, false, "Things that go \"pew\"" )
 	sheets["Food"] = sheet:AddSheet( "Food", list3, "icon16/user.png", false, false, "Delicious Edibles" )
-	sheets["Shipmets"] = sheet:AddSheet( "Shipments", list4, "icon16/box.png", false, false, "Various Packages" )
+	sheets["Shipments"] = sheet:AddSheet( "Shipments", list4, "icon16/box.png", false, false, "Various Packages" )
 	if lastitem != nil then
 
 		sheet:SetActiveTab(sheets[lastitem].Tab)
