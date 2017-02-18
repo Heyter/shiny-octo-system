@@ -18,6 +18,27 @@ http://wiki.darkrp.com/index.php/DarkRP:CustomJobFields
 Add jobs under the following line:
 ---------------------------------------------------------------------------]]
 
+/*
+
+
+customCheck = isDonator,
+    isDonator = true,
+    CustomCheckFailMsg = "Извините, только для донаторов",
+
+
+
+*/
+
+local function isSuperAdmin(ply)
+    return ply:GetUserGroup() == "superadmin"
+end
+local function isAdmin(ply)
+    return ply:GetUserGroup() == "admin" or isSuperAdmin(ply)
+end
+local function isDonator(ply)
+    return ply:GetUserGroup() == "premium" or isAdmin(ply)
+end
+
 TEAM_CITIZEN = DarkRP.createJob("Безработный", {
     color = Color(20, 150, 20, 255),
     model = {
@@ -55,13 +76,13 @@ TEAM_ADMINONDUTY = DarkRP.createJob("Администратор", {
     weapons = {},
     command = "adminonduty",
     max = 10,
-    salary = GAMEMODE.Config.normalsalary,
+    salary = GAMEMODE.Config.normalsalary*0,
     admin = 0,
     vote = false,
     hasLicense = true,
     category = "Citizens",
-    customCheck = function(ply) return ply:GetUserGroup() == "premium" or ply:GetUserGroup() == "admin" end,
-    CustomCheckFailMsg = function(a,b) return "govno" end
+    customCheck = isAdmin,
+    CustomCheckFailMsg = "Только для администрации" 
 })
 
 TEAM_POLICE = DarkRP.createJob("Офицер полиции", {
@@ -150,6 +171,8 @@ TEAM_GANG = DarkRP.createJob("Бандит", {
     vote = false,
     hasLicense = false,
     category = "Gangsters",
+    
+
 })
 
 TEAM_THIEF = DarkRP.createJob("Вор", {
