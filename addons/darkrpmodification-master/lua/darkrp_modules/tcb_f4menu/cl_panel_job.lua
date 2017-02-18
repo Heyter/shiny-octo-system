@@ -56,6 +56,7 @@ function PANEL:Init()
 	self.join.Hover 	= false
 	self.join.Status 	= false
 	self.join.Extended  = false
+	self.join.ForDonators = false
 	self.join.OnCursorEntered	= function() self.join.Hover = true  end
 	self.join.OnCursorExited 	= function() self.join.Hover = false end
 	self.join.DoClick = function() end
@@ -69,7 +70,10 @@ function PANEL:Init()
 			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.SoftBlack )
 		end
 
-		if self.join.Status == true then
+		if self.join.ForDonators then
+			draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.BlackColor )
+			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.PrimaryColor )
+		elseif self.join.Status == true then
 			draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Gray1Color )
 			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Gray2Color )
 		end
@@ -95,7 +99,7 @@ function PANEL:Init()
 end
 
 -- Update
-function PANEL:UpdateInfo( job, team, name, model, max, players, description, vote, cmd )
+function PANEL:UpdateInfo( job, team, name, model, max, players, description, vote, cmd, donator )
 
 	self.info.name 		= name
 	self.info.wep 		= description
@@ -112,11 +116,19 @@ function PANEL:UpdateInfo( job, team, name, model, max, players, description, vo
 	if job['NeedToChangeFrom'] and LocalPlayer():Team() != job['NeedToChangeFrom'] then
 		self.join.Status = true
 	end
+	if donator then
+		self.join.ForDonators = true
+	end
+	
 
 	local closeFunc = function() RunConsoleCommand( "tcb_f4menu_close" ) end
 	
-	if self.join.Status != true then
-		
+	if donator and not job.customCheck(LocalPlayer()) then
+		self.join.Status = true
+		self.join.DoClick = fn.Compose{closeFunc, fn.Partial(notification.AddLegacy, job['CustomCheckFailMsg'] or "Нет", NOTIFY_GENERIC, 2 )}
+	end
+
+	if not self.join.Status then		
 		if vote then
 			self.join.DoClick = fn.Compose{closeFunc, fn.Partial(RunConsoleCommand, "darkrp", "vote" .. cmd)}
 		else
@@ -313,8 +325,9 @@ function PANEL:FillData( parent )
 		local ShowThisItem = true
 		if TCB_Settings.HideWrongJob == true then
 
-			if job.customCheck 		and not job.customCheck(LocalPlayer()) 				then ShowThisItem = false end
-			if job.NeedToChangeFrom and job.NeedToChangeFrom != LocalPlayer():Team() 	then ShowThisItem = false end
+			if job.team == LocalPlayer():Team() 													then ShowThisItem = false end
+			if job.customCheck 		and not job.isDonator and not job.customCheck(LocalPlayer()) 	then ShowThisItem = false end
+			if job.NeedToChangeFrom and job.NeedToChangeFrom != LocalPlayer():Team() 				then ShowThisItem = false end
 
 		end
 		
@@ -329,6 +342,8 @@ function PANEL:FillData( parent )
 			local job_max	= job['max'] 			or 0
 			local job_vote	= job['vote']			or false
 			local job_cmd	= job['command']		or ""
+			local job_donator 	= job['isDonator']	or false
+
 
 			local job_ply	= team.NumPlayers( job['team'] ) or 0
 			local job_mdl	= ""
@@ -337,7 +352,7 @@ function PANEL:FillData( parent )
 
 			if istable( job['model'] ) then job_mdl = job['model'][1] else job_mdl = job['model'] end
 
-			CurrentJob:UpdateInfo( job, job_team, job_name, job_mdl, job_max, job_ply, job_desc, job_vote, job_cmd )
+			CurrentJob:UpdateInfo( job, job_team, job_name, job_mdl, job_max, job_ply, job_desc, job_vote, job_cmd, job_donator )
 
 			StartYPos = StartYPos + CurrentJob:GetTall() + 11
 		end
