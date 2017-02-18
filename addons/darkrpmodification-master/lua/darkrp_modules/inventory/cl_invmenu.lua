@@ -1,5 +1,5 @@
 local function showmenu()
-	print("sadasd")
+
 	local DFrame1
 
 	DFrame1 = vgui.Create('DFrame')

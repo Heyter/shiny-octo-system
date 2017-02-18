@@ -29,13 +29,13 @@ customCheck = isDonator,
 
 */
 
-local function isSuperAdmin(ply)
+function isSuperAdmin(ply)
     return ply:GetUserGroup() == "superadmin"
 end
-local function isAdmin(ply)
+function isAdmin(ply)
     return ply:GetUserGroup() == "admin" or isSuperAdmin(ply)
 end
-local function isDonator(ply)
+function isDonator(ply)
     return ply:GetUserGroup() == "premium" or isAdmin(ply)
 end
 

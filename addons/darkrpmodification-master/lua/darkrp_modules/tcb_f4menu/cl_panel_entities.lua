@@ -42,13 +42,16 @@ function PANEL:FillData( parent )
 			if item.customCheck 		and not item.customCheck( LocalPlayer() ) 						then ShowThisItem = false end
 
 		end
-
+		local donator = false
+		if item.name == "Принтер пятого уровня" then
+			donator = function(ply) return isDonator( ply ) end
+		end
 		if ShowThisItem == true then
 
 			CurrentItem = vgui.Create( "tcb_panel_item", parent )
 			CurrentItem:SetPos( 0, StartYPos )
 
-			CurrentItem:UpdateInfo( item, "entities", "entities" )
+			CurrentItem:UpdateInfo( item, "entities", "entities",donator )
 
 			StartYPos = StartYPos + CurrentItem:GetTall() + 11
 

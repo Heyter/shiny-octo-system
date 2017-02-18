@@ -52,6 +52,7 @@ function PANEL:Init()
 	self.buy:SetText( "" )
 	self.buy.Hover 	= false
 	self.buy.Status = false
+	self.buy.ForDonator = false
 	self.buy.OnCursorEntered	= function() self.buy.Hover = true  end
 	self.buy.OnCursorExited 	= function() self.buy.Hover = false end
 	self.buy.DoClick = function() end
@@ -65,7 +66,10 @@ function PANEL:Init()
 			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.SoftBlack )
 		end
 
-		if self.buy.Status == true then
+		if self.buy.ForDonators then
+			draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.BlackColor )
+			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.PrimaryColor )
+		elseif self.buy.Status == true then
 			draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Gray1Color )
 			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Gray2Color )
 		end
@@ -89,11 +93,15 @@ function PANEL:Init()
 end
 
 -- Update
-function PANEL:UpdateInfo( item, type, check )
+function PANEL:UpdateInfo( item, type, check, donator )
 
 	self.model:SetModel( item.model )
 
 	self.info.name 	= item.name
+	if donator then
+		self.buy.ForDonators = true
+	end
+
 
 	if type == "weapons" then
 		self.slots.text = "Цена: "..DarkRP.formatMoney( item.pricesep )
@@ -151,6 +159,10 @@ function PANEL:UpdateInfo( item, type, check )
 		end
 	else
 		self.info.two 	= "-"
+	end
+	if donator and not donator(LocalPlayer()) then
+		self.buy.DoClick = fn.Compose{closeFunc, fn.Partial(function() notification.AddLegacy("Извините, только для Премиум игроков", NOTIFY_ERROR, 2) 
+																		surface.PlaySound( "buttons/button15.wav" ) end)}
 	end
 	
 end
