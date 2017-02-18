@@ -54,7 +54,7 @@ DarkRP.createEntity("Принтер пятого уровня", {
     model = "models/props_lab/reciever01a.mdl",
     price = 10000,
     max = 1,
-    cmd = "buymoneyprinter5"
+    cmd = "f4091876df6a5d39e6690b7395a95399"
 })
 
 DarkRP.createEntity("Улучшение принтера", {

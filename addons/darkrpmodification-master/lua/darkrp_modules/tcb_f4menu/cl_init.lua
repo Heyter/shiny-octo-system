@@ -14,7 +14,6 @@ local isModelsFixed = false
 function FixmePlease()
 
 	if isModelsFixed then return end
-	print("zhopa")
 	isModelsFixed = true 
 	for i, job in pairs(RPExtraTeams) do
 		if istable(job.model) then
