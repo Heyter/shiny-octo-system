@@ -125,7 +125,8 @@ function PANEL:UpdateInfo( job, team, name, model, max, players, description, vo
 	
 	if donator and not job.customCheck(LocalPlayer()) then
 		self.join.Status = true
-		self.join.DoClick = fn.Compose{closeFunc, fn.Partial(notification.AddLegacy, job['CustomCheckFailMsg'] or "Нет", NOTIFY_GENERIC, 2 )}
+		self.join.DoClick = fn.Compose{closeFunc, fn.Partial(function() notification.AddLegacy(job['CustomCheckFailMsg'] or "Нет", NOTIFY_ERROR, 2) 
+																		surface.PlaySound( "buttons/button15.wav" ) end)}
 	end
 
 	if not self.join.Status then		
