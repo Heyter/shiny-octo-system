@@ -20,7 +20,7 @@ Add entities under the following line:
 DarkRP.createEntity("Принтер первого уровня", {
     ent = "k_printer_t1",
     model = "models/props_lab/reciever01a.mdl",
-    price = 1000,
+    price = 1500,
     max = 3,
     cmd = "buymoneyprinter1"
 })
@@ -28,7 +28,7 @@ DarkRP.createEntity("Принтер первого уровня", {
 DarkRP.createEntity("Принтер второго уровня", {
     ent = "k_printer_t2",
     model = "models/props_lab/reciever01a.mdl",
-    price = 2000,
+    price = 3000,
     max = 2,
     cmd = "buymoneyprinter2"
 })
@@ -36,7 +36,7 @@ DarkRP.createEntity("Принтер второго уровня", {
 DarkRP.createEntity("Принтер третьего уровня", {
     ent = "k_printer_t3",
     model = "models/props_lab/reciever01a.mdl",
-    price = 3000,
+    price = 4500,
     max = 2,
     cmd = "buymoneyprinter3"
 })
@@ -44,7 +44,7 @@ DarkRP.createEntity("Принтер третьего уровня", {
 DarkRP.createEntity("Принтер четвертого уровня", {
     ent = "k_printer_t4",
     model = "models/props_lab/reciever01a.mdl",
-    price = 5000,
+    price = 6500,
     max = 1,
     cmd = "buymoneyprinter4"
 })

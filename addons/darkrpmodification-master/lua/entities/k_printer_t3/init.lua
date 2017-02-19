@@ -9,8 +9,8 @@ local function SetValues( ent )
 	ent.maxPrint = 37; -- Maximum print amount.
 	ent.upgradedExtra = ent.maxPrint * 0.5; -- The additional income received on upgraded printers.
 	ent.printerColor = Color( 100, 100, 200, 255 ); -- The color of the printer prop.
-	ent.coolantSystem = false; -- Toggles the coolant system.
-	ent.coolantLoss = 0.5; -- The Percentage loss for each print of the coolant is enabled.
+	ent.coolantSystem = true; -- Toggles the coolant system.
+	ent.coolantLoss = 1; -- The Percentage loss for each print of the coolant is enabled.
 end;
 ------------------------------
 
@@ -122,7 +122,7 @@ function ENT:CreateMoney()
 		self:SetNWInt( "Coolant", coolantLeft );
 		if coolantLeft <= 0 then
 			self:SetNWInt( "Coolant", 0 );
-			self.damage = self.damage - 5;
+			self.damage = self.damage - 50;
 			self:SetNWInt( "Health", self.damage );
 			self.sparking = true;
 			timer.Simple( 0.3, function() self.sparking = false end );

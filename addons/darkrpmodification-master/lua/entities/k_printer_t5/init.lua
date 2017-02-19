@@ -10,7 +10,7 @@ local function SetValues( ent )
 	ent.upgradedExtra = ent.maxPrint * 0.5; -- The additional income received on upgraded printers.
 	ent.printerColor = Color( 200, 100, 100, 255 ); -- The color of the printer prop.
 	ent.coolantSystem = true; -- Toggles the coolant system.
-	ent.coolantLoss = 0.5; -- The Percentage loss for each print of the coolant is enabled.
+	ent.coolantLoss = 1; -- The Percentage loss for each print of the coolant is enabled.
 end;
 ------------------------------
 
