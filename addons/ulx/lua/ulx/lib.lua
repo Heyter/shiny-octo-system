@@ -51,51 +51,34 @@ local function checkDeath( ply, weapon, killer )
 		return true -- Don't register their death on HUD
 	end
 end
-hook.Add( "PlayerDeath", "ULXCheckDeath", checkDeath, -10 ) -- Hook it first because we're blocking their death.
+hook.Add( "PlayerDeath", "ULXCheckDeath", checkDeath, HOOK_HIGH ) -- Hook it first because we're blocking their death.
 
 local function checkSuicide( ply )
 	if ply.ulxNoDie then
 		return false
 	end
 end
-hook.Add( "CanPlayerSuicide", "ULXCheckSuicide", checkSuicide, - 10 )
+hook.Add( "CanPlayerSuicide", "ULXCheckSuicide", checkSuicide, HOOK_HIGH )
 
-function ulx.getVersion() -- This exists on the client as well, so feel free to use it!
-	local version
-	local r = 0
 
-	if ulx.release then
-		version = string.format( "%.02f", ulx.version )
-	else
-		if ULib.fileExists( "addons/ulx/.svn/wc.db" ) then -- SVN's new format
-			-- The following code would probably work if garry allowed us to read this file...
-			--[[local raw = ULib.fileRead( "addons/ulx/.svn/wc.db" )
-			local highest = 0
-			for rev in string.gmatch( raw, "/ulx/!svn/ver/%d+/" ) do
-				if rev > highest then
-					highest = rev
-				end
+local function advertiseNewVersions( ply )
+	if ply:IsAdmin() and not ply.ULX_UpdatesAdvertised then
+		local updatesFor = {}
+		for name, plugin in pairs (ULib.plugins) do
+			myBuild = tonumber( plugin.BuildNumLocal )
+			curBuild = tonumber( plugin.BuildNumRemote )
+			if myBuild and curBuild and myBuild < curBuild then
+				table.insert( updatesFor, name )
 			end
-			r = highest]]
-		elseif ULib.fileExists( "addons/ulx/lua/ulx/.svn/entries" ) then
-			-- Garry broke the following around 05/11/2010, then fixed it again around 11/10/2010!
-			local lines = string.Explode( "\n", ULib.fileRead( "lua/ulx/.svn/entries" ) )
-			r = tonumber( lines[ 4 ] )
 		end
-
-		if r and r > 0 then
-			version = string.format( "<SVN> revision %i", r )
-		else
-			version = string.format( "<SVN> unknown revision" )
+		if #updatesFor > 0 then
+			ULib.tsay( ply, "[ULX] Updates available for " .. string.Implode( ", ", updatesFor ) )
 		end
+		ply.ULX_UpdatesAdvertised = true
 	end
-
-	return version, ulx.version, r
 end
+hook.Add( ULib.HOOK_UCLAUTH, "ULXAdvertiseUpdates", advertiseNewVersions )
 
-function ulx.addToMenu( menuid, label, data ) -- TODO: Remove
-	Msg( "Warning: ulx.addToMenu was called, which is being phased out!\n" )
-end
 
 function ulx.standardizeModel( model ) -- This will convert all model strings to be of the same type, using linux notation and single dashes.
 	model = model:lower()

@@ -17,7 +17,7 @@ function PANEL:Init()
 	self.Paint = function( pnl, w, h )
 
 		draw.RoundedBox( 0, 0, 0, w - 0, h - 0, TCB_Settings.SoftBlack )
-		draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.ButtonColor2 )
+		draw.RoundedBox( 0, 2, 2, w - 4, h - 4, Color(227, 210, 161, 255) )
 
 	end
 
@@ -37,11 +37,9 @@ function PANEL:Init()
 
 		--draw.RoundedBox( 0, 0, 0, w, h, Color( 255, 255, 255, 20 ) )
 
-		draw.DrawText( self.info.name, "Trebuchet24", w / 2 + 1, 5 + 1, TCB_Settings.BlackColor, 1 )
-		draw.DrawText( self.info.name, "Trebuchet24", w / 2 + 0, 5 + 0, TCB_Settings.WhiteColor, 1 )
+		draw.DrawText( self.info.name, "Trebuchet24", w / 2 + 0, 5 + 0, TCB_Settings.BlackColor, 1 )
 
-		draw.DrawText( self.info.two, "Trebuchet18", w / 2 + 1, 34 + 1, TCB_Settings.BlackColor, 1 )
-		draw.DrawText( self.info.two, "Trebuchet18", w / 2 + 0, 34 + 0, TCB_Settings.WhiteColor, 1 )
+		draw.DrawText( self.info.two, "HUDSmall", w / 2 + 0, 34 + 0, TCB_Settings.BlackColor, 1 )
 
 	end
 
@@ -86,7 +84,7 @@ function PANEL:Init()
 	self.slots.text = "-"
 	self.slots.Paint = function( pnl, w, h )
 
-		draw.DrawText( self.slots.text, "Trebuchet18", w/ 2, 0, TCB_Settings.WhiteColor, 1 )
+		draw.DrawText( self.slots.text, "Trebuchet18", w/ 2, 0, TCB_Settings.BlackColor, 1 )
 
 	end
 	

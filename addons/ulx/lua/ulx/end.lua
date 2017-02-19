@@ -2,23 +2,23 @@
 
 local function init()
 	-- Load our banned users
-	if ULib.fileExists( "cfg/banned_user.cfg" ) then
-		ULib.execFile( "cfg/banned_user.cfg" )
+	if ULib.fileExists( "cfg/banned_user.cfg", true ) then
+		ULib.execFile( "cfg/banned_user.cfg", "ULX-EXEC", true )
 	end
 end
 hook.Add( "Initialize", "ULXInitialize", init )
 
-local function doMainCfg( path )
-	ULib.execString( ULib.stripComments( ULib.fileRead( path ), ";" ), "ULXConfigExec" )
+local function doMainCfg( path, noMount )
+	ULib.execString( ULib.stripComments( ULib.fileRead( path, noMount ), ";" ), "ULXConfigExec" )
 end
 
-local function doDownloadCfg( path )
+local function doDownloadCfg( path, noMount )
 	-- Does the module exist for this?
 	if not ulx.addForcedDownload then
 		return
 	end
 
-	local lines = ULib.explode( "\n+", ULib.stripComments( ULib.fileRead( path ), ";" ) )
+	local lines = ULib.explode( "\n+", ULib.stripComments( ULib.fileRead( path, noMount ), ";" ) )
 	for _, line in ipairs( lines ) do
 		line = line:Trim()
 		if line:len() > 0 then
@@ -27,14 +27,14 @@ local function doDownloadCfg( path )
 	end
 end
 
-local function doGimpCfg( path )
+local function doGimpCfg( path, noMount )
 	-- Does the module exist for this?
 	if not ulx.clearGimpSays then
 		return
 	end
 
 	ulx.clearGimpSays()
-	local lines = ULib.explode( "\n+", ULib.stripComments( ULib.fileRead( path ), ";" ) )
+	local lines = ULib.explode( "\n+", ULib.stripComments( ULib.fileRead( path, noMount ), ";" ) )
 	for _, line in ipairs( lines ) do
 		line = line:Trim()
 		if line:len() > 0 then
@@ -43,13 +43,13 @@ local function doGimpCfg( path )
 	end
 end
 
-local function doAdvertCfg( path )
+local function doAdvertCfg( path, noMount )
 	-- Does the module exist for this?
 	if not ulx.addAdvert then
 		return
 	end
 
-	local data_root, err = ULib.parseKeyValues( ULib.stripComments( ULib.fileRead( path ), ";" ) )
+	local data_root, err = ULib.parseKeyValues( ULib.stripComments( ULib.fileRead( path, noMount ), ";" ) )
 	if not data_root then Msg( "[ULX] Error in advert config: " .. err .. "\n" ) return end
 
 	for group_name, row in pairs( data_root ) do
@@ -67,14 +67,14 @@ local function doAdvertCfg( path )
 	end
 end
 
-local function doVotemapsCfg( path )
+local function doVotemapsCfg( path, noMount )
 	-- Does the module exist for this?
 	if not ulx.clearVotemaps then
 		return
 	end
 
 	ulx.clearVotemaps()
-	local lines = ULib.explode( "\n+", ULib.stripComments( ULib.fileRead( path ), ";" ) )
+	local lines = ULib.explode( "\n+", ULib.stripComments( ULib.fileRead( path, noMount ), ";" ) )
 	for _, line in ipairs( lines ) do
 		line = line:Trim()
 		if line:len() > 0 then
@@ -83,18 +83,38 @@ local function doVotemapsCfg( path )
 	end
 end
 
-local function doReasonsCfg( path )
+local function doReasonsCfg( path, noMount )
 	-- Does the module exist for this?
 	if not ulx.addKickReason then
 		return
 	end
 
-	local lines = ULib.explode( "\n+", ULib.stripComments( ULib.fileRead( path ), ";" ) )
+	local lines = ULib.explode( "\n+", ULib.stripComments( ULib.fileRead( path, noMount ), ";" ) )
 	for _, line in ipairs( lines ) do
 		line = line:Trim()
 		if line:len() > 0 then
 			ulx.addKickReason( ULib.stripQuotes( line ) )
 		end
+	end
+end
+
+local function doMotdCfg( path, noMount )
+	-- Does the module exist for this?
+	if not ulx.motd then
+		return
+	end
+
+	local data_root, err = ULib.parseKeyValues( ULib.stripComments( ULib.fileRead( path, noMount ), ";" ) )
+	if not data_root then Msg( "[ULX] Error in motd config: " .. err .. "\n" ) return end
+
+	ulx.motdSettings = data_root
+	ulx.populateMotdData()
+end
+
+local function doMessageCfg( path, noMount )
+	local message = ULib.stripComments( ULib.fileRead( path, noMount ), ";" ):Trim()
+	if message and message:find("%W") then
+		ULib.BanMessage = message
 	end
 end
 
@@ -106,6 +126,8 @@ local function doCfg()
 		["adverts.txt"] = doAdvertCfg,
 		["votemaps.txt"] = doVotemapsCfg,
 		["banreasons.txt"] = doReasonsCfg,
+		["motd.txt"] = doMotdCfg,
+		["banmessage.txt"] = doMessageCfg,
 	}
 
 	local gamemode_name = GAMEMODE.Name:lower()
@@ -118,17 +140,17 @@ local function doCfg()
 		end
 
 		-- Per gamemode config
-		if ULib.fileExists( "data/ulx/gamemodes/" .. gamemode_name .. "/" .. filename ) then
-			fn( "data/ulx/gamemodes/" .. gamemode_name .. "/" .. filename )
+		if ULib.fileExists( "data/ulx/gamemodes/" .. gamemode_name .. "/" .. filename, true ) then
+			fn( "data/ulx/gamemodes/" .. gamemode_name .. "/" .. filename, true )
 		end
 
 		-- Per map config
-		if ULib.fileExists( "data/ulx/maps/" .. map_name .. "/" .. filename ) then
-			fn( "data/ulx/maps/" .. map_name .. "/" .. filename )
+		if ULib.fileExists( "data/ulx/maps/" .. map_name .. "/" .. filename, true ) then
+			fn( "data/ulx/maps/" .. map_name .. "/" .. filename, true )
 		end
 	end
 
-	ULib.queueFunctionCall( hook.Call, ulx.HOOK_ULXDONELOADING, _ ) -- We're done loading! Wait a tick so the configs load.
+	ULib.namedQueueFunctionCall( "ULXConfigExec", hook.Call, ulx.HOOK_ULXDONELOADING, _ ) -- We're done loading! Wait a tick so the configs load.
 
 	if not game.IsDedicated() then
 		hook.Remove( "PlayerInitialSpawn", "ULXDoCfg" )
@@ -136,7 +158,7 @@ local function doCfg()
 end
 
 if game.IsDedicated() then
-	hook.Add( "Initialize", "ULXDoCfg", doCfg, -20 )
+	hook.Add( "Initialize", "ULXDoCfg", doCfg, HOOK_MONITOR_HIGH )
 else
-	hook.Add( "PlayerInitialSpawn", "ULXDoCfg", doCfg, -20 ) -- TODO can we make this initialize too?
+	hook.Add( "PlayerInitialSpawn", "ULXDoCfg", doCfg, HOOK_MONITOR_HIGH ) -- TODO can we make this initialize too?
 end

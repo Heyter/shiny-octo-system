@@ -1,22 +1,22 @@
-ulx.common_kick_reasons = {}
+ulx.common_kick_reasons = ulx.common_kick_reasons or {}
 function ulx.populateKickReasons( reasons )
 	table.Empty( ulx.common_kick_reasons )
 	table.Merge( ulx.common_kick_reasons, reasons )
 end
 
-ulx.maps = {}
+ulx.maps = ulx.maps or {}
 function ulx.populateClMaps( maps )
 	table.Empty( ulx.maps )
 	table.Merge( ulx.maps, maps )
 end
 
-ulx.gamemodes = {}
+ulx.gamemodes = ulx.gamemodes or {}
 function ulx.populateClGamemodes( gamemodes )
 	table.Empty( ulx.gamemodes )
 	table.Merge( ulx.gamemodes, gamemodes )
 end
 
-ulx.votemaps = {}
+ulx.votemaps = ulx.votemaps or {}
 function ulx.populateClVotemaps( votemaps )
 	table.Empty( ulx.votemaps )
 	table.Merge( ulx.votemaps, votemaps )
@@ -104,23 +104,6 @@ local function rcvVote( um )
 	curVote = { title=title, options=options, endtime=CurTime()+timeout }
 end
 usermessage.Hook( "ulx_vote", rcvVote )
-
-function ulx.getVersion() -- This exists on the server as well, so feel free to use it!
-	if ulx.release then
-		version = string.format( "%.02f", ulx.version )
-	elseif ulx.revision > 0 then -- SVN version?
-		version = string.format( "<SVN> revision %i", ulx.revision )
-	else
-		version = string.format( "<SVN> unknown revision" )
-	end
-
-	return version, ulx.version, ulx.revision
-
-end
-
-function ulx.addToMenu( menuid, label, data ) -- TODO, remove
-	Msg( "Warning: ulx.addToMenu was called, which is being phased out!\n" )
-end
 
 -- Any language stuff for ULX should go here...
 

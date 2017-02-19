@@ -32,7 +32,7 @@ function ULib.explode( separator, str, limit )
 			table.insert( t, str:sub( curpos, newpos - 1 ) ) -- Save it in our table.
 			curpos = endpos + 1 -- save just after where we found it for searching next time.
 		else
-			if limit and table.getn( t ) > limit then
+			if limit and #t > limit then
 				return t -- Reached limit
 			end
 			table.insert( t, str:sub( curpos ) ) -- Save what's left in our array.
@@ -442,6 +442,25 @@ function ULib.toBool( x )
 end
 
 
+local function navigateUpTo(currentPointer, tableCrumbs)
+	for i=1, #tableCrumbs-1 do
+		local nextTableName = tableCrumbs[i]
+		currentPointer = currentPointer[ nextTableName ]
+		if type(currentPointer) ~= "table" then return false end -- Not found
+	end
+	return true, currentPointer
+end
+
+local function getCrumbsTable( varLocation )
+	local tableCrumbs = ULib.explode( "[%.%[]", varLocation )
+	for i=1, #tableCrumbs do
+		local newCrumb, replaced = string.gsub( tableCrumbs[i], "]$", "" )
+		if replaced > 0 then tableCrumbs[i] = tonumber( newCrumb ) end
+	end
+	return tableCrumbs
+end
+
+
 --[[
 	Function: findVar
 
@@ -449,26 +468,72 @@ end
 
 	Parameters:
 
-		var - The variable you wish to find
+		varLocation - The string location of the variable you wish to find or set (E.G., "ULib.myTable.MyVariable").
+		rootTable - The optional root table to search. Defaults to _G, the global environment.
 
 	Returns:
 
-		The variable or nil
+	Two values as follows...
+
+		Status - A boolean indicating whether or not it was found.
+		Value - The value of the variable.
 
 	Revisions:
 
 		v2.40 - Removed dependency on gmod functions.
+		v2.60 - Now returns two values to indicate success and value.
+		        Added second parameter for root table and added better handling for nil values.
 ]]
-function ULib.findVar( var )
-	if not var then error( "Nil param passed to ULib.findVar", 2 ) end
-	local loc = ULib.explode( "%.", var )
-	local x = _G
-	for _, v in ipairs( loc ) do
-		x = x[ v ]
-		if not x then return end
-	end
+function ULib.findVar( varLocation, rootTable )
+	ULib.checkArg( 1, "ULib.findVar", "string", varLocation )
+	ULib.checkArg( 2, "ULib.findVar", {"table", "nil"}, rootTable )
+	rootTable = rootTable or _G
 
-	return x
+	local tableCrumbs = getCrumbsTable( varLocation )
+	local success, lastTable = navigateUpTo(rootTable, tableCrumbs)
+	if not success then return false end
+
+	local lastCrumb = tableCrumbs[#tableCrumbs]
+	return true, lastTable[lastCrumb]
+end
+
+
+--[[
+	Function: setVar
+
+	Given a string, find and set a var starting from the global namespace. This will correctly parse tables. IE, "ULib.serialize".
+
+	Parameters:
+
+		varLocation - The string location of the variable you wish to find or set (E.G., "ULib.myTable.MyVariable").
+		varValue - The value to set it to.
+		rootTable - The optional root table to search. Defaults to _G, the global environment.
+
+	Returns:
+
+	Two values as follows...
+
+		Status - A boolean indicating whether or not it was found and set.
+		Value - The PREVIOUS value of the variable.
+
+	Revisions:
+
+		v2.60 - Initial.
+]]
+function ULib.setVar( varLocation, varValue, rootTable )
+	ULib.checkArg( 1, "ULib.setVar", "string", varLocation )
+	ULib.checkArg( 3, "ULib.setVar", {"table", "nil"}, rootTable )
+	rootTable = rootTable or _G
+
+	local tableCrumbs = getCrumbsTable( varLocation )
+	local success, lastTable = navigateUpTo(rootTable, tableCrumbs)
+	if not success then return false end
+
+	local lastCrumb = tableCrumbs[#tableCrumbs]
+	local prevVal = lastTable[lastCrumb]
+	lastTable[lastCrumb] = varValue
+
+	return true, prevVal
 end
 
 
@@ -645,9 +710,9 @@ end
 
 
 --[[
-	Function: stringTimeToSeconds
+	Function: stringTimeToMinutes
 
-	Converts a string containing time information to seconds.
+	Converts a string containing time information to minutes.
 
 	Parameters:
 
@@ -661,8 +726,9 @@ end
 
 		v2.41 - Initial
 		v2.43 - Added year parameter
+		v2.60 - Renamed function from "stringTimeToSeconds" to "stringTimeToMinutes", because I am dumb
 ]]
-function ULib.stringTimeToSeconds( str )
+function ULib.stringTimeToMinutes( str )
 	if str == nil or type( str ) == "number" then
 		return str
 	end
@@ -705,6 +771,65 @@ function ULib.stringTimeToSeconds( str )
 	end
 
 	return minutes + num
+end
+ULib.stringTimeToSeconds = ULib.stringTimeToMinutes -- Remove in the future
+
+
+--[[
+	Function: secondsToStringTime
+
+	Converts a number of seconds to a string describing the time span.
+	Note that it rounds up to the minute level (ten seconds will be one minute).
+
+	Parameters:
+
+		secs - The number of seconds.
+
+	Returns:
+
+		A string representing the length of the span.
+
+	Revisions:
+
+		v2.60 - Initial
+]]
+function ULib.secondsToStringTime( secs )
+	local str = ""
+	local mins = math.ceil(secs / 60)
+
+	local minsInYear = 60 * 24 * 365
+	if mins >= minsInYear then
+		local years = math.floor( mins / minsInYear )
+		mins = mins % minsInYear
+		str = string.format( "%s%i year%s ", str, years, (years > 1 and "s" or "") )
+	end
+
+	local minsInWeek = 60 * 24 * 7
+	if mins >= minsInWeek then
+		local weeks = math.floor( mins / minsInWeek )
+		mins = mins % minsInWeek
+		str = string.format( "%s%i week%s ", str, weeks, (weeks > 1 and "s" or "") )
+	end
+
+	local minsInDay = 60 * 24
+	if mins >= minsInDay then
+		local days = math.floor( mins / minsInDay )
+		mins = mins % minsInDay
+		str = string.format( "%s%i day%s ", str, days, (days > 1 and "s" or "") )
+	end
+
+	local minsInHour = 60
+	if mins >= minsInHour then
+		local hours = math.floor( mins / minsInHour )
+		mins = mins % minsInHour
+		str = string.format( "%s%i hour%s ", str, hours, (hours > 1 and "s" or "") )
+	end
+
+	if mins > 0 then
+		str = string.format( "%s%i minute%s ", str, mins, (mins > 1 and "s" or "") )
+	end
+
+	return str:Trim()
 end
 
 

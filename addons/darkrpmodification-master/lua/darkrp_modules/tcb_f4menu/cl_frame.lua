@@ -113,7 +113,7 @@ function PANEL:Init()
 	self.Paint = function( pnl, w, h )
 
 		draw.RoundedBoxEx( 10, 0, 0, self:GetWide()-0, self:GetTall()-0, TCB_Settings.Transparent, true, true, false, false )
-		draw.RoundedBoxEx( 10, 2, 2, self:GetWide()-4, self:GetTall()-4, TCB_Settings.ButtonColor3, true, true, false, false )
+		draw.RoundedBoxEx( 10, 2, 2, self:GetWide()-4, self:GetTall()-4, Color(85,58,35,255), true, true, false, false )
 
 	end
 
@@ -155,7 +155,7 @@ function PANEL:Frame()
 	self.StatusBar.NewVersion = 0.0
 	self.StatusBar.Paint = function( pnl, w, h )
 
-		draw.RoundedBox( 0, 2, 0, w - 4, h - 0, TCB_Settings.BaseColor )
+		draw.RoundedBox( 0, 2, 0, w - 4, h - 0, Color(85,58,35,255) )
 
 		local VersionText = ""
 
@@ -177,15 +177,15 @@ function PANEL:Frame()
 	TCB_SideBar:SetPos( 2, 2 )
 	TCB_SideBar.Paint = function( pnl, w, h )
 
-		draw.RoundedBoxEx( 10, 0, 0, w, h, TCB_Settings.BaseColor, true, false, false, false )
+		draw.RoundedBoxEx( 10, 0, 0, w, h, Color(85,58,35,255)  , true, false, false, false )
 
 		-- Title One
-		draw.DrawText( TCB_Settings.TitleOne, "TCB_F4Menu_Big", 250 / 2 + 1, 10 + 1, TCB_Settings.BlackColor, 1 )
-		draw.DrawText( TCB_Settings.TitleOne, "TCB_F4Menu_Big", 250 / 2 + 0, 10 + 0, TCB_Settings.PrimaryColor, 1 )
+		draw.DrawText( TCB_Settings.TitleOne, "HUDLarge", 250 / 2 + 1, 10 + 1, TCB_Settings.BlackColor, 1 )
+		draw.DrawText( TCB_Settings.TitleOne, "HUDLarge", 250 / 2 + 0, 10 + 0, TCB_Settings.PrimaryColor, 1 )
 
 		-- Title Two
-		draw.DrawText( TCB_Settings.TitleTwo, "TCB_F4Menu_Medium", 250 / 2 + 1, 40 + 1, TCB_Settings.BlackColor, 1 )
-		draw.DrawText( TCB_Settings.TitleTwo, "TCB_F4Menu_Medium", 250 / 2 + 0, 40 + 0, TCB_Settings.SecondaryColor, 1 )
+		draw.DrawText( TCB_Settings.TitleTwo, "HUDMedium", 250 / 2 + 1, 40 + 1, TCB_Settings.BlackColor, 1 )
+		draw.DrawText( TCB_Settings.TitleTwo, "HUDMedium", 250 / 2 + 0, 40 + 0, TCB_Settings.SecondaryColor, 1 )
 
 	end
 
@@ -201,15 +201,15 @@ function PANEL:Frame()
 	CloseButton.DoClick = function() RunConsoleCommand( "tcb_f4menu_close" ) end
 	CloseButton.Paint = function( pnl, w, h )
 
-		draw.RoundedBox( 0, 0, 0, w, h, TCB_Settings.ButtonColor1 )
+		draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
 
 		if CloseButton.Hover == false then
-			draw.RoundedBox( 0, 0, 0, w, h, TCB_Settings.ButtonColor2 )
+			draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
 		else
-			draw.RoundedBox( 0, 0, 0, w, h, TCB_Settings.ButtonColor3 )
+			draw.RoundedBox( 0, 0, 0, w, h, Color(196, 183, 139, 255) )
 		end
 
-		draw.DrawText( "Закрыть", "TCB_F4Menu_Medium", w/2, 10, TCB_Settings.TextColor, 1 )
+		draw.DrawText( "Закрыть", "TCB_F4Menu_Medium", w/2, 10, TCB_Settings.BlackColor, 1 )
 
 	end
 
@@ -297,21 +297,21 @@ function PANEL:Frame()
 
 				if CurButton.Active == false then
 
-					draw.RoundedBox( 0, 0, 0, w, h, TCB_Settings.ButtonColor2 )
+					draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
 
 					if CurButton.Hover == false then
-						draw.RoundedBox( 0, 0, 0, w, h, TCB_Settings.ButtonColor2 )
+						draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
 					else
-						draw.RoundedBox( 0, 0, 0, w, h, TCB_Settings.ButtonColor3 )
+						draw.RoundedBox( 0, 0, 0, w, h, Color(196, 183, 139, 255) )
 					end
 
-					draw.DrawText( button['text'], "TCB_F4Menu_Medium", 10, 10, TCB_Settings.TextColor )
+					draw.DrawText( button['text'], "TCB_F4Menu_Medium", 10, 10, TCB_Settings.BlackColor  )
 
 				else
 
-					draw.RoundedBox( 0, 0, 0, w, h, TCB_Settings.ButtonColor4 )
+					draw.RoundedBox( 0, 0, 0, w, h, Color(176, 164, 125,255) )
 
-					draw.DrawText( button['text'], "TCB_F4Menu_Medium", 10, 10, TCB_Settings.TextColor )
+					draw.DrawText( button['text'], "TCB_F4Menu_Medium", 10, 10, TCB_Settings.BlackColor  )
 
 				end
 

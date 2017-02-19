@@ -1,9 +1,21 @@
 --Server stuff for the GUI for ULX --by Stickly Man!
 
-xgui = {}
+xgui = xgui or {}
 xgui.svmodules = {}
 function xgui.addSVModule( name, initFunc, postinitFunc )
+	local found = false
+	for i, svmodule in pairs( xgui.svmodules ) do
+		if svmodule.name == name then
+			table.remove( xgui.svmodules, i )
+			found = true
+			break
+		end
+	end
 	table.insert( xgui.svmodules, { name=name, init=initFunc, postinit=postinitFunc } )
+	if found then -- Autorefresh
+		initFunc()
+		postinitFunc()
+	end
 end
 
 Msg( "///////////////////////////////\n" )
@@ -57,15 +69,27 @@ function xgui.init()
 	end
 	concommand.Add( "_xgui", xgui.cmd )
 
+	ULib.cmds.addCommand( "ulx menu", function( ply, cmd, args )
+		if ply and ply:IsValid() then
+			ULib.clientRPC( ply, "xgui.toggle", args )
+		end
+	end, xgui.ulxmenu_tab_completes )
+
 
 	-----------------
 	--XGUI data stuff
 	-----------------
 	xgui.dataTypes = {}
 	xgui.activeUsers = {}  --Set up a table to list users who are actively transferring data
-	xgui.readyPlayers = {} --Set up a table to store users who are ready to recieve data.
+	xgui.readyPlayers = {} --Set up a table to store users who are ready to receive data.
 	function xgui.addDataType( name, retrievalFunc, access, maxChunkSize, priority )
 		xgui.dataTypes[name] = { getData=retrievalFunc, access=access, maxchunk=maxChunkSize }
+		-- For autorefresh- ensure priorities for a datatype are never added more than once
+		for i=#xgui.dataTypes, 1, -1 do
+			if xgui.dataTypes[i].name == name then
+				table.remove( xgui.dataTypes, i )
+			end
+		end
 		table.insert( xgui.dataTypes, { name=name, priority=priority or 0 } )
 		table.sort( xgui.dataTypes, function(a,b) return a.priority < b.priority end )
 	end
@@ -75,7 +99,7 @@ function xgui.init()
 	end
 	xgui.addCmd( "getdata", xgui.getdata )
 
-	--Let the server know when players are/aren't ready to recieve data.
+	--Let the server know when players are/aren't ready to receive data.
 	function xgui.getInstalled( ply )
 		ULib.clientRPC( ply, "xgui.getInstalled" )
 		xgui.readyPlayers[ply:UniqueID()] = 1
@@ -149,7 +173,7 @@ function xgui.init()
 			local chunks = {}
 			for _, dtype in ipairs( datatypes ) do
 				if xgui.dataTypes[dtype] then
-					data = xgui.dataTypes[dtype]
+					local data = xgui.dataTypes[dtype]
 					if ULib.ucl.query( ply, data.access ) then
 						local t = data.getData()
 						local size = data.maxchunk or 0 --Split the table into "chunks" of per-datatype specified size to even out data flow. 0 to disable
@@ -198,7 +222,7 @@ function xgui.init()
 	--Removes a single key from the table -- The table "data" should be structured that it contains the set of tables to a single key which will be removed. (i.e. data = {base={subtable1="key"}} )
 	--It can also remove multiple values. Here are a few examples:
 		--xgui.removeData( {}, "adverts", {[2]={[1]={"rpt"} } } )  --This would remove the repeat time of the first advert in the second advert group.
-		--xgui.removeData( {}, "votemaps", {3, 3, 3, 3} ) --This will remove votemaps numbered 3-6 in xgui.data.votemaps. (It uses table.remove, but you can alternitavely do {6,5,4,3} to produce the same effect)
+		--xgui.removeData( {}, "votemaps", {3, 3, 3, 3} ) --This will remove votemaps numbered 3-6 in xgui.data.votemaps. (It uses table.remove, but you can alternatively do {6,5,4,3} to produce the same effect)
 	function xgui.removeData( plys, dtype, data )
 		xgui.sendDataEvent( plys, 4, dtype, data )
 	end
@@ -230,7 +254,7 @@ function xgui.init()
 			if #xgui.activeUsers[ply:UniqueID()].tables > 0 then --Data tables have been requested while the player was transferring data
 				xgui.sendDataTable( ply, xgui.activeUsers[ply:UniqueID()].tables, true )
 				xgui.activeUsers[ply:UniqueID()].tables = {}
-			elseif #xgui.activeUsers[ply:UniqueID()].events > 0 then --No data tables are needed, and events have occured while the player was transferring data
+			elseif #xgui.activeUsers[ply:UniqueID()].events > 0 then --No data tables are needed, and events have occurred while the player was transferring data
 				local chunks = {}
 				for _,v in ipairs( xgui.activeUsers[ply:UniqueID()].events ) do
 					table.insert( chunks, v )
@@ -272,12 +296,12 @@ function xgui.init()
 end
 
 --Init the code when the server is ready
-hook.Add( "Initialize", "XGUI_InitServer", xgui.init, -1 )
+hook.Add( "Initialize", "XGUI_InitServer", xgui.init, HOOK_HIGH )
 
 --Call the modules postinit function when ULX is done loading. Should be called well after the Initialize hook.
 function xgui.postInit()
 	for _, v in ipairs( xgui.svmodules ) do if v.postinit then v.postinit() end end
-	
+
 	--Fix any users who requested data before the server was ready
 	for _, ply in pairs( player.GetAll() ) do
 		for UID, data in pairs( xgui.activeUsers ) do
@@ -287,4 +311,4 @@ function xgui.postInit()
 		end
 	end
 end
-hook.Add( ulx.HOOK_ULXDONELOADING, "XGUI_PostInitServer", xgui.postInit )
+hook.Add( ulx.HOOK_ULXDONELOADING, "XGUI_PostInitServer", xgui.postInit, HOOK_MONITOR_LOW )

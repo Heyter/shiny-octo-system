@@ -2,7 +2,7 @@
 	File: Commands
 ]]
 
-ULib.cmds = {}
+ULib.cmds = ULib.cmds or {}
 local cmds = ULib.cmds -- To save my fingers
 
 --[[
@@ -10,7 +10,7 @@ local cmds = ULib.cmds -- To save my fingers
 
 	This is used when specifying an argument to flag the argument as optional.
 ]]
-cmds.optional = {} -- This is just a key, ignore the fact that it's a table.
+cmds.optional = cmds.optional or {} -- This is just a key, ignore the fact that it's a table.
 
 --[[
 	Variable: cmds.restrictToCompletes
@@ -18,7 +18,7 @@ cmds.optional = {} -- This is just a key, ignore the fact that it's a table.
 	This is used when specifying a string argument to flag that only what was
 	specified for autocomplete is allowed to be passed as a valid argument.
 ]]
-cmds.restrictToCompletes = {} -- Key
+cmds.restrictToCompletes = cmds.restrictToCompletes or {} -- Key
 
 --[[
 	Variable: cmds.takeRestOfLine
@@ -28,7 +28,7 @@ cmds.restrictToCompletes = {} -- Key
 	is useful for things like specifying a ban reason where you don't want to
 	force users to write an entire sentence within quotes.
 ]]
-cmds.takeRestOfLine = {} -- Key
+cmds.takeRestOfLine = cmds.takeRestOfLine or {} -- Key
 
 --[[
 	Variable: cmds.round
@@ -36,7 +36,7 @@ cmds.takeRestOfLine = {} -- Key
 	This is used when specifying a number argument to flag the argument to round
 	the number to the nearest integer.
 ]]
-cmds.round = {} -- Key
+cmds.round = cmds.round or {} -- Key
 
 --[[
 	Variable: cmds.ignoreCanTarget
@@ -45,7 +45,7 @@ cmds.round = {} -- Key
 	property in the groups config. IE, private say in ULX uses this so that
 	users can target admins to chat with them.
 ]]
-cmds.ignoreCanTarget = {} -- Key
+cmds.ignoreCanTarget = cmds.ignoreCanTarget or {} -- Key
 
 --[[
 	Variable: cmds.allowTimeString
@@ -53,7 +53,7 @@ cmds.ignoreCanTarget = {} -- Key
 	This is used when specyfing a number argument that should allow time string
 	representations to be parsed (eg, '1w1d' for 1 week 1 day).
 ]]
-cmds.allowTimeString = {} -- Key
+cmds.allowTimeString = cmds.allowTimeString or {} -- Key
 
 
 --[[
@@ -186,16 +186,16 @@ function cmds.NumArg:processRestrictions( cmdRestrictions, plyRestrictions )
 			self.min = tonumber( self.min )
 			self.max = tonumber( self.max )
 		else
-			self.min = ULib.stringTimeToSeconds( self.min )
-			self.max = ULib.stringTimeToSeconds( self.max )
+			self.min = ULib.stringTimeToMinutes( self.min )
+			self.max = ULib.stringTimeToMinutes( self.max )
 		end
 	end
 
 	if allowTimeString and not self.timeStringsParsed then
 		self.timeStringsParsed = true
-		cmdRestrictions.min = ULib.stringTimeToSeconds( cmdRestrictions.min )
-		cmdRestrictions.max = ULib.stringTimeToSeconds( cmdRestrictions.max )
-		cmdRestrictions.default = ULib.stringTimeToSeconds( cmdRestrictions.default )
+		cmdRestrictions.min = ULib.stringTimeToMinutes( cmdRestrictions.min )
+		cmdRestrictions.max = ULib.stringTimeToMinutes( cmdRestrictions.max )
+		cmdRestrictions.default = ULib.stringTimeToMinutes( cmdRestrictions.default )
 	end
 
 	if cmdRestrictions.min and (not self.min or self.min < cmdRestrictions.min) then
@@ -229,7 +229,7 @@ function cmds.NumArg:parseAndValidate( ply, arg, cmdInfo, plyRestrictions )
 	if not allowTimeString then
 		num = tonumber( arg )
 	else
-		num = ULib.stringTimeToSeconds( arg )
+		num = ULib.stringTimeToMinutes( arg )
 	end
 
 	local typeString
@@ -484,7 +484,8 @@ function cmds.PlayerArg:processRestrictions( ply, cmdRestrictions, plyRestrictio
 	end
 
 	if ply:IsValid() and not ignore_can_target and not table.HasValue( cmdRestrictions, cmds.ignoreCanTarget ) and ULib.ucl.getGroupCanTarget( ply:GetUserGroup() ) then -- can_target restriction
-		local restricted = ULib.getUsers( ULib.ucl.getGroupCanTarget( ply:GetUserGroup() ) .. ",^", true, ply ) -- Allow self on top of restrictions
+		local selfTarget = "$" .. ULib.getUniqueIDForPlayer( ply )
+		local restricted = ULib.getUsers( ULib.ucl.getGroupCanTarget( ply:GetUserGroup() ) .. "," .. selfTarget, true, ply ) -- Allow self on top of restrictions
 		if not restricted or not self.restrictedTargets then -- Easy, just set it
 			self.restrictedTargets = restricted
 
@@ -511,7 +512,7 @@ function cmds.PlayerArg:parseAndValidate( ply, arg, cmdInfo, plyRestrictions )
 	self:processRestrictions( ply, cmdInfo, plyRestrictions )
 
 	if not arg and table.HasValue( cmdInfo, cmds.optional ) then
-		arg = cmdInfo.default or "^" -- Set it, needs to go through our process
+		arg = cmdInfo.default or "$" .. ULib.getUniqueIDForPlayer( ply ) -- Set it, needs to go through our process
 	end
 
 	local target, err_msg1 = ULib.getUser( arg, true, ply )
@@ -622,7 +623,7 @@ function cmds.PlayersArg:parseAndValidate( ply, arg, cmdInfo, plyRestrictions )
 	self:processRestrictions( ply, cmdInfo, plyRestrictions )
 
 	if not arg and table.HasValue( cmdInfo, cmds.optional ) then
-		arg = cmdInfo.default or "^" -- Set it, needs to go through our process
+		arg = cmdInfo.default or "$" .. ULib.getUniqueIDForPlayer( ply ) -- Set it, needs to go through our process
 	end
 
 	local targets = ULib.getUsers( arg, true, ply )
@@ -854,21 +855,20 @@ end
 --------
 
 
-local translatedCmds = {} -- To save my fingers, quicker access time, etc
-
 --[[
 	Table: cmds.translatedCmds
 
 	Holds all the commands that are set up through the translator. I won't
 	bother explaining the contents here, just inspect them with PrintTable.
 ]]
-cmds.translatedCmds = translatedCmds
+cmds.translatedCmds = cmds.translatedCmds or {}
+local translatedCmds = cmds.translatedCmds -- To save my fingers, quicker access time, etc
 
 local function translateCmdCallback( ply, commandName, argv )
 	local cmd = translatedCmds[ commandName:lower() ]
 	if not cmd then return error( "Invalid command!" ) end
 
-	local isOpposite = cmd.opposite == commandName
+	local isOpposite = string.lower( cmd.opposite or "" ) == string.lower( commandName )
 
 	local access, accessTag = ULib.ucl.query( ply, commandName )
 	if not access then
@@ -950,7 +950,7 @@ local function translateAutocompleteCallback( commandName, args )
 	local cmd = translatedCmds[ commandName:lower() ]
 	if not cmd then return error( "Invalid command!" ) end
 
-	local isOpposite = cmd.opposite == commandName
+	local isOpposite = string.lower( cmd.opposite or "" ) == string.lower( commandName )
 	local ply
 	if CLIENT then
 		ply = LocalPlayer()
@@ -1139,7 +1139,7 @@ end
 function cmds.TranslateCommand:setOpposite( cmd, args, say_cmd, hide_say, no_space_in_say )
 	ULib.checkArg( 1, "ULib.cmds.TranslateCommand:setOpposite", "string", cmd )
 	ULib.checkArg( 2, "ULib.cmds.TranslateCommand:setOpposite", "table", args )
-	ULib.checkArg( 3, "ULib.cmds.TranslateCommand:setOpposite", {"nil", "string"}, say_cmd )
+	ULib.checkArg( 3, "ULib.cmds.TranslateCommand:setOpposite", {"nil", "string", "table"}, say_cmd )
 	ULib.checkArg( 4, "ULib.cmds.TranslateCommand:setOpposite", {"nil", "boolean"}, hide_say )
 	ULib.checkArg( 5, "ULib.cmds.TranslateCommand:setOpposite", {"nil", "boolean"}, no_space_in_say )
 
@@ -1307,7 +1307,9 @@ if SERVER then
 	end
 
 	local function hookRoute( ply, command, argv )
-		concommand.Run( ply, table.remove( argv, 1 ), argv )
+		if #argv > 0 then
+			concommand.Run( ply, table.remove( argv, 1 ), argv )
+		end
 	end
 	concommand.Add( "_u", hookRoute )
 end

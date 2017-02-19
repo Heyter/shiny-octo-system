@@ -6,8 +6,9 @@
 
 ULib = ULib or {}
 
-
-ULib.VERSION = 2.51
+ULib.RELEASE = true -- Don't access these two directly, use ULib.pluginVersionStr("ULib")
+ULib.VERSION = 2.61
+ULib.AUTOMATIC_UPDATE_CHECKS = true
 
 ULib.ACCESS_ALL = "user"
 ULib.ACCESS_OPERATOR = "operator"
@@ -215,6 +216,45 @@ ULib.HOOK_POST_TRANSLATED_COMMAND = "ULibPostTranslatedCommand"
 ULib.HOOK_PLAYER_NAME_CHANGED = "ULibPlayerNameChanged"
 
 --[[
+	Hook: ULibGetUsersCustomKeyword
+
+	Called during ULib.getUsers when considering a target string for keywords.
+	This could be used to create a new, custom keyword for targetting users who
+	have been connected for less than five minutes, for example.
+	Return nil or a table of player objects to add to the target list.
+
+	Parameters passed to callback:
+
+		target - A string chunk of a possibly larger target list to operate on.
+		ply - The player doing the targetting, not always specified (can be nil).
+
+	Revisions:
+
+		v2.60 - Initial
+]]
+ULib.HOOK_GETUSERS_CUSTOM_KEYWORD = "ULibGetUsersCustomKeyword"
+
+--[[
+	Hook: ULibGetUserCustomKeyword
+
+	Called during ULib.getUser when considering a target string for keywords.
+	This could be used to create a new, custom keyword for always targetting a
+	specific connected steamid, for example. Or, to target the shortest connected
+	player.
+	Return nil or a player object.
+
+	Parameters passed to callback:
+
+		target - A string target.
+		ply - The player doing the targetting, not always specified (can be nil).
+
+	Revisions:
+
+		v2.60 - Initial
+]]
+ULib.HOOK_GETUSER_CUSTOM_KEYWORD = "ULibGetUserCustomKeyword"
+
+--[[
 	Section: UCL Helpers
 
 	These defines are server-only, to help with UCL.
@@ -225,16 +265,8 @@ ULib.UCL_USERS = "data/ulib/users.txt"
 ULib.UCL_GROUPS = "data/ulib/groups.txt"
 ULib.UCL_REGISTERED = "data/ulib/misc_registered.txt" -- Holds access strings that ULib has already registered
 ULib.BANS_FILE = "data/ulib/bans.txt"
-ULib.VERSION_FILE = "data/ulib/version.txt"
 
 ULib.DEFAULT_GRANT_ACCESS = { allow={}, deny={}, guest=true }
-
-hook.Add( "Initialize", "ULibCheckFileInit", function()
-	if ULib.fileExists( ULib.UCL_REGISTERED ) and ULib.fileExists( "addons/ulib/data/" .. ULib.UCL_GROUPS ) and ULib.fileRead( ULib.UCL_GROUPS ) == ULib.fileRead( "addons/ulib/data/" .. ULib.UCL_GROUPS ) then
-	  -- File has been reset, delete registered
-		ULib.deleteFile( ULib.UCL_REGISTERED )
-	end
-end)
 end
 
 --[[
