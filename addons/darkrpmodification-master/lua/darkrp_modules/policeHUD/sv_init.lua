@@ -11,8 +11,9 @@ local function CombineRequest(ply, args)
     net.WriteVector( ply:EyePos() )
     net.Send(players)
     DarkRP.notify(players,0,4,"Кому-то нужна помощь!")
+    DarkRP.notify(ply,0,4,"Помощь уже в пути")
 end
 
 for _, cmd in pairs{"cr", "911", "999", "112", "000"} do
-    DarkRP.defineChatCommand(cmd, CombineRequest, 1.5)
+    DarkRP.defineChatCommand(cmd, CombineRequest, 60)
 end
