@@ -1,11 +1,9 @@
 "AddonInfo"
 {
-	"name"				"ULib"
-	"version"			"2.51"
-	"up_date"			"00/00/00"
-	"author_name"			"Team Ulysses"
-	"author_email"			"teamulysses@ulyssesmod.net"
-	"author_url"			"http://www.ulyssesmod.net/"
-	"info"				"Lua Library"
-	"override"			"0"
+	"name"            "ULib"
+	"version"         "2.61"
+	"up_date"         "05/22/16"
+	"author_name"     "Team Ulysses"
+	"author_email"    "teamulysses@ulyssesmod.net"
+	"author_url"      "http://www.ulyssesmod.net/"
 }

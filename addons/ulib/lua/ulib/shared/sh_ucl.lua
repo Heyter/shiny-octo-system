@@ -9,13 +9,13 @@
 
 	Holds all of the ucl variables and functions
 ]]
-ULib.ucl = {}
+ULib.ucl = ULib.ucl or {}
 local ucl = ULib.ucl -- Make it easier for us to refer to
 
 -- Setup!
-ucl.groups = {} -- Stores allows, inheritance, and custom addon info keyed by group name
-ucl.users = {} -- Stores allows, denies, group, and last seen name keyed by user id (steamid, ip, whatever)
-ucl.authed = {} -- alias to ucl.users subtable for player if they have an entry, otherwise a "guest" entry. Keyed by uniqueid.
+ucl.groups = ucl.groups or {} -- Stores allows, inheritance, and custom addon info keyed by group name
+ucl.users = ucl.users or {} -- Stores allows, denies, group, and last seen name keyed by user id (steamid, ip, whatever)
+ucl.authed = ucl.authed or {} -- alias to ucl.users subtable for player if they have an entry, otherwise a "guest" entry. Keyed by uniqueid.
 -- End setup
 
 --[[
@@ -70,7 +70,7 @@ function ucl.query( ply, access, hide )
 	end
 
 	-- No specific instruction, assume they don't have access.
-	return false
+	return nil
 end
 
 
@@ -276,8 +276,8 @@ end
 	Function: Player:CheckGroup
 
 	This function is similar to IsUserGroup(), but this one checks the UCL group chain as well.
-	For example, if a user is in group "owner" which inherits from "superadmin", this function
-	will return true if you check the user against "superadmin", where IsUserGroup() wouldn't.
+	For example, if a user is in group "superadmin" which inherits from "admin", this function
+	will return true if you check the user against "admin", where IsUserGroup() wouldn't.
 
 	Parameters:
 

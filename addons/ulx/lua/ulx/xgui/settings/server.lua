@@ -50,6 +50,26 @@ server.catList.OnRowSelected = function( self, LineID, Line )
 	xlib.animQueue_start()
 end
 
+function xgui.openServerModule( name )
+	name = string.lower( name )
+	for i = 1, #xgui.modules.submodule do
+		local module = xgui.modules.submodule[i]
+		if module.mtype == "server" and string.lower(module.name) == name then
+			if module.panel ~= server.curPanel then
+				server.catList:ClearSelection()
+				for i=1, #server.catList.Lines do
+					local line = server.catList.Lines[i]
+					if string.lower(line:GetColumnText(1)) == name then
+						server.catList:SelectItem( line )
+						break
+					end
+				end
+			end
+			break
+		end
+	end
+end
+
 --Process modular settings
 function server.processModules()
 	server.catList:Clear()
@@ -57,13 +77,13 @@ function server.processModules()
 		if module.mtype == "server" and ( not module.access or LocalPlayer():query( module.access ) ) then
 			local w,h = module.panel:GetSize()
 			if w == h and h == 0 then module.panel:SetSize( 275, 322 ) end
-			
+
 			if module.panel.scroll then --For DListLayouts
 				module.panel.scroll.panel = module.panel
 				module.panel = module.panel.scroll
 			end
 			module.panel:SetParent( server.panel )
-			
+
 			local line = server.catList:AddLine( module.name, i )
 			if ( module.panel == server.curPanel ) then
 				server.curPanel = nil
@@ -77,7 +97,7 @@ function server.processModules()
 end
 server.processModules()
 
-xgui.hookEvent( "onProcessModules", nil, server.processModules )
+xgui.hookEvent( "onProcessModules", nil, server.processModules, "serverSettingsProcessModules" )
 xgui.addSettingModule( "Server", server, "icon16/server.png", "xgui_svsettings" )
 
 
@@ -91,7 +111,7 @@ local plist = xlib.makelistlayout{ w=275, h=322, parent=xgui.null }
 plist:Add( xlib.makelabel{ label="Admin Votemap Settings" } )
 plist:Add( xlib.makelabel{ label="Ratio of votes needed to accept a mapchange" } )
 plist:Add( xlib.makeslider{ label="<--->", min=0, max=1, decimal=2, repconvar="ulx_votemap2Successratio" } )
-plist:Add( xlib.makelabel{ label="Ratio of votes needed to accept a mapchange" } )
+plist:Add( xlib.makelabel{ label="Minimum votes for a successful mapchange" } )
 plist:Add( xlib.makeslider{ label="<--->", min=0, max=10, repconvar="ulx_votemap2Minvotes" } )
 xgui.addSubModule( "ULX Admin Votemaps", plist, nil, "server" )
 
@@ -117,7 +137,7 @@ end
 function adverts.isBottomNode( node )
 	local parentnode = node:GetParentNode()
 	local parentchildren = parentnode.ChildNodes:GetChildren()
-	
+
 	if parentnode:GetParentNode().ChildNodes then --Is node within a subgroup?
 		local parentparentchildren = parentnode:GetParentNode().ChildNodes:GetChildren()
 		return parentchildren[#parentchildren] == node and parentparentchildren[#parentparentchildren] == parentnode
@@ -137,8 +157,9 @@ end
 adverts.tree.DoRightClick = function( self, node )
 	self:SetSelectedItem( node )
 	local menu = DermaMenu()
+	menu:SetSkin(xgui.settings.skin)
 	if not node.data then
-		menu:AddOption( "Rename Group...", function() adverts.RenameAdvert( node:GetValue() ) end )
+		menu:AddOption( "Rename Group...", function() adverts.RenameAdvert( node:GetText() ) end )
 	end
 	menu:AddOption( "Delete", function() adverts.removeAdvert( node ) end )
 	menu:Open()
@@ -194,7 +215,7 @@ adverts.nodeup.DoClick = function()
 		local parentparentchildren = parentnode:GetParentNode().ChildNodes:GetChildren()
 		local newgroup = "<No Group>"
 		for i,v in ipairs( parentparentchildren ) do
-			if v == parentnode then 
+			if v == parentnode then
 				if parentparentchildren[i-1] and type( parentparentchildren[i-1].group ) ~= "number" then
 					newgroup = parentparentchildren[i-1].group
 					adverts.selnewgroup = newgroup
@@ -246,7 +267,7 @@ end
 function adverts.removeAdvert( node )
 	if node then
 		Derma_Query( "Are you sure you want to delete this " .. ( node.data and "advert?" or "advert group?" ), "XGUI WARNING", 
-		"Delete", function() 
+		"Delete", function()
 			if node.data then --Remove a single advert
 				RunConsoleCommand( "xgui", "removeAdvert", node.group, node.number, type( node.group ) )
 			else --Remove an advert group
@@ -274,7 +295,7 @@ function adverts.updateAdverts()
 	adverts.removebutton:SetDisabled( true )
 	--Store the currently selected node, if any
 	local lastNode = adverts.tree:GetSelectedItem()
-	if adverts.selnewgroup then 
+	if adverts.selnewgroup then
 		lastNode.group = adverts.selnewgroup
 		lastNode.number = adverts.seloffset
 		adverts.selnewgroup = nil
@@ -294,7 +315,7 @@ function adverts.updateAdverts()
 	adverts.group:Clear()
 	adverts.group:AddChoice( "<No Group>" )
 	adverts.group:ChooseOptionID( 1 )
-	
+
 	local sortGroups = {}
 	local sortSingle = {}
 	for group, advertgroup in pairs( xgui.data.adverts ) do
@@ -326,7 +347,7 @@ function adverts.updateAdverts()
 		--Expand folder if it was expanded previously
 		if groupStates[group] then foldernode:SetExpanded( true, true ) end
 	end
-	
+
 	adverts.tree:InvalidateLayout()
 	local node = adverts.tree:GetSelectedItem()
 	if node then
@@ -365,8 +386,71 @@ end
 function adverts.onOpen()
 	ULib.queueFunctionCall( adverts.tree.InvalidateLayout, adverts.tree )
 end
-xgui.hookEvent( "adverts", "process", adverts.updateAdverts )
+adverts.updateAdverts() -- For autorefresh
+xgui.hookEvent( "adverts", "process", adverts.updateAdverts, "serverUpdateAdverts" )
 xgui.addSubModule( "ULX Adverts", adverts, nil, "server" )
+
+---------------------------Ban Message---------------------------
+xgui.prepareDataType( "banmessage" )
+local plist = xlib.makelistlayout{ w=275, h=322, parent=xgui.null }
+plist:Add( xlib.makelabel{ label="Message Shown to Banned Users", zpos=1 } )
+plist.txtBanMessage = xlib.maketextbox{ zpos=2, h=236, multiline=true }
+plist:Add( plist.txtBanMessage )
+plist:Add( xlib.makelabel{ label="Insert variable:", zpos=3 } )
+plist.variablePicker = xlib.makecombobox{ choices={ "Banned By - Admin:SteamID who created the ban", "Ban Start - Date/Time the ban was created", "Reason", "Time Left", "SteamID (excluding non-number characters)", "SteamID64 (useful for constructing URLs for appealing bans)" }, zpos=4 }
+plist:Add( plist.variablePicker )
+
+plist.btnPreview = xlib.makebutton{ label="Preview Ban Message", zpos=4 }
+plist.btnPreview.DoClick = function()
+	net.Start( "XGUI.PreviewBanMessage" )
+		net.WriteString( plist.txtBanMessage:GetText() )
+	net.SendToServer()
+end
+xgui.handleBanPreview = function( message )
+	local preview = xlib.makeframe{ w=380, h=200 }
+	local message = xlib.makelabel{ x=20, y=35, label=message, textcolor=Color( 191, 191, 191, 255 ), font="DefaultLarge", parent=preview }
+	message:SizeToContents()
+	local close = xlib.makebutton{ x=288, y=message:GetTall()+42, w=72, h=24, label="Close", font="DefaultLarge", parent=preview }
+	close.DoClick = function()
+		preview:Remove()
+	end
+	preview:SetTall( message:GetTall() + 85 )
+end
+plist:Add( plist.btnPreview )
+plist.btnSave = xlib.makebutton{ label="Save Ban Message", zpos=5 }
+plist.btnSave.DoClick = function()
+	net.Start( "XGUI.SaveBanMessage" )
+		net.WriteString( plist.txtBanMessage:GetText() )
+	net.SendToServer()
+end
+plist:Add( plist.btnSave )
+
+plist.variablePicker.OnSelect = function( self, index, value, data )
+	self:SetValue( "" )
+	local newVariable = ""
+	if index == 1 then
+		newVariable = "{{BANNED_BY}}"
+	elseif index == 2 then
+		newVariable = "{{BAN_START}}"
+	elseif index == 3 then
+		newVariable = "{{REASON}}"
+	elseif index == 4 then
+		newVariable = "{{TIME_LEFT}}"
+	elseif index == 5 then
+		newVariable = "{{STEAMID}}"
+	elseif index == 6 then
+		newVariable = "{{STEAMID64}}"
+	end
+	plist.txtBanMessage:SetText( plist.txtBanMessage:GetText() .. newVariable )
+end
+
+plist.updateBanMessage = function()
+	plist.txtBanMessage:SetText( xgui.data.banmessage.message or "" )
+end
+plist.updateBanMessage()
+xgui.hookEvent( "banmessage", "process", plist.updateBanMessage, "serverUpdateBanMessage" )
+
+xgui.addSubModule( "ULX Ban Message", plist, nil, "server" )
 
 ------------------------------Echo-------------------------------
 local plist = xlib.makelistlayout{ w=275, h=322, parent=xgui.null }
@@ -395,73 +479,8 @@ xgui.addSubModule( "ULX Command/Event Echoes", plist, nil, "server" )
 local plist = xlib.makelistlayout{ w=275, h=322, parent=xgui.null }
 plist:Add( xlib.makelabel{ label="General ULX Settings" } )
 plist:Add( xlib.makeslider{ label="Chat spam time", min=0, max=5, decimal=1, repconvar="ulx_chattime" } )
-plist:Add( xlib.makelabel{ label="\nMOTD Settings" } )
---Very custom convar handling for ulx_showMotd
-plist.motdEnabled = xlib.makecheckbox{ label="Show MOTD when players join" }
-function plist.motdEnabled:Toggle() self.Button:DoClick() end
-plist.motdEnabled.Button.DoClick = function( self )
-	self:Toggle()
-	local bVal = self:GetChecked()
-	if bVal == true then
-		if plist.motdURLEnabled:GetChecked() then
-			RunConsoleCommand( "ulx_showMotd", plist.motdURLText:GetValue() )
-		else
-			RunConsoleCommand( "ulx_showMotd", "1" )
-		end
-	else
-		RunConsoleCommand( "ulx_showMotd", "0" )
-	end
-end
-plist.motdURLEnabled = xlib.makecheckbox{ label="Get MOTD from URL instead of motd.txt:" }
-
-function plist.motdURLEnabled:Toggle() self.Button:DoClick() end
-plist.motdURLEnabled.Button.DoClick = function( self )
-	self:Toggle()
-	local bVal = self:GetChecked()
-	if bVal == true then
-		if plist.motdURLText:GetValue() ~= "" then
-			RunConsoleCommand( "ulx_showMotd", plist.motdURLText:GetValue() )
-		end
-		plist.motdURLText:SetDisabled( false )
-	else
-		RunConsoleCommand( "ulx_showMotd", "1" )
-		plist.motdURLText:SetDisabled( true )
-	end
-end
-plist.motdURLText = xlib.maketextbox{ selectall=true }
-function plist.motdURLText:UpdateConvarValue()
-	if plist.motdURLText:GetValue() ~= "" then
-		RunConsoleCommand( "ulx_showMotd", self:GetValue() )
-	end
-end
-function plist.motdURLText:OnEnter() self:UpdateConvarValue() end
-function plist.ConVarUpdated( sv_cvar, cl_cvar, ply, old_val, new_val )
-	if cl_cvar == "ulx_showmotd" then
-		if tonumber( new_val ) == nil then --MOTD is enabled and set to a URL 
-			plist.motdEnabled:SetValue( 1 )
-			plist.motdURLEnabled:SetValue( 1 )
-			plist.motdURLEnabled:SetDisabled( false )
-			plist.motdURLText:SetValue( new_val )
-			plist.motdURLText:SetDisabled( false )
-		else
-			plist.motdEnabled:SetValue( new_val )
-			if new_val == "1" then
-				plist.motdURLEnabled:SetValue( 0 )
-				plist.motdURLEnabled:SetDisabled( false )
-				plist.motdURLText:SetDisabled( true )
-			elseif new_val == "0" then
-				plist.motdURLEnabled:SetDisabled( true )
-				plist.motdURLText:SetDisabled( true )
-			end
-		end
-	end
-end
-hook.Add( "ULibReplicatedCvarChanged", "XGUI_ulx_showMotd", plist.ConVarUpdated )
-
-plist:Add( plist.motdEnabled )
-plist:Add( plist.motdURLEnabled )
-plist:Add( plist.motdURLText )
-plist:Add( xlib.makelabel{ label="Allowed variables: %curmap%, %steamid%" } )
+plist:Add( xlib.makelabel{ label="\nAllow '/me' chat feature" } )
+plist:Add( xlib.makecombobox{ repconvar="ulx_meChatEnabled", isNumberConvar=true, choices={ "Disabled", "Sandbox Only", "Enabled" } } )
 plist:Add( xlib.makelabel{ label="\nWelcome Message" } )
 plist:Add( xlib.maketextbox{ repconvar="ulx_welcomemessage", selectall=true } )
 plist:Add( xlib.makelabel{ label="Allowed variables: %curmap%, %host%" } )
@@ -470,9 +489,6 @@ plist:Add( xlib.makelabel{ label="Number of name changes till kicked (0 disables
 plist:Add( xlib.makeslider{ label="<--->", min=0, max=10, decimal=0, repconvar="ulx_kickAfterNameChanges" } )
 plist:Add( xlib.makeslider{ label="Cooldown time (seconds)", min=0, max=600, decimal=0, repconvar="ulx_kickAfterNameChangesCooldown" } )
 plist:Add( xlib.makecheckbox{ label="Warn players how many name-changes remain", repconvar="ulx_kickAfterNameChangesWarning" } )
-
-xlib.checkRepCvarCreated( "ulx_showMotd" )
-plist.ConVarUpdated( nil, "ulx_showMotd", nil, nil, GetConVar( "ulx_showMotd" ):GetString() )
 
 xgui.addSubModule( "ULX General Settings", plist, nil, "server" )
 
@@ -510,7 +526,8 @@ gimps.updateGimps = function()
 		gimps.list:AddLine( v )
 	end
 end
-xgui.hookEvent( "gimps", "process", gimps.updateGimps )
+gimps.updateGimps()
+xgui.hookEvent( "gimps", "process", gimps.updateGimps, "serverUpdateGimps" )
 xgui.addSubModule( "ULX Gimps", gimps, nil, "server" )
 
 ------------------------Kick/Ban Reasons-------------------------
@@ -547,7 +564,8 @@ panel.updateBanReasons = function()
 		panel.list:AddLine( v )
 	end
 end
-xgui.hookEvent( "banreasons", "process", panel.updateBanReasons )
+panel.updateBanReasons()
+xgui.hookEvent( "banreasons", "process", panel.updateBanReasons, "serverUpdateBanReasons" )
 xgui.addSubModule( "ULX Kick/Ban Reasons", panel, "xgui_managebans", "server" )
 
 --------------------------Log Settings---------------------------
@@ -570,6 +588,508 @@ end
 hook.Add( "ULibReplicatedCvarChanged", "XGUI_ulx_logDir", logdirbutton.ConVarUpdated )
 plist:Add( logdirbutton )
 xgui.addSubModule( "ULX Logs", plist, nil, "server" )
+
+------------------------------Motd-------------------------------
+xgui.prepareDataType( "motdsettings" )
+local motdpnl = xlib.makepanel{ w=275, h=322, parent=xgui.null }
+local plist = xlib.makelistlayout{ w=275, h=298, parent=motdpnl }
+
+local fontWeights = { "normal", "bold", "100", "200", "300", "400", "500", "600", "700", "800", "900", "lighter", "bolder" }
+local commonFonts = { "Arial", "Arial Black", "Calibri", "Candara", "Cambria", "Consolas", "Courier New", "Fraklin Gothic Medium", "Futura", "Georgia", "Helvetica", "Impact", "Lucida Console", "Segoe UI", "Tahoma", "Times New Roman", "Trebuchet MS", "Verdana" }
+
+
+plist:Add( xlib.makelabel{ label="MOTD Mode:", zpos=0 } )
+plist:Add( xlib.makecombobox{ repconvar="ulx_showmotd", isNumberConvar=true, choices={ "0 - Disabled", "1 - Local File", "2 - MOTD Generator", "3 - URL" }, zpos=1 } )
+plist.txtMotdFile = xlib.maketextbox{ repconvar="ulx_motdfile", zpos=2 }
+plist:Add( plist.txtMotdFile )
+plist.txtMotdURL = xlib.maketextbox{ repconvar="ulx_motdurl", zpos=3 }
+plist:Add( plist.txtMotdURL )
+plist.lblDescription = xlib.makelabel{ zpos=4 }
+plist:Add( plist.lblDescription )
+
+
+----- MOTD Generator helper methods
+local function unitToNumber(value)
+	return tonumber( string.gsub(value, "[^%d]", "" ), _ )
+end
+
+local function hexToColor(value)
+	value = string.gsub(value, "#","")
+	return Color(tonumber("0x"..value:sub(1,2)), tonumber("0x"..value:sub(3,4)), tonumber("0x"..value:sub(5,6)))
+end
+
+local function colorToHex(color)
+	return string.format("#%02x%02x%02x", color.r, color.g, color.b )
+end
+
+local didPressEnter = false
+local selectedPanelTag = nil
+local function registerMOTDChangeEventsTextbox( textbox, setting, sendTable )
+	textbox.hasChanged = false
+
+	textbox.OnEnter = function( self )
+		didPressEnter = true
+	end
+
+	textbox.OnLoseFocus = function( self )
+		selectedPanelTag = nil
+		hook.Call( "OnTextEntryLoseFocus", nil, self )
+
+		-- OnLoseFocus gets called twice when pressing enter. This will hackishly take care of one of them.
+		if didPressEnter then
+			didPressEnter = false
+			return
+		end
+
+		if self:GetValue() and textbox.hasChanged then
+			textbox.hasChanged = false
+			if sendTable then
+				net.Start( "XGUI.SetMotdData" )
+					net.WriteString( setting )
+					net.WriteTable( ULib.explode( "\n", self:GetValue() ) )
+				net.SendToServer()
+			else
+				net.Start( "XGUI.UpdateMotdData" )
+					net.WriteString( setting )
+					net.WriteString( self:GetValue() )
+				net.SendToServer()
+			end
+		end
+	end
+
+	-- Don't submit the data if the text hasn't changed.
+	textbox:SetUpdateOnType( true )
+	textbox.OnValueChange = function( self, strValue )
+		textbox.hasChanged = true
+	end
+
+	-- Store focused setting so we can re-set the focused element when the panels are recreated.
+	textbox.OnGetFocus = function( self )
+		hook.Run( "OnTextEntryGetFocus", self )
+		selectedPanelTag = setting
+	end
+	if selectedPanelTag == setting then
+		timer.Simple( 0, function() textbox:RequestFocus() end )
+	end
+
+end
+
+local function registerMOTDChangeEventsCombobox( combobox, setting )
+	registerMOTDChangeEventsTextbox( combobox.TextEntry, setting )
+
+	combobox.OnSelect = function( self )
+		net.Start( "XGUI.UpdateMotdData" )
+			net.WriteString( setting )
+			net.WriteString( self:GetValue() )
+		net.SendToServer()
+	end
+end
+
+local function registerMOTDChangeEventsSlider( slider, setting )
+	registerMOTDChangeEventsTextbox( slider.TextArea, setting )
+
+	local tmpfunc = slider.Slider.SetDragging
+	slider.Slider.SetDragging = function( self, bval )
+		tmpfunc( self, bval )
+		if ( !bval ) then
+			net.Start( "XGUI.UpdateMotdData" )
+				net.WriteString( setting )
+				net.WriteString( slider.TextArea:GetValue() )
+			net.SendToServer()
+		end
+	end
+
+	local tmpfunc2 = slider.Scratch.OnMouseReleased
+	slider.Scratch.OnMouseReleased = function( self, mousecode )
+		tmpfunc2( self, mousecode )
+		net.Start( "XGUI.UpdateMotdData" )
+			net.WriteString( setting )
+			net.WriteString( slider.TextArea:GetValue() )
+		net.SendToServer()
+	end
+end
+
+local function registerMOTDChangeEventsColor( colorpicker, setting )
+	colorpicker.OnChange = function( self, color )
+		net.Start( "XGUI.UpdateMotdData" )
+			net.WriteString( setting )
+			net.WriteString( colorToHex( color ) )
+		net.SendToServer()
+	end
+end
+
+local function performMOTDInfoUpdate( data, setting )
+	net.Start( "XGUI.SetMotdData" )
+		net.WriteString( setting )
+		net.WriteTable( data )
+	net.SendToServer()
+end
+
+
+-- MOTD Generator UI
+plist.generator = xlib.makelistlayout{ w=255, h=250, zpos=6 }
+plist:Add( plist.generator )
+plist.generator:SetVisible( false )
+
+plist.generator:Add( xlib.makelabel{ label="MOTD Generator Title:", zpos=-2 } )
+
+local txtServerDescription = xlib.maketextbox{ zpos=-1 }
+plist.generator:Add( txtServerDescription )
+
+plist.generator:Add( xlib.makelabel{ label="\nMOTD Generator Info" } )
+local pnlInfo = xlib.makelistlayout{ w=271 }
+plist.generator:Add( pnlInfo )
+
+plist.generator:Add( xlib.makelabel{} )
+
+local btnAddSection = xlib.makebutton{ label="Add a New Section..." }
+btnAddSection.DoClick = function()
+	local menu = DermaMenu()
+	menu:SetSkin(xgui.settings.skin)
+	menu:AddOption( "Text Content", function()
+		local info = xgui.data.motdsettings.info
+		table.insert( info, {
+			type="text",
+			title="About This Server",
+			contents={"Enter server description here!"}
+		})
+		performMOTDInfoUpdate( info[#info], "info["..#info.."]" )
+	end )
+	menu:AddOption( "Bulleted List", function()
+		local info = xgui.data.motdsettings.info
+		table.insert( info, {
+			type="list",
+			title="Example List",
+			contents={"Each newline becomes its own bullet point.", "You can add as many as you need!"}
+		})
+		performMOTDInfoUpdate( info[#info], "info["..#info.."]" )
+	end )
+	menu:AddOption( "Numbered List", function()
+		local info = xgui.data.motdsettings.info
+		table.insert( info, {
+			type="ordered_list",
+			title="Example Numbered List",
+			contents={"Each newline becomes its own numbered item.", "You can add as many as you need!"}
+		})
+		performMOTDInfoUpdate( info[#info], "info["..#info.."]" )
+	end )
+	menu:AddOption( "Installed Addons", function()
+		local info = xgui.data.motdsettings.info
+		table.insert( info, {
+			type="mods",
+			title="Installed Addons"
+		})
+		performMOTDInfoUpdate( info[#info], "info["..#info.."]" )
+	end )
+	menu:AddOption( "List Users in Group", function()
+		local info = xgui.data.motdsettings.info
+		table.insert( info, {
+			type="admins",
+			title="Our Admins",
+			contents={"superadmin", "admin"}
+		})
+		performMOTDInfoUpdate( info[#info], "info["..#info.."]" )
+	end )
+	menu:Open()
+end
+plist.generator:Add( btnAddSection )
+
+plist.generator:Add( xlib.makelabel{ label="\nMOTD Generator Fonts" } )
+
+plist.generator:Add( xlib.makelabel{ label="\nServer Name (Title)" } )
+local pnlFontServerName = xlib.makepanel{h=80, parent=xgui.null }
+xlib.makelabel{ x=5, y=8, label="Font Name", parent=pnlFontServerName }
+pnlFontServerName.name = xlib.makecombobox{ x=65, y=5, w=190, enableinput=true, selectall=true, choices=commonFonts, parent=pnlFontServerName }
+pnlFontServerName.size = xlib.makeslider{ x=5, y=30, w=250, label="Font Size (Pixels)", value=16, min=4, max=72, parent=pnlFontServerName }
+xlib.makelabel{ x=5, y=58, label="Font Weight", parent=pnlFontServerName }
+pnlFontServerName.weight = xlib.makecombobox{ x=72, y=55, w=183, enableinput=true, selectall=true, choices=fontWeights, parent=pnlFontServerName }
+plist.generator:Add( pnlFontServerName )
+
+plist.generator:Add( xlib.makelabel{ label="\nServer Description (Subtitle)" } )
+local pnlFontSubtitle = xlib.makepanel{h=80, parent=xgui.null }
+xlib.makelabel{ x=5, y=8, label="Font Name", parent=pnlFontSubtitle }
+pnlFontSubtitle.name = xlib.makecombobox{ x=65, y=5, w=190, enableinput=true, selectall=true, choices=commonFonts, parent=pnlFontSubtitle }
+pnlFontSubtitle.size = xlib.makeslider{ x=5, y=30, w=250, label="Font Size (Pixels)", value=16, min=4, max=72, parent=pnlFontSubtitle }
+xlib.makelabel{ x=5, y=58, label="Font Weight", parent=pnlFontSubtitle }
+pnlFontSubtitle.weight = xlib.makecombobox{ x=72, y=55, w=183, enableinput=true, selectall=true, choices=fontWeights, parent=pnlFontSubtitle }
+plist.generator:Add( pnlFontSubtitle )
+
+plist.generator:Add( xlib.makelabel{ label="\nSection Title" } )
+local pnlFontSection = xlib.makepanel{h=80, parent=xgui.null }
+xlib.makelabel{ x=5, y=8, label="Font Name", parent=pnlFontSection }
+pnlFontSection.name = xlib.makecombobox{ x=65, y=5, w=190, enableinput=true, selectall=true, choices=commonFonts, parent=pnlFontSection }
+pnlFontSection.size = xlib.makeslider{ x=5, y=30, w=250, label="Font Size (Pixels)", value=16, min=4, max=72, parent=pnlFontSection }
+xlib.makelabel{ x=5, y=58, label="Font Weight", parent=pnlFontSection }
+pnlFontSection.weight = xlib.makecombobox{ x=72, y=55, w=183, enableinput=true, selectall=true, choices=fontWeights, parent=pnlFontSection }
+plist.generator:Add( pnlFontSection )
+
+plist.generator:Add( xlib.makelabel{ label="\nRegular Text" } )
+local pnlFontRegular = xlib.makepanel{ h=80, parent=xgui.null }
+xlib.makelabel{ x=5, y=8, label="Font Name", parent=pnlFontRegular }
+pnlFontRegular.name = xlib.makecombobox{ x=65, y=5, w=190, enableinput=true, selectall=true, choices=commonFonts, parent=pnlFontRegular }
+pnlFontRegular.size = xlib.makeslider{ x=5, y=30, w=250, label="Font Size (Pixels)", value=16, min=4, max=72, parent=pnlFontRegular }
+xlib.makelabel{ x=5, y=58, label="Font Weight", parent=pnlFontRegular }
+pnlFontRegular.weight = xlib.makecombobox{ x=72, y=55, w=183, enableinput=true, selectall=true, choices=fontWeights, parent=pnlFontRegular }
+plist.generator:Add( pnlFontRegular )
+
+
+plist.generator:Add( xlib.makelabel{ label="\nMOTD Generator Colors\n" } )
+
+plist.generator:Add( xlib.makelabel{ label="Background Color" } )
+local pnlColorBackground = xlib.makecolorpicker{ noalphamodetwo=true }
+plist.generator:Add( pnlColorBackground )
+plist.generator:Add( xlib.makelabel{ label="Header Color" } )
+local pnlColorHeaderBackground = xlib.makecolorpicker{ noalphamodetwo=true }
+plist.generator:Add( pnlColorHeaderBackground )
+plist.generator:Add( xlib.makelabel{ label="Header Text Color" } )
+local pnlColorHeader = xlib.makecolorpicker{ noalphamodetwo=true }
+plist.generator:Add( pnlColorHeader )
+plist.generator:Add( xlib.makelabel{ label="Section Header Text Color" } )
+local pnlColorSection = xlib.makecolorpicker{ noalphamodetwo=true }
+plist.generator:Add( pnlColorSection )
+plist.generator:Add( xlib.makelabel{ label="Default Text Color" } )
+local pnlColorText = xlib.makecolorpicker{ noalphamodetwo=true }
+plist.generator:Add( pnlColorText )
+
+plist.generator:Add( xlib.makelabel{ label="\nMOTD Generator Top/Bottom Borders\n" } )
+
+local pnlBorderThickness = xlib.makeslider{ label="Border Thickness (Pixels)", w=200, value=1, min=0, max=32 }
+plist.generator:Add( pnlBorderThickness )
+plist.generator:Add( xlib.makelabel{ label="Border Color" } )
+local pnlBorderColor = xlib.makecolorpicker{ noalphamodetwo=true }
+plist.generator:Add( pnlBorderColor )
+
+registerMOTDChangeEventsTextbox( txtServerDescription, "info.description" )
+
+registerMOTDChangeEventsCombobox( pnlFontServerName.name, "style.fonts.server_name.family" )
+registerMOTDChangeEventsSlider( pnlFontServerName.size, "style.fonts.server_name.size" )
+registerMOTDChangeEventsCombobox( pnlFontServerName.weight, "style.fonts.server_name.weight" )
+registerMOTDChangeEventsCombobox( pnlFontSubtitle.name, "style.fonts.subtitle.family" )
+registerMOTDChangeEventsSlider( pnlFontSubtitle.size, "style.fonts.subtitle.size" )
+registerMOTDChangeEventsCombobox( pnlFontSubtitle.weight, "style.fonts.subtitle.weight" )
+registerMOTDChangeEventsCombobox( pnlFontSection.name, "style.fonts.section_title.family" )
+registerMOTDChangeEventsSlider( pnlFontSection.size, "style.fonts.section_title.size" )
+registerMOTDChangeEventsCombobox( pnlFontSection.weight, "style.fonts.section_title.weight" )
+registerMOTDChangeEventsCombobox( pnlFontRegular.name, "style.fonts.regular.family" )
+registerMOTDChangeEventsSlider( pnlFontRegular.size, "style.fonts.regular.size" )
+registerMOTDChangeEventsCombobox( pnlFontRegular.weight, "style.fonts.regular.weight" )
+
+registerMOTDChangeEventsColor( pnlColorBackground, "style.colors.background_color" )
+registerMOTDChangeEventsColor( pnlColorHeaderBackground, "style.colors.header_color" )
+registerMOTDChangeEventsColor( pnlColorHeader, "style.colors.header_text_color" )
+registerMOTDChangeEventsColor( pnlColorSection, "style.colors.section_text_color" )
+registerMOTDChangeEventsColor( pnlColorText, "style.colors.text_color" )
+
+registerMOTDChangeEventsColor( pnlBorderColor, "style.borders.border_color" )
+registerMOTDChangeEventsSlider( pnlBorderThickness, "style.borders.border_thickness" )
+
+
+
+-- MOTD Cvar and data handling
+plist.updateGeneratorSettings = function( data )
+	if not data then data = xgui.data.motdsettings end
+	if not data or not data.style or not data.info then return end
+	if not plist.generator:IsVisible() then return end
+
+	local borders = data.style.borders
+	local colors = data.style.colors
+	local fonts = data.style.fonts
+
+	-- Description
+	txtServerDescription:SetText( data.info.description )
+
+	-- Section panels
+	pnlInfo:Clear()
+	for i=1, #data.info do
+		local section = data.info[i]
+		local sectionPanel = xlib.makelistlayout{ w=270 }
+
+		if section.type == "text" then
+			sectionPanel:Add( xlib.makelabel{ label="\n"..i..": Text Content", zpos=0 } )
+
+			local sectionTitle = xlib.maketextbox{ zpos=1 }
+			registerMOTDChangeEventsTextbox( sectionTitle, "info["..i.."].title" )
+			sectionTitle:SetText( section.title )
+			sectionPanel:Add( sectionTitle )
+
+			local sectionText = xlib.maketextbox{ h=100, multiline=true, zpos=2 }
+			registerMOTDChangeEventsTextbox( sectionText, "info["..i.."].contents", true )
+			sectionText:SetText( table.concat( section.contents, "\n" ) )
+			sectionPanel:Add( sectionText )
+
+		elseif section.type == "ordered_list" then
+			sectionPanel:Add( xlib.makelabel{ label="\n"..i..": Numbered List" } )
+
+			local sectionTitle = xlib.maketextbox{ zpos=1 }
+			registerMOTDChangeEventsTextbox( sectionTitle, "info["..i.."].title" )
+			sectionTitle:SetText( section.title )
+			sectionPanel:Add( sectionTitle )
+
+			local sectionOrderedList = xlib.maketextbox{ h=110, multiline=true, zpos=2 }
+			registerMOTDChangeEventsTextbox( sectionOrderedList, "info["..i.."].contents", true )
+			sectionOrderedList:SetText( table.concat( section.contents, "\n" ) )
+			sectionPanel:Add( sectionOrderedList )
+
+		elseif section.type == "list" then
+			sectionPanel:Add( xlib.makelabel{ label="\n"..i..": Bulleted List" } )
+
+			local sectionTitle = xlib.maketextbox{ zpos=1 }
+			registerMOTDChangeEventsTextbox( sectionTitle, "info["..i.."].title" )
+			sectionTitle:SetText( section.title )
+			sectionPanel:Add( sectionTitle )
+
+			local sectionList = xlib.maketextbox{ h=100, multiline=true, zpos=2 }
+			registerMOTDChangeEventsTextbox( sectionList, "info["..i.."].contents", true )
+			sectionList:SetText( table.concat( section.contents, "\n" ) )
+			sectionPanel:Add( sectionList )
+
+		elseif section.type == "mods" then
+			sectionPanel:Add( xlib.makelabel{ label="\n"..i..": Installed Addons" } )
+
+			local modsTitle = xlib.maketextbox{ zpos=1 }
+			registerMOTDChangeEventsTextbox( modsTitle, "info["..i.."].title" )
+			modsTitle:SetText( section.title )
+			sectionPanel:Add( modsTitle )
+
+		elseif section.type == "admins" then
+			sectionPanel:Add( xlib.makelabel{ label="\n"..i..": List Users in Group" } )
+
+			local adminsTitle = xlib.maketextbox{ zpos=1 }
+			registerMOTDChangeEventsTextbox( adminsTitle, "info["..i.."].title" )
+			adminsTitle:SetText( section.title )
+			sectionPanel:Add( adminsTitle )
+
+			for j=1, #section.contents do
+				local group = section.contents[j]
+				local adminPnl = xlib.makepanel{ h=20, w=270, zpos=i+j }
+				xlib.makelabel{ h=20, w=200, label=group, parent=adminPnl }
+				local adminBtn = xlib.makebutton{ x=204, w=50, label="Remove", parent=adminPnl }
+				adminBtn.DoClick = function()
+					table.remove( section.contents, j )
+					performMOTDInfoUpdate( section.contents, "info["..i.."].contents" )
+				end
+				sectionPanel:Add( adminPnl )
+			end
+
+			local adminAddPnl = xlib.makepanel{ h=20, w=270, zpos=99 }
+			local adminBtn = xlib.makebutton{ w=100, label="Add Group...", parent=adminAddPnl }
+			adminBtn.DoClick = function()
+				local menu = DermaMenu()
+				menu:SetSkin(xgui.settings.skin)
+				for j=1, #xgui.data.groups do
+					local group = xgui.data.groups[j]
+					if not table.HasValue( section.contents, group ) then
+						menu:AddOption( group, function()
+							table.insert( section.contents, group )
+							performMOTDInfoUpdate( section.contents, "info["..i.."].contents" )
+						end )
+					end
+				end
+				menu:Open()
+			end
+			sectionPanel:Add( adminAddPnl )
+
+		end
+
+		local actionPnl = xlib.makepanel{ w=270, h=20, zpos=100 }
+		local btnRemove = xlib.makebutton{ w=100, label="Remove Section", parent=actionPnl }
+		btnRemove.DoClick = function()
+			Derma_Query( "Are you sure you want to remove the section \"" .. section.title .. "\"?", "XGUI WARNING",
+				"Remove",	function()
+								table.remove( data.info, i )
+								performMOTDInfoUpdate( data.info, "info" )
+							end,
+				"Cancel", 	function() end )
+		end
+		local btnUp = xlib.makebutton{ x=214, w=20, icon="icon16/bullet_arrow_up.png", centericon=true, disabled=(i==1), parent=actionPnl }
+		btnUp.DoClick = function()
+			local tmp = data.info[i-1]
+			data.info[i-1] = data.info[i]
+			data.info[i] = tmp
+			performMOTDInfoUpdate( data.info, "info" )
+		end
+		local btnDown = xlib.makebutton{ x=234, w=20, icon="icon16/bullet_arrow_down.png", centericon=true, disabled=(i==#data.info), parent=actionPnl }
+		btnDown.DoClick = function()
+			local tmp = data.info[i+1]
+			data.info[i+1] = data.info[i]
+			data.info[i] = tmp
+			performMOTDInfoUpdate( data.info, "info" )
+		end
+		sectionPanel:Add( actionPnl )
+
+		pnlInfo:Add( sectionPanel )
+	end
+
+	-- Fonts
+	pnlFontServerName.name:SetText( fonts.server_name.family )
+	pnlFontServerName.size:SetValue( unitToNumber( fonts.server_name.size ) )
+	pnlFontServerName.weight:SetText( fonts.server_name.weight )
+	pnlFontSubtitle.name:SetText( fonts.subtitle.family )
+	pnlFontSubtitle.size:SetValue( unitToNumber( fonts.subtitle.size ) )
+	pnlFontSubtitle.weight:SetText( fonts.subtitle.weight )
+	pnlFontSection.name:SetText( fonts.section_title.family )
+	pnlFontSection.size:SetValue( unitToNumber( fonts.section_title.size ) )
+	pnlFontSection.weight:SetText( fonts.section_title.weight )
+	pnlFontRegular.name:SetText( fonts.regular.family )
+	pnlFontRegular.size:SetValue( unitToNumber( fonts.regular.size ) )
+	pnlFontRegular.weight:SetText( fonts.regular.weight )
+
+	-- Colors
+	pnlColorBackground:SetColor( hexToColor( colors.background_color ) )
+	pnlColorHeaderBackground:SetColor( hexToColor( colors.header_color ) )
+	pnlColorHeader:SetColor( hexToColor( colors.header_text_color ) )
+	pnlColorSection:SetColor( hexToColor( colors.section_text_color ) )
+	pnlColorText:SetColor( hexToColor( colors.text_color ) )
+
+	-- Borders
+	pnlBorderThickness:SetValue( unitToNumber( borders.border_thickness ) )
+	pnlBorderColor:SetColor( hexToColor( borders.border_color ) )
+end
+xgui.hookEvent( "motdsettings", "process", plist.updateGeneratorSettings, "serverUpdateGeneratorSettings" )
+plist.updateGeneratorSettings()
+
+plist.btnPreview = xlib.makebutton{ label="Preview MOTD", w=275, y=302, parent=motdpnl }
+plist.btnPreview.DoClick = function()
+	RunConsoleCommand( "ulx", "motd" )
+end
+
+function plist.ConVarUpdated( sv_cvar, cl_cvar, ply, old_val, new_val )
+	if string.lower( cl_cvar ) == "ulx_showmotd" then
+		local previewDisabled = false
+		local showMotdFile = false
+		local showGenerator = false
+		local showURL = false
+
+		if new_val == "0" then
+			previewDisabled = true
+			plist.lblDescription:SetText( "MOTD is completely disabled.\n" )
+		elseif new_val == "1" then
+			showMotdFile = true
+			plist.lblDescription:SetText( "MOTD is the contents of the given file.\nFile is located in the server's garrysmod root.\n" )
+		elseif new_val == "2" then
+			showGenerator = true
+			plist.lblDescription:SetText( "MOTD is generated using a basic template and the\nsettings below.\n" )
+		elseif new_val == "3" then
+			showURL = true
+			plist.lblDescription:SetText( "MOTD is the given URL.\nYou can use %curmap% nand %steamid%\n(eg, server.com/?map=%curmap%&id=%steamid%)\n" )
+		end
+
+		plist.btnPreview:SetDisabled( previewDisabled )
+		plist.txtMotdFile:SetVisible( showMotdFile )
+		plist.generator:SetVisible( showGenerator )
+		plist.txtMotdURL:SetVisible( showURL )
+		plist.lblDescription:SizeToContents()
+		plist.updateGeneratorSettings()
+
+		plist.scroll:InvalidateChildren()
+	end
+end
+hook.Add( "ULibReplicatedCvarChanged", "XGUI_ulx_showMotd", plist.ConVarUpdated )
+
+xlib.checkRepCvarCreated( "ulx_showMotd" )
+plist.ConVarUpdated( nil, "ulx_showMotd", nil, nil, GetConVar( "ulx_showMotd" ):GetString() )
+
+xgui.addSubModule( "ULX MOTD", motdpnl, "ulx showmotd", "server" )
 
 -----------------------Player Votemap List-----------------------
 xgui.prepareDataType( "votemaps", ulx.votemaps )
@@ -597,7 +1117,9 @@ panel.remove.DoClick = function()
 	for _, v in ipairs( panel.votemaps:GetSelected() ) do
 		table.insert( temp, v:GetColumnText(1) )
 	end
-	RunConsoleCommand( "xgui", "removeVotemaps", unpack( temp ) )
+	net.Start( "XGUI.RemoveVotemaps" )
+		net.WriteTable( temp )
+	net.SendToServer()
 end
 panel.add = xlib.makebutton{ x=140, y=282, w=135, label="<-- Add", disabled=true, parent=panel }
 panel.add.DoClick = function()
@@ -606,7 +1128,9 @@ panel.add.DoClick = function()
 	for _, v in ipairs( panel.remainingmaps:GetSelected() ) do
 		table.insert( temp, v:GetColumnText(1) )
 	end
-	RunConsoleCommand( "xgui", "addVotemaps", unpack( temp ) )
+	net.Start( "XGUI.AddVotemaps" )
+		net.WriteTable( temp )
+	net.SendToServer()
 end
 panel.votemapmode = xlib.makecombobox{ y=302, w=275, repconvar="ulx_votemapMapmode", isNumberConvar=true, numOffset=0, choices={ "Include new maps by default", "Exclude new maps by default" }, parent=panel }
 panel.updateList = function()
@@ -624,7 +1148,8 @@ panel.updateList = function()
 		end
 	end
 end
-xgui.hookEvent( "votemaps", "process", panel.updateList )
+panel.updateList()
+xgui.hookEvent( "votemaps", "process", panel.updateList, "serverUpdateVotemapList" )
 xgui.addSubModule( "ULX Player Votemap List", panel, nil, "server" )
 
 ---------------------Player Votemap Settings---------------------

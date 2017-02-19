@@ -151,14 +151,18 @@ end
 
 		v2.40 - Rewrite, added more keywords, removed immunity.
 		v2.50 - Added "#" and '$' keywords, removed special exception for "%user" (replaced by "#user").
+		v2.60 - Returns false if target is an empty string.
 ]]
 function ULib.getUsers( target, enable_keywords, ply )
+	if target == "" then
+		return false, "No target specified!"
+	end
+
 	local players = player.GetAll()
-	target = target:lower()
 
 	-- First, do a full name match in case someone's trying to exploit our target system
 	for _, player in ipairs( players ) do
-		if target == player:Nick():lower() then
+		if target:lower() == player:Nick():lower() then
 			return { player }
 		end
 	end
@@ -169,7 +173,6 @@ function ULib.getUsers( target, enable_keywords, ply )
 	for _, piece in ipairs( pieces ) do
 		piece = piece:Trim()
 		if piece ~= "" then
-			local safe = ULib.makePatternSafe( piece )
 			local keywordMatch = false
 			if enable_keywords then
 				local tmpTargets = {}
@@ -182,7 +185,7 @@ function ULib.getUsers( target, enable_keywords, ply )
 				if piece:sub( 1, 1 ) == "$" then
 					local player = ULib.getPlyByID( piece:sub( 2 ) )
 					if player then
-						table.insert( tmpTargets,  player )
+						table.insert( tmpTargets, player )
 					end
 				elseif piece == "*" then -- All!
 					table.Add( tmpTargets, players )
@@ -215,6 +218,11 @@ function ULib.getUsers( target, enable_keywords, ply )
 							table.insert( tmpTargets, player )
 						end
 					end
+				else
+					local tblForHook = hook.Run( ULib.HOOK_GETUSERS_CUSTOM_KEYWORD, piece, ply )
+					if tblForHook then
+						table.Add( tmpTargets, tblForHook )
+					end
 				end
 
 				if negate then
@@ -234,7 +242,7 @@ function ULib.getUsers( target, enable_keywords, ply )
 
 			if not keywordMatch then
 				for _, player in ipairs( players ) do
-					if player:Nick():lower():find( piece, 1, true ) then -- No patterns
+					if player:Nick():lower():find( piece:lower(), 1, true ) then -- No patterns
 						table.insert( targetPlys, player )
 					end
 				end
@@ -278,21 +286,26 @@ end
 
 		v2.40 - Rewrite, added keywords, removed immunity.
 		v2.50 - Added "$" keyword.
+		v2.60 - Returns false if target is an empty string.
 ]]
 function ULib.getUser( target, enable_keywords, ply )
+	if target == "" then
+		return false, "No target specified!"
+	end
+
 	local players = player.GetAll()
 	target = target:lower()
 
-	local plyMatch
+	local plyMatches = {}
 	if enable_keywords and target:sub( 1, 1 ) == "$" then
 		possibleId = target:sub( 2 )
-		plyMatch = ULib.getPlyByID( possibleId )
+		table.insert( plyMatches, ULib.getPlyByID( possibleId ) )
 	end
 
 	-- First, do a full name match in case someone's trying to exploit our target system
 	for _, player in ipairs( players ) do
 		if target == player:Nick():lower() then
-			if not plyMatch then
+			if #plyMatches == 0 then
 				return player
 			else
 				return false, "Found multiple targets! Please choose a better string for the target. (EG, the whole name)"
@@ -301,7 +314,7 @@ function ULib.getUser( target, enable_keywords, ply )
 	end
 
 	if enable_keywords then
-		if target == "^"  and ply then
+		if target == "^" and ply then
 			if ply:IsValid() then
 				return ply
 			else
@@ -314,27 +327,28 @@ function ULib.getUser( target, enable_keywords, ply )
 			else
 				return player
 			end
+		else
+			local player = hook.Run( ULib.HOOK_GETUSER_CUSTOM_KEYWORD, target, ply )
+			if player then return player end
 		end
 	end
 
 	for _, player in ipairs( players ) do
-		local nameMatch
 		if player:Nick():lower():find( target, 1, true ) then -- No patterns
-			nameMatch = player
-		end
-
-		if plyMatch and nameMatch then -- Already have one
-			return false, "Found multiple targets! Please choose a better string for the target. (EG, the whole name)"
-		end
-		if nameMatch then
-			plyMatch = nameMatch
+			table.insert( plyMatches, player )
 		end
 	end
 
-	if not plyMatch then
+	if #plyMatches == 0 then
 		return false, "No target found or target has immunity!"
+	elseif #plyMatches > 1 then
+		local str = plyMatches[ 1 ]:Nick()
+		for i=2, #plyMatches do
+			str = str .. ", " .. plyMatches[ i ]:Nick()
+		end
+
+		return false, "Found multiple targets: " .. str .. ". Please choose a better string for the target. (EG, the whole name)"
 	end
 
-	return plyMatch
+	return plyMatches[ 1 ]
 end
-

@@ -2,14 +2,98 @@
 	Title: UCL
 
 	ULib's Access Control List
+
+	Formatting Details:
+
+		Format of admin account in users.txt--
+		"<steamid|ip|unique id>"
+		{
+			"group" "superadmin"
+			"allow"
+			{
+				"ulx kick"
+				"ulx ban"
+			}
+			"deny"
+			{
+				"ulx cexec"
+			}
+		}
+
+		Example of a superadmin--
+		"STEAM_0:1:123456"
+		{
+			"group" "superadmin"
+			"allow"
+			{
+			}
+			"deny"
+			{
+			}
+		}
+
+		Format of group that gets the same allows as a superadmin in groups.txt--
+		"<group_name>"
+		{
+			"allow"
+			{
+				"ulx kick"
+				"ulx ban"
+			}
+			"inherit_from" "superadmin"
+		}
 ]]
 
 local ucl = ULib.ucl -- Make it easier for us to refer to
+
+local defaultGroupsText = -- To populate initially or when the user deletes it
+[["operator"
+{
+	"allow"
+	{
+	}
+	"can_target"    "!%admin"
+}
+
+"admin"
+{
+	"allow"
+	{
+	}
+	"inherit_from"	"operator"
+	"can_target"    "!%superadmin"
+}
+
+"superadmin"
+{
+	"allow"
+	{
+	}
+	"inherit_from"	"admin"
+}
+
+"user"
+{
+	"allow"
+	{
+	}
+}
+]]
 
 local accessStrings = ULib.parseKeyValues( ULib.fileRead( ULib.UCL_REGISTERED ) or "" ) or {}
 local accessCategories = {}
 ULib.ucl.accessStrings = accessStrings
 ULib.ucl.accessCategories = accessCategories
+
+if not ULib.fileExists( ULib.UCL_GROUPS, true ) then
+	ULib.fileWrite( ULib.UCL_GROUPS, defaultGroupsText )
+
+	if ULib.fileExists( ULib.UCL_REGISTERED ) then
+		ULib.fileDelete( ULib.UCL_REGISTERED ) -- Since we're regnerating we'll need to remove this
+	end
+	table.Empty( accessStrings )
+	table.Empty( accessCategories )
+end
 
 -- Helper function to save access string registration to misc_registered.txt
 local function saveAccessStringRegistration()
@@ -35,28 +119,34 @@ function ucl.saveUsers()
 end
 
 local function reloadGroups()
+	-- Try to read from the safest locations first
+	local noMount = true
+	local path = ULib.UCL_GROUPS
+	if not ULib.fileExists( path, noMount ) then
+		ULib.fileWrite( path, defaultGroupsText )
+
+		if ULib.fileExists( ULib.UCL_REGISTERED ) then
+			ULib.fileDelete( ULib.UCL_REGISTERED ) -- Since we're regnerating we'll need to remove this
+		end
+		table.Empty( accessStrings )
+		table.Empty( accessCategories )
+	end
+
 	local needsBackup = false
 	local err
-	ucl.groups, err = ULib.parseKeyValues( ULib.removeCommentHeader( ULib.fileRead( ULib.UCL_GROUPS ), "/" ) )
+	ucl.groups, err = ULib.parseKeyValues( ULib.removeCommentHeader( ULib.fileRead( path, noMount ) or "", "/" ) )
 
 	if not ucl.groups or not ucl.groups[ ULib.ACCESS_ALL ] then
 		needsBackup = true
 		-- Totally messed up! Clear it.
-		local f = "addons/ulib/" .. ULib.UCL_GROUPS
-		if not ULib.fileExists( f ) then
-			Msg( "ULIB PANIC: groups.txt is corrupted and I can't find the default groups.txt file!!\n" )
-		else
-			local err2
-			ucl.groups, err2 = ULib.parseKeyValues( ULib.removeCommentHeader( ULib.fileRead( f ), "/" ) )
-			if not ucl.groups or not ucl.groups[ ULib.ACCESS_ALL ] then
-				Msg( "ULIB PANIC: default groups.txt is corrupt!\n" )
-				err = err2
-			end
-		end
+		local err2
+		ucl.groups, err2 = ULib.parseKeyValues( ULib.removeCommentHeader( defaultGroupsText, "/" ) )
+
 		if ULib.fileExists( ULib.UCL_REGISTERED ) then
 			ULib.fileDelete( ULib.UCL_REGISTERED ) -- Since we're regnerating we'll need to remove this
 		end
-		accessStrings = {}
+		table.Empty( accessStrings )
+		table.Empty( accessCategories )
 
 	else
 		-- Check to make sure it passes a basic validity test
@@ -101,10 +191,10 @@ local function reloadGroups()
 				-- Lower case'ify
 				for k, v in pairs( groupInfo.allow ) do
 					if type( k ) == "string" and k:lower() ~= k then
-						groupInfo.allow[ k:lower() ] = v:lower()
+						groupInfo.allow[ k:lower() ] = v
 						groupInfo.allow[ k ] = nil
 					else
-						groupInfo.allow[ k ] = v:lower()
+						groupInfo.allow[ k ] = v
 					end
 				end
 			end
@@ -123,29 +213,22 @@ end
 reloadGroups()
 
 local function reloadUsers()
+	-- Try to read from the safest locations first
+	local noMount = true
+	local path = ULib.UCL_USERS
+	if not ULib.fileExists( path, noMount ) then
+		ULib.fileWrite( path, "" )
+	end
+
 	local needsBackup = false
 	local err
-	ucl.users, err = ULib.parseKeyValues( ULib.removeCommentHeader( ULib.fileRead( ULib.UCL_USERS ), "/" ) )
+	ucl.users, err = ULib.parseKeyValues( ULib.removeCommentHeader( ULib.fileRead( path, true ) or "", "/" ) )
 
 	-- Check to make sure it passes a basic validity test
 	if not ucl.users then
 		needsBackup = true
 		-- Totally messed up! Clear it.
-		local f = "addons/ulib/" .. ULib.UCL_USERS
-		if not ULib.fileExists( f ) then
-			Msg( "ULIB PANIC: users.txt is corrupted and I can't find the default users.txt file!!\n" )
-		else
-			local err2
-			ucl.users, err2 = ULib.parseKeyValues( ULib.removeCommentHeader( ULib.fileRead( f ), "/" ) )
-			if not ucl.users then
-				Msg( "ULIB PANIC: default users.txt is corrupt!\n" )
-				err = err2
-			end
-		end
-		if ULib.fileExists( ULib.UCL_REGISTERED ) then
-			ULib.deleteFile( ULib.UCL_REGISTERED ) -- Since we're regnerating we'll need to remove this
-		end
-		accessStrings = {}
+		ucl.users = {}
 
 	else
 		for id, userInfo in pairs( ucl.users ) do
@@ -185,19 +268,19 @@ local function reloadUsers()
 				-- Lower case'ify
 				for k, v in pairs( userInfo.allow ) do
 					if type( k ) == "string" and k:lower() ~= k then
-						userInfo.allow[ k:lower() ] = v:lower()
+						userInfo.allow[ k:lower() ] = v
 						userInfo.allow[ k ] = nil
 					else
-						userInfo.allow[ k ] = v:lower()
+						userInfo.allow[ k ] = v
 					end
 				end
 
 				for k, v in ipairs( userInfo.deny ) do
 					if type( k ) == "string" and type( v ) == "string" then -- This isn't allowed here
-						table.insert( userInfo.deny, k:lower() )
+						table.insert( userInfo.deny, k )
 						userInfo.deny[ k ] = nil
 					else
-						userInfo.deny[ k ] = v:lower()
+						userInfo.deny[ k ] = v
 					end
 				end
 			end
@@ -207,7 +290,7 @@ local function reloadUsers()
 	if needsBackup then
 		Msg( "Users file was not formatted correctly. Attempting to fix and backing up original\n" )
 		if err then
-			Msg( "Error while reading groups file was: " .. err .. "\n" )
+			Msg( "Error while reading users file was: " .. err .. "\n" )
 		end
 		Msg( "Original file was backed up to " .. ULib.backupFile( ULib.UCL_USERS ) .. "\n" )
 		ucl.saveUsers()
@@ -226,13 +309,15 @@ reloadUsers()
 		name - A string of the group name. (IE: superadmin)
 		allows - *(Optional, defaults to empty table)* The allowed access for the group.
 		inherit_from - *(Optional)* A string of a valid group to inherit from
+		from_CAMI - *(Optional)* An indicator for this group coming from CAMI.
 
 	Revisions:
 
 		v2.10 - acl is now an options parameter, added inherit_from.
 		v2.40 - Rewrite, changed parameter list around.
+		v2.60 - Added CAMI support and parameter.
 ]]
-function ucl.addGroup( name, allows, inherit_from )
+function ucl.addGroup( name, allows, inherit_from, from_CAMI )
 	ULib.checkArg( 1, "ULib.ucl.addGroup", "string", name )
 	ULib.checkArg( 2, "ULib.ucl.addGroup", {"nil","table"}, allows )
 	ULib.checkArg( 3, "ULib.ucl.addGroup", {"nil","string"}, inherit_from )
@@ -252,6 +337,11 @@ function ucl.addGroup( name, allows, inherit_from )
 	ucl.saveGroups()
 
 	hook.Call( ULib.HOOK_UCLCHANGED )
+
+	-- CAMI logic
+	if not from_CAMI and not ULib.findInTable( {"superadmin", "admin", "user"}, name ) then
+		CAMI.RegisterUsergroup( {Name=name, Inherits=inherit_from}, CAMI.ULX_TOKEN )
+	end
 end
 
 
@@ -289,7 +379,7 @@ function ucl.groupAllow( name, access, revoke )
 		local access = v:lower()
 		local accesstag
 		if type( k ) == "string" then
-			accesstag = v:lower()
+			accesstag = v
 			access = k:lower()
 		end
 
@@ -344,6 +434,7 @@ end
 	Revisions:
 
 		v2.40 - Initial.
+		v2.60 - Added CAMI support.
 ]]
 function ucl.renameGroup( orig, new )
 	ULib.checkArg( 1, "ULib.ucl.renameGroup", "string", orig )
@@ -383,6 +474,14 @@ function ucl.renameGroup( orig, new )
 	ucl.saveGroups()
 
 	hook.Call( ULib.HOOK_UCLCHANGED )
+
+	-- CAMI logic
+	if not ULib.findInTable( {"superadmin", "admin", "user"}, orig ) then
+		CAMI.UnregisterUsergroup( orig, CAMI.ULX_TOKEN )
+	end
+	if not ULib.findInTable( {"superadmin", "admin", "user"}, new ) then
+		CAMI.RegisterUsergroup( {Name=new, Inherits=ucl.groups[ new ].inherit_from}, CAMI.ULX_TOKEN )
+	end
 end
 
 
@@ -395,19 +494,19 @@ end
 
 		group - A string of the group name. (IE: superadmin)
 		inherit_from - Either a string of the new inheritance group name or nil to remove inheritance. (IE: admin)
+		from_CAMI - *(Optional)* An indicator for this group coming from CAMI.
 
 	Revisions:
 
 		v2.40 - Initial.
+		v2.60 - Added CAMI support and parameter.
 ]]
-function ucl.setGroupInheritance( group, inherit_from )
+function ucl.setGroupInheritance( group, inherit_from, from_CAMI )
 	ULib.checkArg( 1, "ULib.ucl.renameGroup", "string", group )
 	ULib.checkArg( 2, "ULib.ucl.renameGroup", {"nil","string"}, inherit_from )
-	if inherit_from then
-		if inherit_from == ULib.ACCESS_ALL then inherit_from = nil end -- Implicitly inherited
-	end
+	inherit_from = inherit_from or "user"
 
-	if group == ULib.ACCESS_ALL then return error( "This group (" .. group .. ") cannot have it's inheritance changed!", 2 ) end
+	if group == ULib.ACCESS_ALL then return error( "This group (" .. group .. ") cannot have its inheritance changed!", 2 ) end
 	if not ucl.groups[ group ] then return error( "Group does not exist (" .. group .. ")", 2 ) end
 	if inherit_from and not ucl.groups[ inherit_from ] then return error( "Group for inheritance does not exist (" .. inherit_from .. ")", 2 ) end
 
@@ -438,6 +537,12 @@ function ucl.setGroupInheritance( group, inherit_from )
 	ucl.saveGroups()
 
 	hook.Call( ULib.HOOK_UCLCHANGED )
+
+	-- CAMI logic
+	if not from_CAMI and not ULib.findInTable( {"superadmin", "admin", "user"}, group ) then
+		CAMI.UnregisterUsergroup( group, CAMI.ULX_TOKEN )
+		CAMI.RegisterUsergroup( {Name=group, Inherits=inherit_from}, CAMI.ULX_TOKEN )
+	end
 end
 
 
@@ -478,13 +583,15 @@ end
 	Parameters:
 
 		name - A string of the group name. (IE: superadmin)
+		from_CAMI - *(Optional)* An indicator for this group coming from CAMI.
 
 	Revisions:
 
 		v2.10 - Initial.
 		v2.40 - Rewrite, removed write parameter.
+		v2.60 - Added CAMI support and parameter.
 ]]
-function ucl.removeGroup( name )
+function ucl.removeGroup( name, from_CAMI )
 	ULib.checkArg( 1, "ULib.ucl.removeGroup", "string", name )
 
 	if name == ULib.ACCESS_ALL then return error( "This group (" .. name .. ") cannot be removed!", 2 ) end
@@ -521,6 +628,11 @@ function ucl.removeGroup( name )
 	ucl.saveGroups()
 
 	hook.Call( ULib.HOOK_UCLCHANGED )
+
+	-- CAMI logic
+	if not from_CAMI and not ULib.findInTable( {"superadmin", "admin", "user"}, name ) then
+		CAMI.UnregisterUsergroup( name, CAMI.ULX_TOKEN )
+	end
 end
 
 --[[
@@ -534,7 +646,7 @@ end
 
 	Revisions:
 
-		2.41 - Initial.
+		v2.41 - Initial.
 ]]
 
 function ucl.getUserRegisteredID( ply )
@@ -550,6 +662,29 @@ function ucl.getUserRegisteredID( ply )
 end
 
 --[[
+	Function: ucl.getUserInfoFromID
+
+	Returns a table containing the name and group of a player in the UCL table of users if they exist.
+
+	Parameters:
+
+		id - The SteamID, IP, or UniqueID of the user you wish to check.
+]]
+
+function ucl.getUserInfoFromID( id )
+
+	ULib.checkArg( 1, "ULib.ucl.addUser", "string", id )
+	id = id:upper() -- In case of steamid, needs to be upper case
+
+	if ucl.users[ id ] then
+		return ucl.users[ id ]
+	else
+		return nil
+	end
+
+end
+
+--[[
 	Function: ucl.addUser
 
 	Adds a user to the UCL. Automatically probes for the user, automatically saves.
@@ -559,14 +694,16 @@ end
 		id - The SteamID, IP, or UniqueID of the user you wish to add.
 		allows - *(Optional, defaults to empty table)* The list of access you wish to give this user.
 		denies - *(Optional, defaults to empty table)* The list of access you wish to explicitly deny this user.
-		group - *(Optional)* The sting of the group this user should belong to. Must be a valid group.
+		group - *(Optional)* The string of the group this user should belong to. Must be a valid group.
+		from_CAMI - *(Optional)* An indicator for this information coming from CAMI.
 
 	Revisions:
 
-		2.10 - No longer makes a group if it doesn't exist.
-		2.40 - Rewrite, changed the arguments all around.
+		v2.10 - No longer makes a group if it doesn't exist.
+		v2.40 - Rewrite, changed the arguments all around.
+		v2.60 - Added support for CAMI and parameter.
 ]]
-function ucl.addUser( id, allows, denies, group )
+function ucl.addUser( id, allows, denies, group, from_CAMI )
 	ULib.checkArg( 1, "ULib.ucl.addUser", "string", id )
 	ULib.checkArg( 2, "ULib.ucl.addUser", {"nil","table"}, allows )
 	ULib.checkArg( 3, "ULib.ucl.addUser", {"nil","table"}, denies )
@@ -580,8 +717,8 @@ function ucl.addUser( id, allows, denies, group )
 	if group and not ucl.groups[ group ] then return error( "Group does not exist for adding user to (" .. group .. ")", 2 ) end
 
 	-- Lower case'ify
-	for k, v in ipairs( allows ) do allows[ k ] = v:lower() end
-	for k, v in ipairs( denies ) do denies[ k ] = v:lower() end
+	for k, v in ipairs( allows ) do allows[ k ] = v end
+	for k, v in ipairs( denies ) do denies[ k ] = v end
 
 	local name
 	if ucl.users[ id ] and ucl.users[ id ].name then name = ucl.users[ id ].name end -- Preserve name
@@ -591,6 +728,11 @@ function ucl.addUser( id, allows, denies, group )
 
 	local ply = ULib.getPlyByID( id )
 	if ply then
+		-- CAMI logic -- no way to pass disconnected group change.
+		if not from_CAMI then
+			CAMI.SignalUserGroupChanged( ply, ply:GetUserGroup(), group or "user", CAMI.ULX_TOKEN )
+		end
+
 		ucl.probe( ply )
 	else -- Otherwise this gets called twice
 		hook.Call( ULib.HOOK_UCLCHANGED )
@@ -668,7 +810,7 @@ function ucl.userAllow( id, access, revoke, deny )
 		if type( k ) == "string" then
 			access = k:lower()
 			if not revoke and not deny then -- Not valid to have accessTags unless this is the case
-				accesstag = v:lower()
+				accesstag = v
 			end
 		end
 
@@ -728,12 +870,14 @@ end
 
 		id - The SteamID, IP, or UniqueID of the user you wish to remove. Must be a valid, existing ID.
 			The unique id of a connected user is always valid.
+		from_CAMI - *(Optional)* An indicator for this information coming from CAMI.
 
 	Revisions:
 
 		v2.40 - Rewrite, removed the write argument.
+		v2.60 - Added CAMI support and parameter.
 ]]
-function ucl.removeUser( id )
+function ucl.removeUser( id, from_CAMI )
 	ULib.checkArg( 1, "ULib.ucl.addUser", "string", id )
 	id = id:upper() -- In case of steamid, needs to be upper case
 
@@ -767,6 +911,11 @@ function ucl.removeUser( id )
 
 	local ply = ULib.getPlyByID( id )
 	if ply then
+		-- CAMI logic -- no way to pass disconnected group change.
+		if not from_CAMI then
+			CAMI.SignalUserGroupChanged( ply, ply:GetUserGroup(), ULib.ACCESS_ALL, CAMI.ULX_TOKEN )
+		end
+
 		ply:SetUserGroup( ULib.ACCESS_ALL, true )
 		ucl.probe( ply ) -- Reprobe
 	else -- Otherwise this is called twice
@@ -801,6 +950,7 @@ function ucl.registerAccess( access, groups, comment, category )
 
 	access = access:lower()
 	comment = comment or ""
+	if groups == nil then groups = {} end
 	if type( groups ) == "string" then
 		groups = { groups }
 	end
@@ -879,37 +1029,47 @@ function ucl.probe( ply )
 	hook.Call( ULib.HOOK_UCLCHANGED )
 	hook.Call( ULib.HOOK_UCLAUTH, _, ply )
 end
-hook.Add( "PlayerAuthed", "ULibAuth", ucl.probe, -4 ) -- Run slightly after garry-auth
+-- Note that this function is hooked into "PlayerAuthed", below.
 
+local function setupBot( ply )
+	if not ply or not ply:IsValid() then return end
 
-local function botCheck( ply )
-	if ply:IsBot() and not ucl.authed[ ply:UniqueID() ] then
+	if not ucl.authed[ ply:UniqueID() ] then
 		ply:SetUserGroup( ULib.ACCESS_ALL, true ) -- Give it a group!
 		ucl.probe( ply )
 	end
 end
-hook.Add( "PlayerInitialSpawn", "ULibSendAuthToClients", botCheck, -20 )
+
+local function botCheck( ply )
+	if ply:IsBot() then
+		-- We have to call this twice because the uniqueID will change for NextBots
+		setupBot( ply )
+		ULib.queueFunctionCall( setupBot, ply )
+	end
+end
+hook.Add( "PlayerInitialSpawn", "ULibSendAuthToClients", botCheck, HOOK_MONITOR_HIGH )
 
 local function sendAuthToClients( ply )
 	ULib.clientRPC( _, "authPlayerIfReady", ply, ply:UserID() ) -- Call on client
 end
-hook.Add( ULib.HOOK_UCLAUTH, "ULibSendAuthToClients", sendAuthToClients, 20 )
+hook.Add( ULib.HOOK_UCLAUTH, "ULibSendAuthToClients", sendAuthToClients, HOOK_MONITOR_LOW )
 
 local function sendUCLDataToClient( ply )
 	ULib.clientRPC( ply, "ULib.ucl.initClientUCL", ucl.authed, ucl.groups ) -- Send all UCL data (minus offline users) to all loaded users
 	ULib.clientRPC( ply, "hook.Call", ULib.HOOK_UCLCHANGED ) -- Call hook on client
 	ULib.clientRPC( ply, "authPlayerIfReady", ply, ply:UserID() ) -- Call on client
 end
-hook.Add( ULib.HOOK_LOCALPLAYERREADY, "ULibSendUCLDataToClient", sendUCLDataToClient, -20 )
+hook.Add( ULib.HOOK_LOCALPLAYERREADY, "ULibSendUCLDataToClient", sendUCLDataToClient, HOOK_MONITOR_HIGH )
 
 local function playerDisconnected( ply )
+	-- We want to perform these actions after everything else has processed through, but we need high priority hook to ensure we don't get sniped.
 	local uid = ply:UniqueID()
 	ULib.queueFunctionCall( function()
 		ucl.authed[ uid ] = nil
 		hook.Call( ULib.HOOK_UCLCHANGED )
 	end )
 end
-hook.Add( "PlayerDisconnected", "ULibUCLDisconnect", playerDisconnected, 20 ) -- Last thing we want to do
+hook.Add( "PlayerDisconnected", "ULibUCLDisconnect", playerDisconnected, HOOK_MONITOR_HIGH )
 
 local function UCLChanged()
 	ULib.clientRPC( _, "ULib.ucl.initClientUCL", ucl.authed, ucl.groups ) -- Send all UCL data (minus offline users) to all loaded users
@@ -929,7 +1089,13 @@ hook.Add( "PlayerAuthed", "UTEST", function() print( "HERE HERE: Player Authed" 
 -- Move garry's auth function so it gets called sooner
 local playerAuth = hook.GetTable().PlayerInitialSpawn.PlayerAuthSpawn
 hook.Remove( "PlayerInitialSpawn", "PlayerAuthSpawn" ) -- Remove from original spot
-hook.Add( "PlayerAuthed", "GarryAuth", playerAuth, -5 ) -- Put here
+
+local function newPlayerAuth( ply, ... )
+	ucl.authed[ ply:UniqueID() ] = nil -- If the player ent is removed before disconnecting, we can have this hanging out there.
+	playerAuth( ply, ... ) -- Put here, slightly ahead of ucl.
+	ucl.probe( ply, ... )
+end
+hook.Add( "PlayerAuthed", "ULibAuth", newPlayerAuth, HOOK_MONITOR_HIGH )
 
 local meta = FindMetaTable( "Player" )
 if not meta then return end

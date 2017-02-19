@@ -1,3 +1,20 @@
+local ulxBuildNumURL = ulx.release and "https://teamulysses.github.io/ulx/ulx.build" or "https://raw.githubusercontent.com/TeamUlysses/ulx/master/ulx.build"
+ULib.registerPlugin{
+	Name          = "ULX",
+	Version       = string.format( "%.2f", ulx.version ),
+	IsRelease     = ulx.release,
+	Author        = "Team Ulysses",
+	URL           = "http://ulyssesmod.net",
+	WorkshopID    = 557962280,
+	BuildNumLocal         = tonumber(ULib.fileRead( "ulx.build" )),
+	BuildNumRemoteURL      = ulxBuildNumURL,
+	--BuildNumRemoteReceivedCallback = nil
+}
+
+function ulx.getVersion() -- This function will be removed in the future
+	return ULib.pluginVersionStr( "ULX" )
+end
+
 local ulxCommand = inheritsFrom( ULib.cmds.TranslateCommand )
 
 function ulxCommand:logString( str )
@@ -37,12 +54,20 @@ function ulxCommand:getUsage( ply )
 	return str
 end
 
-ulx.cmdsByCategory = {}
+ulx.cmdsByCategory = ulx.cmdsByCategory or {}
 function ulx.command( category, command, fn, say_cmd, hide_say, nospace )
-    if type( say_cmd ) == "string" then say_cmd = { say_cmd } end
+	if type( say_cmd ) == "string" then say_cmd = { say_cmd } end
 	local obj = ulxCommand( command, fn, say_cmd, hide_say, nospace )
 	obj:addParam{ type=ULib.cmds.CallingPlayerArg }
 	ulx.cmdsByCategory[ category ] = ulx.cmdsByCategory[ category ] or {}
+	for cat, cmds in pairs( ulx.cmdsByCategory ) do
+		for i=1, #cmds do
+			if cmds[i].cmd == command then
+				table.remove( ulx.cmdsByCategory[ cat ], i )
+				break
+			end
+		end
+	end
 	table.insert( ulx.cmdsByCategory[ category ], obj )
 	obj.category = category
 	obj.say_cmd = say_cmd
@@ -122,7 +147,7 @@ function ulx.help( ply )
 	end
 
 
-	ULib.console( ply, "\n-End of help\nULX version: " .. ulx.getVersion() .. "\n" )
+	ULib.console( ply, "\n-End of help\nULX version: " .. ULib.pluginVersionStr( "ULX" ) .. "\n" )
 end
 local help = ulx.command( "Utility", "ulx help", ulx.help )
 help:help( "Shows this help." )
