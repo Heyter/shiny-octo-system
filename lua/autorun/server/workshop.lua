@@ -18,3 +18,5 @@ resource.AddWorkshop("108176967") -- Sit Anywhere
 resource.AddWorkshop("182758912") -- Thief Playermodel
 resource.AddWorkshop("248302805") -- DARKRP
 resource.AddWorkshop("108424005") -- Keypad
+resource.AddWorkshop("650242617") -- L.A. Noire
+resource.AddWorkshop("844787757") -- radio and mic 

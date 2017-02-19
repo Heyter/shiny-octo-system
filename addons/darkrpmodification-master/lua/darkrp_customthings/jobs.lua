@@ -29,6 +29,8 @@ customCheck = isDonator,
 
 */
 
+--#NoSimplerr#
+
 function isSuperAdmin(ply)
     return ply:GetUserGroup() == "superadmin"
 end
@@ -115,7 +117,7 @@ TEAM_DETECTIVE = DarkRP.createJob("Детектив", {
     color = Color(56,38,22,255),
     model = "models/sirgibs/ragdolls/detective_magnusson_player.mdl",
     description = [[Тот, кто ведет расследования.]],
-    weapons = {"m9k_model627"},
+    weapons = {"arrest_stick", "unarrest_stick", "stunstick", "door_ram", "weaponchecker", "m9k_model627"},
     command = "detective",
     max = 2,
     salary = GAMEMODE.Config.normalsalary * 2,
@@ -206,7 +208,7 @@ TEAM_MOB = DarkRP.createJob("Босс мафии", {
     category = "Gangsters",
 })
 
-TEAM_GUN = DarkRP.createJob("Продавец оружия", {
+TEAM_GUN = DarkRP.createJob("Торговец оружием", {
     color = Color(255, 140, 0, 255),
     model = "models/player/monk.mdl",
     description = [[Тот, кто продает гражданам оружие.]],
@@ -220,7 +222,7 @@ TEAM_GUN = DarkRP.createJob("Продавец оружия", {
     category = "Citizens",
 })
 
-TEAM_ILLEGALDEALER = DarkRP.createJob("Продавец нелегального оборудования", {
+TEAM_ILLEGALDEALER = DarkRP.createJob("Торговец нелегальным", {
     color = Color(255, 190, 0, 255),
     model = "models/player/guerilla.mdl",
     description = [[Тот, кто продает нелегальные вещи.]],
@@ -299,6 +301,23 @@ TEAM_GUARD = DarkRP.createJob("Охранник", {
     category = "Citizens",
 })
 
+TEAM_HITMAN = DarkRP.createJob("Наемный убийца", {
+    color = Color(94, 0, 24, 255),
+    model = "models/player/lanoire_detective.mdl",
+    description = [[Тот, кто убивает на заказ.]],
+    weapons = {""},
+    command = "hitman",
+    max = 3,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    category = "Citizens",
+    customCheck = isDonator,
+    isDonator = true,
+    CustomCheckFailMsg = "Извините, только для Премиум игроков",
+})
+
 if not DarkRP.disabledDefaults["modules"]["hungermod"] then
     TEAM_COOK = DarkRP.createJob("Повар", {
         color = Color(238, 99, 99, 255),
@@ -337,4 +356,4 @@ GAMEMODE.CivilProtection = {
 --[[---------------------------------------------------------------------------
 Jobs that are hitmen (enables the hitman menu)
 ---------------------------------------------------------------------------]]
-DarkRP.addHitmanTeam(TEAM_MOB)
+DarkRP.addHitmanTeam(TEAM_HITMAN)
