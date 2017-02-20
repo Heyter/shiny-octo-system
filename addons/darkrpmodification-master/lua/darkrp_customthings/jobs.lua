@@ -31,8 +31,11 @@ customCheck = isDonator,
 
 --#NoSimplerr#
 
+function isArchitector(ply)
+    return ply:GetUserGroup() == "architector"
+end
 function isSuperAdmin(ply)
-    return ply:GetUserGroup() == "superadmin"
+    return ply:GetUserGroup() == "superadmin" or isArchitector(ply)
 end
 function isAdmin(ply)
     return ply:GetUserGroup() == "admin" or isSuperAdmin(ply)
