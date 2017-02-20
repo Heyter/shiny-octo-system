@@ -1,3 +1,4 @@
+--#NoSimplerr#
 resource.AddFile("materials/Waypoint.png")
 util.AddNetworkString( "CombineRequest" )
 local function CombineRequest(ply, args)
@@ -32,8 +33,8 @@ function DarkRP.hooks:canArrest(arrester, arrestee)
         return false, DarkRP.getPhrase("must_be_wanted_for_arrest")
     end
 
-    if arrestee:IsPlayer() and arrstee.job == TEAM_ADMINONDUTY then
-        return false, DarkRP.getPhrase("cant_arrest_fadmin_jailed")
+    if arrestee:IsPlayer() and arrestee:Team() == TEAM_ADMINONDUTY then
+        return false, ("Вы чо охуели??")
     end
 
     local jpc = DarkRP.jailPosCount()

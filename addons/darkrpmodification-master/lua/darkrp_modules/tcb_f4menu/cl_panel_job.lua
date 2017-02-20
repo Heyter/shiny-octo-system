@@ -181,7 +181,7 @@ function PANEL:Init()
 	h = ScrH()
 	self:SetPos((w/2)+450,(h/2)-325)
 	self:SetSize(100,650)
-	self:SetBackgroundColor(TCB_Settings.BaseColor)
+	self:SetBackgroundColor(Color(85,58,35,255))
 	self.visible = false
 	self.scroll = vgui.Create("tcb_panel_scroll",self)
 	self.scroll:SetSize(200,620)
@@ -190,12 +190,25 @@ function PANEL:Init()
 	self.closebtn = vgui.Create("DButton",self)
 	self.closebtn:SetPos(0,620)
 	self.closebtn:SetSize(100,30)
+	self.closebtn.Hover = false
+	self.closebtn.Active = false
+	self.closebtn.OnCursorEntered	= function() self.closebtn.Hover = true  end
+	self.closebtn.OnCursorExited 	= function() self.closebtn.Hover = false end
 	self.closebtn:SetText("")
 	self.closebtn.DoClick = function() self:Close() end
-	self.closebtn.Paint = function()
-	draw.RoundedBox(0,0,0,100,30,TCB_Settings.ButtonColor3)
-	draw.DrawText( "Закрыть", "HUDSmall", 20, 6, TCB_Settings.PrimaryColor )
+	self.closebtn.Paint = function( pnl, w, h )
+
+		draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
+
+		if self.closebtn.Hover == false then
+			draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
+		else
+			draw.RoundedBox( 0, 0, 0, w, h, Color(186, 175, 140, 255) )
+		end
+
+		draw.DrawText( "Закрыть", "HUDSmall", 20, 6, TCB_Settings.BlackColor )
 	end
+
 	hook.Add("TCB_F4Menu_Close","Close TCB_model",function() self:Close() end)
 
 end
@@ -220,7 +233,7 @@ function PANEL:UpdateInfo(job, parent)
             btn:SetSelected(true)
             btn.Paint= function()
             draw.RoundedBox(0,0,0,60,60,TCB_Settings.PrimaryColor)
-            draw.RoundedBox(0,1,1,58,58,TCB_Settings.ButtonColor3)
+            draw.RoundedBox(0,1,1,58,58,Color(145, 137, 109, 255))
 
             	
         end
@@ -280,7 +293,7 @@ function PANEL:OnMouseReleased()
     
 end
 function PANEL:Paint(pnl, w, h)
-	draw.RoundedBox(0,0,0,60,60,TCB_Settings.ButtonColor3)
+	draw.RoundedBox(0,0,0,60,60,Color(227, 210, 161, 255))
 end
 function PANEL:UpdateInfo(job, model, host)
     self.hostPanel = host

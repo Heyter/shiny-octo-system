@@ -206,7 +206,7 @@ function PANEL:Frame()
 		if CloseButton.Hover == false then
 			draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
 		else
-			draw.RoundedBox( 0, 0, 0, w, h, Color(196, 183, 139, 255) )
+			draw.RoundedBox( 0, 0, 0, w, h, Color(186, 175, 140, 255) )
 		end
 
 		draw.DrawText( "Закрыть", "TCB_F4Menu_Medium", w/2, 10, TCB_Settings.BlackColor, 1 )
@@ -302,14 +302,14 @@ function PANEL:Frame()
 					if CurButton.Hover == false then
 						draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
 					else
-						draw.RoundedBox( 0, 0, 0, w, h, Color(196, 183, 139, 255) )
+						draw.RoundedBox( 0, 0, 0, w, h, Color(186, 175, 140, 255) )
 					end
 
 					draw.DrawText( button['text'], "TCB_F4Menu_Medium", 10, 10, TCB_Settings.BlackColor  )
 
 				else
 
-					draw.RoundedBox( 0, 0, 0, w, h, Color(176, 164, 125,255) )
+					draw.RoundedBox( 0, 0, 0, w, h, Color(145, 137, 109, 255) )
 
 					draw.DrawText( button['text'], "TCB_F4Menu_Medium", 10, 10, TCB_Settings.BlackColor  )
 
