@@ -291,7 +291,7 @@ end
 Hooks
 ---------------------------------------------------------------------------]]
 
-function DarkRP.hooks:canArrest(arrester, arrestee)
+/*function DarkRP.hooks:canArrest(arrester, arrestee)
     if IsValid(arrestee) and arrestee:IsPlayer() and arrestee:isCP() and not GAMEMODE.Config.cpcanarrestcp then
         return false, DarkRP.getPhrase("cant_arrest_other_cp")
     end
@@ -319,7 +319,7 @@ function DarkRP.hooks:canArrest(arrester, arrestee)
     end
 
     return true
-end
+end*/
 
 function DarkRP.hooks:playerArrested(ply, time, arrester)
     if ply:isWanted() then ply:unWanted(arrester) end
