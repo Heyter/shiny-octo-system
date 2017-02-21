@@ -58,14 +58,14 @@ function NLRBox()
     NLabel:SetPos(105, 30)
     NLabel:SetText(warningtext)
     NLabel:SetFont(lfont)
-    NLabel:SetTextColor( Color( 229, 229, 229) )
+    NLabel:SetTextColor(TCB_Settings.PrimaryColor)
     NLabel:SizeToContents()
  
     local NButton = vgui.Create( "DButton", NFrame )
     NButton:SetPos( 210, 131 )
     NButton:SetText(timertext)
     NButton:SetFont(bfont)
-	NButton:SetTextColor( Color( 245, 206, 34, 255) )
+	NButton:SetTextColor(TCB_Settings.BlackColor)
     NButton:SetSize( 180, 30 )
     NButton.Hover = false
     NButton.Active = false
@@ -75,12 +75,12 @@ function NLRBox()
 
         if NButton.Active == false then
 
-            draw.RoundedBox( 0, 0, 0, w, h, Color(56, 38, 22, 255) )
+            draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
 
             if NButton.Hover == false then
-                draw.RoundedBox( 0, 0, 0, w, h, Color(56, 38, 22, 255) )
+                draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
             else
-                draw.RoundedBox( 0, 0, 0, w, h, Color(71, 49, 29,255) )
+                draw.RoundedBox( 0, 0, 0, w, h, Color(186, 175, 140, 255) )
             end
         end
         surface.DrawRect( 0, 0, NButton:GetWide(), NButton:GetTall() )            
