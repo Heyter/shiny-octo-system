@@ -19,7 +19,7 @@ SWEP.DrawCrosshair = true
 SWEP.Base = "weapon_cs_base2"
 
 SWEP.Author = "DarkRP Developers"
-SWEP.Instructions = "Left click to pick up\nRight click to drop\nReload to open the menu"
+SWEP.Instructions = "Left click to pick up\nRight click to open inv"
 SWEP.Contact = ""
 SWEP.Purpose = ""
 SWEP.IsDarkRPPocket = true
