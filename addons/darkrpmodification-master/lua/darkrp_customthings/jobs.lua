@@ -321,6 +321,39 @@ TEAM_HITMAN = DarkRP.createJob("Наемный убийца", {
     CustomCheckFailMsg = "Извините, только для Премиум игроков",
 })
 
+TEAM_RADIOHOST = DarkRP.createJob("Ведущий радио", {
+    color = Color(108, 156, 92, 255),
+    model = {
+        "models/player/Group01/Male_05.mdl",
+        "models/player/Group01/Female_01.mdl",
+        "models/player/Group01/Female_02.mdl",
+        "models/player/Group01/Female_03.mdl",
+        "models/player/Group01/Female_04.mdl",
+        "models/player/Group01/Female_06.mdl",
+        "models/player/group01/male_01.mdl",
+        "models/player/Group01/Male_02.mdl",
+        "models/player/Group01/male_03.mdl",
+        "models/player/Group01/Male_04.mdl",
+        "models/player/Group01/Male_06.mdl",
+        "models/player/Group01/Male_07.mdl",
+        "models/player/Group01/Male_08.mdl",
+        "models/player/Group01/Male_09.mdl"
+    },
+    description = [[Тот, кто не приносит пользы обществу.]],
+    weapons = {},
+    command = "radiohost",
+    max = 1,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    candemote = false,
+    category = "Citizens",
+    customCheck = isDonator,
+    isDonator = true,
+    CustomCheckFailMsg = "Извините, только для Премиум игроков",
+})
+
 if not DarkRP.disabledDefaults["modules"]["hungermod"] then
     TEAM_COOK = DarkRP.createJob("Повар", {
         color = Color(238, 99, 99, 255),

@@ -89,3 +89,28 @@ DarkRP.createShipment("Thommy Gun", {
     category = "Rifles",
 })
 
+DarkRP.createShipment("Отмычка", {
+    model = "models/weapons/w_crowbar.mdl",
+    entity = "lockpick",
+    price = 1000,
+    amount = 10,
+    separate = true,
+    pricesep = 800,
+    noship = true,
+    allowed = {TEAM_ILLEGALDEALER},
+})
+
+DarkRP.createShipment("Устройство для взлома", {
+    model = "models/weapons/w_c4.mdl",
+    entity = "keypad_cracker",
+    price = 1000,
+    amount = 10,
+    separate = true,
+    pricesep = 1200,
+    noship = true,
+    allowed = {TEAM_ILLEGALDEALER},
+})
+
+
+
+

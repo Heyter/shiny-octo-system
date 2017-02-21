@@ -65,9 +65,9 @@ TCB_Settings.SidebarButtons = {
 	{ text = "Работы", 		panel = "tcb_panel_jobs",		info = true,	func = "jobs"  		},
 	{ text = "Предметы",	panel = "tcb_panel_entities",	info = true,	func = "entities"	},
 	{ text = "Оружие",		panel = "tcb_panel_guns",		info = true,	func = "weapons"	},
-	{ text = "Партии",	    panel = "tcb_panel_shipments",	info = true,	func = "shipments" 	},
+	--{ text = "Партии",	    panel = "tcb_panel_shipments",	info = true,	func = "shipments" 	},
 	{ text = "Патроны",		panel = "tcb_panel_ammo",		info = true,	func = "ammo" 		},
-	{ text = "Транспорт",	panel = "tcb_panel_vehicles",	info = true,	func = "vehicles"	},
+	--{ text = "Транспорт",	panel = "tcb_panel_vehicles",	info = true,	func = "vehicles"	},
 
 }
 

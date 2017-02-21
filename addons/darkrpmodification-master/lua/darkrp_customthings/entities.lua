@@ -17,6 +17,43 @@ http://wiki.darkrp.com/index.php/DarkRP:CustomEntityFields
 Add entities under the following line:
 ---------------------------------------------------------------------------]]
 
+
+DarkRP.createEntity("Бронежилет", {
+    ent = "armor",
+    model = "models/weapons/w_defuser.mdl",
+    price = 2000,
+    max = 10,
+    cmd = "buyarmor",
+    allowed = {TEAM_ILLEGALDEALER},
+})
+
+DarkRP.createEntity("Аптечка", {
+    ent = "health_pack",
+    model = "models/healthvial.mdl",
+    price = 1000,
+    max = 10,
+    cmd = "buyhealthpack",
+    allowed = {TEAM_MEDIC},
+})
+
+DarkRP.createEntity("Радио", {
+    ent = "re_radio",
+    model = "models/props_lab/citizenradio.mdl",
+    price = 200,
+    max = 2,
+    cmd = "buyradio",
+})
+
+DarkRP.createEntity("Микрофон", {
+    ent = "re_microphone",
+    model = "models/roleplay/microphone_full.mdl",
+    price = 200,
+    max = 1,
+    cmd = "buymicrophone",
+    allowed = {TEAM_RADIOHOST},
+})
+
+
 DarkRP.createEntity("Принтер первого уровня", {
     ent = "k_printer_t1",
     model = "models/props_lab/reciever01a.mdl",
@@ -73,20 +110,4 @@ DarkRP.createEntity("Охладитель", {
     cmd = "buycoolantcell"
 })
 
-DarkRP.createEntity("Бронежилет", {
-    ent = "armor",
-    model = "models/weapons/w_defuser.mdl",
-    price = 2000,
-    max = 10,
-    cmd = "buyarmor",
-    allowed = {TEAM_ILLEGALDEALER},
-})
 
-DarkRP.createEntity("Аптечка", {
-    ent = "health_pack",
-    model = "models/healthvial.mdl",
-    price = 1000,
-    max = 10,
-    cmd = "buyhealthpack",
-    allowed = {TEAM_MEDIC},
-})
