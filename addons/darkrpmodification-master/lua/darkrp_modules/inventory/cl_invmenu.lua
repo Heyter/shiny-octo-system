@@ -1,4 +1,7 @@
 --#noSimplerr#
+
+
+
 hook.Call("RebuildInventory",nil,LocalPlayer())
 PANEL = {}
 
@@ -6,7 +9,7 @@ function PANEL:Init()
 
 	self:SetSize(560,414)
 	self:Center()
-	self:SetTitle('Inventory')
+	self:SetTitle('Инвентарь')
 	self:SetSizable(false)
 	self.Paint = function(w,h)
 		draw.RoundedBox(1,0,0,560,414,Color(70,45,23,255))
@@ -24,6 +27,11 @@ function PANEL:Init()
 	self.DLayout.OnModified = function()
 			ListItem = self.DLayout:Add( "DPanel" )
 			ListItem:SetSize( 100,120 ) 
+			ListItem.Paint = function(hui,w,h)
+
+				draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
+			end
+
 		
 	end
 
@@ -43,15 +51,33 @@ function PANEL:MakeList()
 	end
 	for c = self.DLayout.numberOfItems,29 do
 		ListItem = self.DLayout:Add( "DPanel" )
-		ListItem:SetSize( 100,120 ) 
+		ListItem:SetSize( 100,120 )
+		ListItem.Paint = function(hui,w,h)
+
+				draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
+			end 
+
 	end
 
 end
 
 
 function PANEL:ProcessPanel(panel, itemk, type)
+	panel.jaba = false
 	local w = 100
 	local h = 120
+	panel.Paint = function(hui,w,h)
+
+		draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
+
+		if panel.jaba == false then
+			draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
+		else
+			draw.RoundedBox( 0, 0, 0, w, h, Color(186, 175, 140, 255) )
+		end
+	end
+
+
 
 
 	--Здесь может быть self.Paint для перекрашивания и десигна итемов инвентаря
@@ -109,11 +135,21 @@ function PANEL:ProcessPanel(panel, itemk, type)
 		use.DoClick = usef
 		use:SetVisible(false)
 
-
-	panel.OnMouseReleased = function()
+	panel.OnCursorEntered = function()
+		panel.jaba = true
 		name:SetVisible(false)
 		drop:SetVisible(true)
 		use:SetVisible(true)
+	end
+
+	panel.OnCursorExited = function()
+		if not panel:IsChildHovered( true ) then 
+			panel.jaba = false
+			name:SetVisible(true)
+			drop:SetVisible(false)
+			use:SetVisible(false)
+		end
+
 	end
 
 end
