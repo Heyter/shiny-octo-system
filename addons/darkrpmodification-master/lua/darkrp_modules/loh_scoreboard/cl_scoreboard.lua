@@ -69,16 +69,16 @@ local function CreateScoreboard()
         surface.DrawLine(10, 126, w - 10, 126)
 
         -- Player names label
-        draw.SimpleText("Name", "scoreboard.info", 13, 115, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Имя", "scoreboard.info", 13, 115, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
         -- Player job label
-        draw.SimpleText("Job", "scoreboard.info", w / 2, 115, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Работа", "scoreboard.info", w / 2, 115, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
         -- Player rank label
-        draw.SimpleText("Rank", "scoreboard.info", w - 75, 115, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Ранг", "scoreboard.info", w - 75, 115, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
         -- Player ping label
-        draw.SimpleText("Ping", "scoreboard.info", w - 23, 115, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+        draw.SimpleText("Пинг", "scoreboard.info", w - 23, 115, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
         -- Stop
         render.SetScissorRect(0, 0, 0, 0, false)
