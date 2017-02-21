@@ -517,13 +517,13 @@ local russian = {
 	start_lottery = "Начать лотерею",
 	give_license_lookingat = "Выдать <lookingat> лицензию на оружие",
 
-	laws_of_the_land = "ЗАКОНЫ СТРАНЫ",
+	laws_of_the_land = "ЗАКОНЫ ШТАТА",
 	law_added = "Закон добавлен.",
 	law_removed = "Закон удален.",
 	law_reset = "Законы сброшены.",
 	law_too_short = "Список законов слишком короткий.",
 	laws_full = "Список законов полон.",
-	default_law_change_denied = "Вы не моежете изменить законы по умолчанию.",
+	default_law_change_denied = "Вы не можете изменить основные законы.",
 
 	-- Second tab
 	job_name = "Имя: ",
