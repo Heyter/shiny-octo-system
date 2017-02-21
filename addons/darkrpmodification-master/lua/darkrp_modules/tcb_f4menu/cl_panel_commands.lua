@@ -7,49 +7,45 @@
 ---------------------------------------------------------------------------*/
 
 -- Table
-local CommandsTable = {}
+local CommandsTable = {
 
-CommandsTable[1]	= {
+{
 	type 	= 1,
 	cmd 	= "/dropmoney", 
 	text 	= "Бросить деньги", 
 	args 	= { arg1_show = true, arg1_text = "10", arg2_show = false, arg2_text = "" } 
-}
+},
 
-CommandsTable[2]	= {
+{
 	type 	= 1,
 	cmd 	= "/give", 
 	text 	= "Дать деньги", 
 	args 	= { arg1_show = true, arg1_text = "10", arg2_show = false, arg2_text = "" } 
-}
-
-CommandsTable[3]	= {
+},
+{
 	type 	= 2,
 	cmd 	= "/drop", 
 	text 	= "Выбросить текущее оружие", 
 	args 	= { arg1_show = false, arg1_text = "", arg2_show = false, arg2_text = "" } 
-}
-
-CommandsTable[4]	= {
+},
+{
 	type 	= 2,
 	cmd 	= "/makeshipment", 
 	text 	= "Сделать партию", 
 	args 	= { arg1_show = false, arg1_text = "", arg2_show = false, arg2_text = "" } 
-}
-
-CommandsTable[5]	= {
+},
+{
 	type 	= 2,
 	cmd 	= "/unownalldoors", 
 	text 	= "Продать все двери", 
 	args 	= { arg1_show = false, arg1_text = "", arg2_show = false, arg2_text = "" } 
-}
-
-CommandsTable[6]	= {
+},
+{
 	type 	= 2,
 	cmd 	= "/requestlicense", 
 	text 	= "Запросить лицензию", 
 	args 	= { arg1_show = false, arg1_text = "", arg2_show = false, arg2_text = "" } 
-}
+}}
 
 -- Variables
 local PANEL = {}
@@ -57,7 +53,7 @@ local PANEL = {}
 -- Panel
 function PANEL:Init()
 
-	self:SetSize( 299, 90 ) -- Height (2 Args): 130
+	self:SetSize( 299, 105 ) -- Height (2 Args): 130
 	self.Paint = function( pnl, w, h )
 
 		draw.RoundedBox( 0, 0, 0, w - 0, h - 0, TCB_Settings.SoftBlack )
@@ -104,7 +100,7 @@ function PANEL:Init()
 
 	self.button = vgui.Create( "DButton", self )
 	self.button:SetSize( self:GetWide() - 16, 34 )
-	self.button:SetPos( 8, self.arg1:GetTall() + 22 )	-- Y (2 Args): self.arg1:GetTall() * 2 + 36
+	self.button:SetPos( 8, self.arg1:GetTall() + 36 )	-- Y (2 Args): self.arg1:GetTall() * 2 + 36
 	self.button:SetText( "" )
 	self.button.Type 	= 1
 	self.button.Text 	= ""
@@ -159,9 +155,15 @@ function PANEL:UpdateInfo( item )
 
 	-- Set Command
 	local ButtonClick = function() end
-	
-	if item['args']['arg1_text'] == "" then 
-		ButtonClick = function() RunConsoleCommand( "tcb_f4menu_close" ) RunConsoleCommand( "say", item['cmd'] ) end
+
+
+	if not tobool(item['args']['arg1_show']) then
+
+		ButtonClick = function() RunConsoleCommand( "tcb_f4menu_close" ) RunConsoleCommand( "say", item['cmd'] ) 
+		end
+		self.parg1:SetVisible(false)
+		self:SetSize( 299, 50 ) 
+		self.button:SetPos( 8, 8 )
 	else
 		ButtonClick = function() RunConsoleCommand( "tcb_f4menu_close" ) RunConsoleCommand( "say", item['cmd'].." "..self.arg1:GetValue() ) end
 	end
@@ -199,25 +201,33 @@ end
 -- Fill Data
 function PANEL:FillData( parent )
 
-	local StartYPos = 0
+	local StartYPosl = 0
+	local StartYPosr = 0
 	local StartXPos = 0
-
+	local StartYPos = 0
 	local ItemTable = CommandsTable
 	for i, item in ipairs( ItemTable ) do
 
 		CurrentItem = vgui.Create( "tcb_panel_item_cmd", parent )
+		if StartXPos == 0 then
+			StartYPos = StartYPosl
+		else
+			StartYPos = StartYPosr
+		end
+
 		CurrentItem:SetPos( StartXPos, StartYPos )
 
 		CurrentItem:UpdateInfo( item )
 
 		if StartXPos == 0 then
 			StartXPos = StartXPos + CurrentItem:GetWide() + 10
+			StartYPosl = StartYPosl + CurrentItem:GetTall() + 5
 		elseif StartXPos > 0 then
 			StartXPos = 0
-			StartYPos = StartYPos + CurrentItem:GetTall() + 11
+			StartYPosr = StartYPosr + CurrentItem:GetTall() + 5
 		end
 		
-
+	
 	end
 
 end
