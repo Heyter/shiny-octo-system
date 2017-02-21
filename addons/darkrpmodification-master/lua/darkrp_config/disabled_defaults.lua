@@ -77,10 +77,10 @@ DarkRP.disabledDefaults["shipments"] = {
 Entities
 ---------------------------------------------------------------------------]]
 DarkRP.disabledDefaults["entities"] = {
-	["Drug lab"]      = false,
-	["Gun lab"]       = false,
-	["Money printer"] = false,
-	["Microwave"]     = false, --Hungermod only
+	["Drug lab"]      = true,
+	["Gun lab"]       = true,
+	["Money printer"] = true,
+	["Microwave"]     = true, --Hungermod only
 }
 
 --[[---------------------------------------------------------------------------
@@ -122,9 +122,9 @@ DarkRP.disabledDefaults["doorgroups"] = {
 Ammo packets
 ---------------------------------------------------------------------------]]
 DarkRP.disabledDefaults["ammo"] = {
-	["Pistol ammo"]  = false,
-	["Rifle ammo"]   = false,
-	["Shotgun ammo"] = false,
+	["Pistol ammo"]  = true,
+	["Rifle ammo"]   = true,
+	["Shotgun ammo"] = true,
 }
 
 --[[---------------------------------------------------------------------------
