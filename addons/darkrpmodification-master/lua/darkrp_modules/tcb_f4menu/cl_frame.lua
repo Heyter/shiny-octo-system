@@ -113,7 +113,7 @@ function PANEL:Init()
 	self.Paint = function( pnl, w, h )
 
 		draw.RoundedBoxEx( 10, 0, 0, self:GetWide()-0, self:GetTall()-0, TCB_Settings.Transparent, true, true, false, false )
-		draw.RoundedBoxEx( 10, 2, 2, self:GetWide()-4, self:GetTall()-4, Color(85,58,35,255), true, true, false, false )
+		draw.RoundedBoxEx( 10, 2, 2, self:GetWide()-4, self:GetTall()-4, Color(69,46,27,255), true, true, false, false )
 
 	end
 
@@ -155,7 +155,7 @@ function PANEL:Frame()
 	self.StatusBar.NewVersion = 0.0
 	self.StatusBar.Paint = function( pnl, w, h )
 
-		draw.RoundedBox( 0, 2, 0, w - 4, h - 0, Color(85,58,35,255) )
+		draw.RoundedBox( 0, 2, 0, w - 4, h - 0, Color(56,38,22,255) )
 
 		local VersionText = ""
 
@@ -177,7 +177,7 @@ function PANEL:Frame()
 	TCB_SideBar:SetPos( 2, 2 )
 	TCB_SideBar.Paint = function( pnl, w, h )
 
-		draw.RoundedBoxEx( 10, 0, 0, w, h, Color(85,58,35,255)  , true, false, false, false )
+		draw.RoundedBoxEx( 10, 0, 0, w, h, Color(56,38,22,255)  , true, false, false, false )
 
 		-- Title One
 		draw.DrawText( TCB_Settings.TitleOne, "HUDLarge", 250 / 2 + 1, 10 + 1, TCB_Settings.BlackColor, 1 )
@@ -309,7 +309,7 @@ function PANEL:Frame()
 
 				else
 
-					draw.RoundedBox( 0, 0, 0, w, h, Color(145, 137, 109, 255) )
+					draw.RoundedBox( 0, 0, 0, w, h, Color(219, 177, 38, 255) )
 
 					draw.DrawText( button['text'], "TCB_F4Menu_Medium", 10, 10, TCB_Settings.BlackColor  )
 
