@@ -203,7 +203,7 @@ function PANEL:Init()
 		if self.closebtn.Hover == false then
 			draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
 		else
-			draw.RoundedBox( 0, 0, 0, w, h, Color(186, 175, 140, 255) )
+			draw.RoundedBox( 0, 0, 0, w, h, Color(215, 190, 107, 255) )
 		end
 
 		draw.DrawText( "Закрыть", "HUDSmall", 20, 6, TCB_Settings.BlackColor )
