@@ -23,6 +23,27 @@ local CommandsTable = {
 	args 	= { arg1_show = true, arg1_text = "10", arg2_show = false, arg2_text = "" } 
 },
 {
+	type 	= 1,
+	cmd 	= "/cheque", 
+	text 	= "Выдать чек", 
+	args 	= { arg1_show = true, arg1_text = "Name", arg2_show = true, arg2_text = "Amount" } 
+
+},
+{
+	type 	= 1,
+	cmd 	= "/demote", 
+	text 	= "Уволить", 
+	args 	= { arg1_show = true, arg1_text = "Name", arg2_show = true, arg2_text = "Reason" } 
+
+},
+{
+	type 	= 1,
+	cmd 	= "/rpname", 
+	text 	= "Сменить имя", 
+	args 	= { arg1_show = true, arg1_text = "Name", arg2_show = false, arg2_text = "" } 
+
+},
+{
 	type 	= 2,
 	cmd 	= "/drop", 
 	text 	= "Выбросить текущее оружие", 
@@ -45,15 +66,15 @@ local CommandsTable = {
 	cmd 	= "/requestlicense", 
 	text 	= "Запросить лицензию", 
 	args 	= { arg1_show = false, arg1_text = "", arg2_show = false, arg2_text = "" } 
-}}
-
+},
+}
 -- Variables
 local PANEL = {}
 
 -- Panel
 function PANEL:Init()
 
-	self:SetSize( 299, 105 ) -- Height (2 Args): 130
+	self:SetSize( 299, 50 )  -- Height (2 Args): 130
 	self.Paint = function( pnl, w, h )
 
 		draw.RoundedBox( 0, 0, 0, w - 0, h - 0, TCB_Settings.SoftBlack )
@@ -61,9 +82,77 @@ function PANEL:Init()
 
 	end
 
+	self.button = vgui.Create( "DButton", self )
+	self.button:SetSize( self:GetWide() - 16, 34 )
+	self.button:SetPos( 8, 8 )	-- Y (2 Args): self.arg1:GetTall() * 2 + 36
+	self.button:SetText( "" )
+	self.button.Type 	= 1
+	self.button.Text 	= ""
+	self.button.Hover 	= false
+	self.button.Status 	= false
+	self.button.OnCursorEntered	= function() self.button.Hover = true  end
+	self.button.OnCursorExited 	= function() self.button.Hover = false end
+	self.button.DoClick = function() end
+	self.button.Paint = function( pnl, w, h )
+
+		draw.RoundedBox( 0, 0, 0, w - 0, h - 0, TCB_Settings.SoftBlack )
+
+		if self.button.Type == 1 then
+			draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Green1Color )
+			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Green2Color )
+		else
+			draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Blue1Color )
+			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Blue2Color )
+		end
+
+		draw.DrawText( self.button.Text, "Trebuchet24", w / 2 + 1, 5 + 1, TCB_Settings.BlackColor, 1 )
+		draw.DrawText( self.button.Text, "Trebuchet24", w / 2 + 0, 5 + 0, TCB_Settings.WhiteColor, 1 )
+
+	end
+
+end
+
+-- Update
+function PANEL:UpdateInfo( item )
+
+	-- Set Text
+	self.button.Text = item['text']
+	-- Set Type
+	self.button.Type = item['type']
+	-- Set Command
+	local parent = self:GetParent():GetParent():GetParent()
+	local ButtonClick = function() end
+	if not item['args']['arg1_show'] then
+		ButtonClick = function() RunConsoleCommand("tcb_f4menu_close") RunConsoleCommand( "say", item['cmd'] ) end 
+	else
+		ButtonClick = function() parent.popup:UpdateInfo(item)
+									parent.popup:SetVisible(true) end
+	end
+		
+		
+	self.button.DoClick = ButtonClick
+
+end
+
+-- Derma
+vgui.Register( "tcb_panel_item_cmd", PANEL, "DPanel" )
+
+PANEL = {}
+
+
+function PANEL:Init()
+	self:SetDeleteOnClose(false)
+	self:SetSize( 299, 105 ) -- Height (2 Args): 130
+	self:Center()
+	self.Paint = function( pnl, w, h )
+
+		draw.RoundedBox( 0, 0, 0, w - 0, h - 0, TCB_Settings.SoftBlack )
+		draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.ButtonColor2 )
+
+	end
 	self.parg1 = vgui.Create( "DPanel", self )
 	self.parg1:SetSize( self:GetWide() - 16, 34 )
-	self.parg1:SetPos( 8, 8 )
+	self.parg1:SetPos( 8, 28 )
 	self.parg1.Paint = function( pnl, w, h )
 
 		draw.RoundedBox( 0, 0, 0, w - 0, h - 0, TCB_Settings.SoftBlack )
@@ -78,16 +167,16 @@ function PANEL:Init()
 	self.arg1:SetText( "" )
 	self.arg1:SetEnabled( false )
 	self.arg1.Paint = function( pnl, w, h ) pnl:DrawTextEntryText(TCB_Settings.WhiteColor, TCB_Settings.Blue1Color, TCB_Settings.WhiteColor) end
+	self.arg1.OnMousePressed = function() self.arg1:SetText("") end
 
-
-	/*self.parg2 = vgui.Create( "DPanel", self )
+	self.parg2 = vgui.Create( "DPanel", self )
 	self.parg2:SetSize( self:GetWide() - 16, 34 )
 	self.parg2:SetPos( 8, self.parg1:GetTall() + 14 )
 	self.parg2.Paint = function( pnl, w, h )
 
 		draw.RoundedBox( 0, 0, 0, w - 0, h - 0, TCB_Settings.SoftBlack )
-		draw.RoundedBox( 0, 2, 2, w - 4, h - 4, Color( 149, 165, 166, 255 ) )
-		draw.RoundedBox( 0, 4, 4, w - 8, h - 8, Color( 127, 140, 141, 255 ) )
+		draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.LightBrown )
+		draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.ButtonColor3 )
 
 	end
 
@@ -96,7 +185,8 @@ function PANEL:Init()
 	self.arg2:SetPos( 4, 4 )
 	self.arg2:SetText( "" )
 	self.arg2:SetEnabled( false )
-	self.arg2.Paint = function( pnl, w, h ) pnl:DrawTextEntryText(TCB_Settings.WhiteColor, TCB_Settings.Blue1Color, TCB_Settings.WhiteColor) end*/
+	self.arg2.Paint = function( pnl, w, h ) pnl:DrawTextEntryText(TCB_Settings.WhiteColor, TCB_Settings.Blue1Color, TCB_Settings.WhiteColor) end
+	self.arg2.OnMousePressed = function() self.arg2:SetText("") end
 
 	self.button = vgui.Create( "DButton", self )
 	self.button:SetSize( self:GetWide() - 16, 34 )
@@ -128,9 +218,8 @@ function PANEL:Init()
 
 end
 
--- Update
 function PANEL:UpdateInfo( item )
-
+	self:SetTitle(item['cmd'])
 	-- Arg 1
 	local Arg1_Text = item['args']['arg1_text']
 	if Arg1_Text == "" then Arg1_Text = "" end
@@ -141,11 +230,11 @@ function PANEL:UpdateInfo( item )
 
 	-- Set Args
 	self.arg1:SetText( Arg1_Text )
-	--self.arg2:SetText( Arg2_Text )
+	self.arg2:SetText( Arg2_Text )
 
 	-- Set Status
 	self.arg1:SetEnabled( item['args']['arg1_show'] )
-	--self.arg2:SetEnabled( item['args']['arg2_show'] )
+	self.arg2:SetEnabled( item['args']['arg2_show'] )
 
 	-- Set Text
 	self.button.Text = item['text']
@@ -155,27 +244,35 @@ function PANEL:UpdateInfo( item )
 
 	-- Set Command
 	local ButtonClick = function() end
+	local close = function() self:SetVisible(false) end
 
+	if not item['args']['arg1_show'] then
 
-	if not tobool(item['args']['arg1_show']) then
-
-		ButtonClick = function() RunConsoleCommand( "tcb_f4menu_close" ) RunConsoleCommand( "say", item['cmd'] ) 
+		ButtonClick = function() close() RunConsoleCommand( "say", item['cmd'] ) 
 		end
 		self.parg1:SetVisible(false)
-		self:SetSize( 299, 50 ) 
-		self.button:SetPos( 8, 8 )
+		self:SetSize( 299, 50+40 ) 
+		self.button:SetPos( 8, 28 )
+	elseif item['args']['arg1_show'] and not item['args']['arg2_show'] then
+		ButtonClick = function() close() RunConsoleCommand( "say", item['cmd'].." "..self.arg1:GetValue() ) end
+		self.parg1:SetVisible(true)
+		self.parg2:SetVisible(false)
+		self:SetSize( 299, 110 )
+		self.button:SetPos( 8, 28+40 )
 	else
-		ButtonClick = function() RunConsoleCommand( "tcb_f4menu_close" ) RunConsoleCommand( "say", item['cmd'].." "..self.arg1:GetValue() ) end
+		ButtonClick = function() close() RunConsoleCommand( "say", item['cmd'].." "..self.arg1:GetValue().." "..self.arg2:GetValue() ) end
+		self.parg1:SetVisible(true)
+		self.parg2:SetVisible(true)
+		self:SetSize( 299, 150 )
+		self.button:SetPos( 8, 28+40+40 )
+		self.parg2:SetPos( 8, 28+40)
 	end
 
 	self.button.DoClick = ButtonClick
 
 end
 
--- Derma
-vgui.Register( "tcb_panel_item_cmd", PANEL, "DPanel" )
-
-
+vgui.Register("cmd_popup",PANEL, "DFrame")
 -- Variables
 local PANEL = {}
 local TCB_Scroll
@@ -192,10 +289,14 @@ function PANEL:Init()
 	end
 
 	TCB_Scroll = vgui.Create( "tcb_panel_scroll", self )
-
+	self.popup = vgui.Create( "cmd_popup", self )
+	self.popup:SetVisible(false)
 	-- Fill Data
 	self:FillData( TCB_Scroll )
 
+	hook.Add("TCB_F4Menu_Close","Closef4popup",function()
+		self.popup:SetVisible(false)
+	end)
 end
 
 -- Fill Data
@@ -209,21 +310,25 @@ function PANEL:FillData( parent )
 	for i, item in ipairs( ItemTable ) do
 
 		CurrentItem = vgui.Create( "tcb_panel_item_cmd", parent )
-		if StartXPos == 0 then
+		if StartYPosl <= StartYPosr then
+			
 			StartYPos = StartYPosl
+			StartXPos = 0
 		else
+			
 			StartYPos = StartYPosr
+			StartXPos = 299+10
 		end
 
 		CurrentItem:SetPos( StartXPos, StartYPos )
 
 		CurrentItem:UpdateInfo( item )
-
+		
 		if StartXPos == 0 then
-			StartXPos = StartXPos + CurrentItem:GetWide() + 10
+	
 			StartYPosl = StartYPosl + CurrentItem:GetTall() + 5
-		elseif StartXPos > 0 then
-			StartXPos = 0
+		elseif StartXPos != 0 then
+			
 			StartYPosr = StartYPosr + CurrentItem:GetTall() + 5
 		end
 		
@@ -246,5 +351,8 @@ function PANEL:RefillData()
 
 end
 
+function PANEL:OnClose()
+	print("asdasdasd")
+end
 -- Derma 
 vgui.Register( "tcb_panel_commands", PANEL, "DPanel" )
