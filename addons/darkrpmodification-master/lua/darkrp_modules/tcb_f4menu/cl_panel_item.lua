@@ -57,7 +57,7 @@ function PANEL:Init()
 	self.buy.Paint = function( pnl, w, h )
 
 		draw.RoundedBox( 0, 0, 0, w - 0, h - 0, TCB_Settings.SoftBlack )
-		draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Green1Color )
+		draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.BlackColor )
 		draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Green2Color )
 
 		if self.buy.Hover == true then
@@ -65,8 +65,13 @@ function PANEL:Init()
 		end
 
 		if self.buy.ForDonators then
-			draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.BlackColor )
-			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.PrimaryColor )
+			if self.buy.Hover == true then
+				draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.BlackColor )
+				draw.RoundedBox( 0, 4, 4, w - 8, h - 8, Color(205, 177, 38, 255) )
+			else
+				draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.BlackColor )
+				draw.RoundedBox( 0, 4, 4, w - 8, h - 8, Color(219, 190, 38, 255) )
+			end
 		elseif self.buy.Status == true then
 			draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Gray1Color )
 			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Gray2Color )
