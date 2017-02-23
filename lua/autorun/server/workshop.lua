@@ -20,3 +20,6 @@ resource.AddWorkshop("248302805") -- DARKRP
 resource.AddWorkshop("108424005") -- Keypad
 resource.AddWorkshop("650242617") -- L.A. Noire
 resource.AddWorkshop("844787757") -- radio and mic 
+resource.AddWorkshop("464609424") -- BF Hardline SWAT playermodels
+resource.AddWorkshop("128091208") -- M9K Heavy
+resource.AddWorkshop("128089118") -- M9K Assault
