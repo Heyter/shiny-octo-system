@@ -111,7 +111,7 @@ TEAM_POLICE = DarkRP.createJob("Офицер полиции", {
     vote = true,
     hasLicense = true,
     ammo = {
-        ["m9k_ammo_pistol"] = 30,
+        ["pistol"] = 30,
     },
     category = "Civil Protection",
 })
@@ -127,6 +127,9 @@ TEAM_DETECTIVE = DarkRP.createJob("Детектив", {
     admin = 0,
     vote = false,
     hasLicense = true,
+    ammo = {
+        ["357"] = 18,
+    },
     category = "Civil Protection",
     customCheck = isDonator,
     isDonator = true,
@@ -146,7 +149,7 @@ TEAM_SWAT = DarkRP.createJob("SWAT Штурмовик", {
     vote = true,
     hasLicense = true,
     ammo = {
-        ["m9k_ammo_pistol"] = 30,
+        ["smg"] = 60,
     },
     category = "Civil Protection",
 })
@@ -156,7 +159,7 @@ TEAM_SWATLEADER = DarkRP.createJob("SWAT Лидер", {
     model = {
         "models/player/bfh_mechanic.mdl"},
     description = [[Тот, кто командует SWAT.]],
-    weapons = {"arrest_stick", "unarrest_stick", "m9k_mp5sd", "door_ram", "weaponchecker"},
+    weapons = {"arrest_stick", "unarrest_stick", "m9k_jackhammer", "door_ram", "weaponchecker"},
     command = "swatleader",
     max = 1,
     salary = GAMEMODE.Config.normalsalary * 2,
@@ -164,7 +167,7 @@ TEAM_SWATLEADER = DarkRP.createJob("SWAT Лидер", {
     vote = false,
     hasLicense = true,
     ammo = {
-        ["m9k_ammo_pistol"] = 30,
+        ["buckshot"] = 30,
     },
     category = "Civil Protection",
     customCheck = isDonator,
@@ -185,7 +188,7 @@ TEAM_SWATMEDIC = DarkRP.createJob("SWAT Медик", {
     vote = true,
     hasLicense = true,
     ammo = {
-        ["m9k_ammo_pistol"] = 30,
+        ["pistol"] = 30,
     },
     category = "Civil Protection",
 })
@@ -203,7 +206,7 @@ TEAM_SWATSNIPER = DarkRP.createJob("SWAT Снайпер", {
     vote = false,
     hasLicense = true,
     ammo = {
-        ["m9k_ammo_pistol"] = 30,
+        ["sniper_rounds"] = 20,
     },
     category = "Civil Protection",
     customCheck = isDonator,
@@ -234,7 +237,7 @@ TEAM_CHIEF = DarkRP.createJob("Шериф полиции", {
     chief = true,
     NeedToChangeFrom = TEAM_POLICE,
     ammo = {
-        ["pistol"] = 60,
+        ["357"] = 18,
     },
     category = "Civil Protection",
 })
@@ -417,7 +420,7 @@ TEAM_RADIOHOST = DarkRP.createJob("Ведущий радио", {
         "models/player/Group01/Male_08.mdl",
         "models/player/Group01/Male_09.mdl"
     },
-    description = [[Тот, кто не приносит пользы обществу.]],
+    description = [[Тот, кто не ставит ваши песни.]],
     weapons = {},
     command = "radiohost",
     max = 1,
