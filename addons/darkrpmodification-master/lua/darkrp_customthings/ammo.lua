@@ -3,6 +3,8 @@ Ammo types
 ---------------------------------------------------------------------------
 Ammo boxes that can be purchased in the F4 menu.
 
+--#NoSimplerr#
+
 Add your custom ammo types in this file. Here's the syntax:
 DarkRP.createAmmoType("ammoType", {
     name = "Ammo name",
@@ -65,3 +67,54 @@ DarkRP.createAmmoType("smg1", {
 
 Add new ammo types under the next line!
 ---------------------------------------------------------------------------]]
+
+DarkRP.createAmmoType("pistol", {
+	name = "Патроны для пистолета",
+	model = "models/Items/BoxSRounds.mdl",
+	price = 500,
+	amountGiven = 24
+})
+
+DarkRP.createAmmoType("357", {
+	name = "Патроны для револьверов",
+	model = "models/Items/357ammo.mdl",
+	price = 600,
+	amountGiven = 18
+})
+
+DarkRP.createAmmoType("smg1", {
+	name = "Патроны для пистолета-пулемета",
+	model = "models/Items/BoxMRounds.mdl",
+	price = 700,
+	amountGiven = 60
+})
+
+DarkRP.createAmmoType("buckshot", {
+	name = "Патроны для дробовика",
+	model = "models/Items/BoxBuckshot.mdl",
+	price = 800,
+	amountGiven = 8
+})
+
+DarkRP.createAmmoType("ar2", {
+	name = "Патроны для винтовки",
+	model = "models/Items/BoxMRounds.mdl",
+	price = 800,
+	amountGiven = 60
+})
+
+DarkRP.createAmmoType("SniperPenetratedRound", {
+	name = "Патроны для снайперской винтовки",
+	model = "models/Items/sniper_round_box.mdl",
+	price = 1000,
+	amountGiven = 60
+})
+
+DarkRP.createAmmoType("AirboatGun", {
+	name = "Патроны для винчестера",
+	model = "models/Items/sniper_round_box.mdl",
+	price = 1000,
+	amountGiven = 60
+})
+
+

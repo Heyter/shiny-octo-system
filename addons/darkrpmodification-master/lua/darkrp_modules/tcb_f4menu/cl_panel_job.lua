@@ -63,7 +63,7 @@ function PANEL:Init()
 	self.join.Paint = function( pnl, w, h )
 
 		draw.RoundedBox( 0, 0, 0, w - 0, h - 0, TCB_Settings.SoftBlack )
-		draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Green1Color )
+		draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.BlackColor )
 		draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Green2Color )
 
 		if self.join.Hover == true then
@@ -71,8 +71,13 @@ function PANEL:Init()
 		end
 
 		if self.join.ForDonators then
-			draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.BlackColor )
-			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.PrimaryColor )
+			if self.join.Hover == true then
+				draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.BlackColor )
+				draw.RoundedBox( 0, 4, 4, w - 8, h - 8, Color(205, 177, 38, 255) )
+			else
+				draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.BlackColor )
+				draw.RoundedBox( 0, 4, 4, w - 8, h - 8, Color(235, 203, 27, 255) )
+			end
 		elseif self.join.Status == true then
 			draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Gray1Color )
 			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Gray2Color )
@@ -203,7 +208,7 @@ function PANEL:Init()
 		if self.closebtn.Hover == false then
 			draw.RoundedBox( 0, 0, 0, w, h, Color(227, 210, 161, 255) )
 		else
-			draw.RoundedBox( 0, 0, 0, w, h, Color(186, 175, 140, 255) )
+			draw.RoundedBox( 0, 0, 0, w, h, Color(215, 190, 107, 255) )
 		end
 
 		draw.DrawText( "Закрыть", "HUDSmall", 20, 6, TCB_Settings.BlackColor )

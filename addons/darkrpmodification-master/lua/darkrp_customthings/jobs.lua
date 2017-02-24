@@ -111,7 +111,7 @@ TEAM_POLICE = DarkRP.createJob("Офицер полиции", {
     vote = true,
     hasLicense = true,
     ammo = {
-        ["m9k_ammo_pistol"] = 30,
+        ["pistol"] = 30,
     },
     category = "Civil Protection",
 })
@@ -127,6 +127,87 @@ TEAM_DETECTIVE = DarkRP.createJob("Детектив", {
     admin = 0,
     vote = false,
     hasLicense = true,
+    ammo = {
+        ["357"] = 18,
+    },
+    category = "Civil Protection",
+    customCheck = isDonator,
+    isDonator = true,
+    CustomCheckFailMsg = "Извините, только для Премиум игроков",
+})
+
+TEAM_SWAT = DarkRP.createJob("SWAT Штурмовик", {
+    color = Color(25, 80, 180, 255),
+    model = {
+        "models/player/bfh_enforcer.mdl"},
+    description = [[Тот, кто вооружен и опасен.]],
+    weapons = {"arrest_stick", "unarrest_stick", "m9k_mp5sd", "door_ram", "weaponchecker"},
+    command = "swat",
+    max = 8,
+    salary = GAMEMODE.Config.normalsalary * 1.8,
+    admin = 0,
+    vote = true,
+    hasLicense = true,
+    ammo = {
+        ["smg"] = 60,
+    },
+    category = "Civil Protection",
+})
+
+TEAM_SWATLEADER = DarkRP.createJob("SWAT Лидер", {
+    color = Color(25, 80, 180, 255),
+    model = {
+        "models/player/bfh_mechanic.mdl"},
+    description = [[Тот, кто командует SWAT.]],
+    weapons = {"arrest_stick", "unarrest_stick", "m9k_jackhammer", "door_ram", "weaponchecker"},
+    command = "swatleader",
+    max = 1,
+    salary = GAMEMODE.Config.normalsalary * 2,
+    admin = 0,
+    vote = false,
+    hasLicense = true,
+    ammo = {
+        ["buckshot"] = 30,
+    },
+    category = "Civil Protection",
+    customCheck = isDonator,
+    isDonator = true,
+    CustomCheckFailMsg = "Извините, только для Премиум игроков",
+})
+
+TEAM_SWATMEDIC = DarkRP.createJob("SWAT Медик", {
+    color = Color(25, 80, 180, 255),
+    model = {
+        "models/player/bfh_operator.mdl"},
+    description = [[Тот, лечит союзников.]],
+    weapons = {"arrest_stick", "unarrest_stick", "m9k_sig_p229r", "door_ram", "weaponchecker", "med_kit"},
+    command = "swatmedic",
+    max = 8,
+    salary = GAMEMODE.Config.normalsalary * 1.8,
+    admin = 0,
+    vote = true,
+    hasLicense = true,
+    ammo = {
+        ["pistol"] = 30,
+    },
+    category = "Civil Protection",
+})
+
+TEAM_SWATSNIPER = DarkRP.createJob("SWAT Снайпер", {
+    color = Color(25, 80, 180, 255),
+    model = {
+        "models/player/bfh_pro.mdl"},
+    description = [[Тот, кто следит за тобой.]],
+    weapons = {"arrest_stick", "unarrest_stick", "m9k_svu", "door_ram", "weaponchecker"},
+    command = "swatsniper",
+    max = 1,
+    salary = GAMEMODE.Config.normalsalary * 2,
+    admin = 0,
+    vote = false,
+    hasLicense = true,
+    ammo = {
+        ["sniper_rounds"] = 20,
+    },
     category = "Civil Protection",
     customCheck = isDonator,
     isDonator = true,
@@ -156,7 +237,7 @@ TEAM_CHIEF = DarkRP.createJob("Шериф полиции", {
     chief = true,
     NeedToChangeFrom = TEAM_POLICE,
     ammo = {
-        ["pistol"] = 60,
+        ["357"] = 18,
     },
     category = "Civil Protection",
 })
@@ -225,7 +306,7 @@ TEAM_GUN = DarkRP.createJob("Торговец оружием", {
     category = "Citizens",
 })
 
-TEAM_ILLEGALDEALER = DarkRP.createJob("Торговец нелегальным", {
+TEAM_ILLEGALDEALER = DarkRP.createJob("Торговец нелегалом", {
     color = Color(255, 190, 0, 255),
     model = "models/player/guerilla.mdl",
     description = [[Тот, кто продает нелегальные вещи.]],
@@ -339,7 +420,7 @@ TEAM_RADIOHOST = DarkRP.createJob("Ведущий радио", {
         "models/player/Group01/Male_08.mdl",
         "models/player/Group01/Male_09.mdl"
     },
-    description = [[Тот, кто не приносит пользы обществу.]],
+    description = [[Тот, кто не ставит ваши песни.]],
     weapons = {},
     command = "radiohost",
     max = 1,
@@ -387,6 +468,9 @@ GAMEMODE.CivilProtection = {
 	[TEAM_CHIEF] = true,
 	[TEAM_MAYOR] = true,
     [TEAM_DETECTIVE] = true,
+    [TEAM_SWAT] = true,
+    [TEAM_SWATLEADER] = true,
+    [TEAM_SWATSNIPER] = true,
 }
 
 --[[---------------------------------------------------------------------------

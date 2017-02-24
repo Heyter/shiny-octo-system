@@ -80,6 +80,9 @@ local function CreateScoreboard()
         -- Player ping label
         draw.SimpleText("Пинг", "scoreboard.info", w - 23, 115, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 
+        -- Здфнук сщгтекн дфиуд
+        draw.SimpleText("Страна", "scoreboard.info", w - 129, 115, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+
         -- Stop
         render.SetScissorRect(0, 0, 0, 0, false)
     end
@@ -128,6 +131,7 @@ local function CreateScoreboard()
             local name = v:Name()
             local job = v:getJobTable().name
             local icon = config.mIconGroups[v:GetUserGroup()] or config.mIconGroups.guest
+            local country = Material("flags16/"..system.GetCountry()..".png")
 
             -- Steamid checks
             if (config.mIconGroups[v:SteamID()]) then
@@ -158,13 +162,18 @@ local function CreateScoreboard()
                 -- Player job
                 draw.SimpleText(job, "scoreboard.player", w / 2 + 5, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
-                -- Player ping
+                -- Player rang
                 surface.SetDrawColor(color_white)
                 surface.SetMaterial(icon)
                 surface.DrawTexturedRect(w - 75 - 12, h / 2 - 8, 16, 16)
 
                 -- Player ping
                 draw.SimpleText(v:Ping(), "scoreboard.player", w - 20, h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
+                
+                -- Player country
+                surface.SetDrawColor(color_white)
+                surface.SetMaterial(country)
+                surface.DrawTexturedRect(w - 75 - 75, h / 2 - 5, 20, 10) 
             end 
         end
     end
