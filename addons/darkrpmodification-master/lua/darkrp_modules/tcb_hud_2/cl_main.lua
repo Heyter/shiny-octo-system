@@ -62,7 +62,7 @@ surface.CreateFont( "HUDSmall", {
 
 /*--  HUD Settings --*/
 local 	HUD = {}
-
+local localplayer = LocalPlayer()
 -- Edit settings here.
 HUD.X = "left" 			-- left / center / right
 HUD.Y = "bottom"; 		-- bottom / center / top
@@ -317,17 +317,17 @@ local function Agenda()
 	local agenda = LocalPlayer():getAgendaTable()
 	if not agenda then return end
 
-	draw.RoundedBox(10, 10, 10, 460, 110, Color(0, 0, 0, 155))
-	draw.RoundedBox(10, 12, 12, 456, 106, Color(51, 58, 51,100))
-	draw.RoundedBox(10, 12, 12, 456, 20, Color(0, 0, 70, 100))
+	draw.RoundedBox(10, 10, 10, 403, 90, Color(36, 36, 36, 255 ))
+	draw.RoundedBox(10, 12, 12, 400, 87, Color(84, 57, 34, 255))
+	draw.RoundedBox(10, 12, 12, 400, 20, Color(43, 29, 17, 255))
 
-	draw.DrawNonParsedText(agenda.Title, "DarkRPHUD1", 30, 12, Color(255, 0, 0, 255), 0)
+	draw.DrawNonParsedText(agenda.Title, "HUDMedium", 30, 12, Color(245, 206, 34, 255 ), 0)
 
 	local text = LocalPlayer():getDarkRPVar("agenda") or ""
 
 	text = text:gsub("//", "\n"):gsub("\\n", "\n")
-	text = DarkRP.textWrap(text, "DarkRPHUD1", 440)
-	draw.DrawNonParsedText(text, "DarkRPHUD1", 30, 35, Color(255, 255, 255, 255), 0)
+	text = DarkRP.textWrap(text, "HUDSmall", 375)
+	draw.DrawNonParsedText(text, "HUDSmall", 20, 15, Color(255, 255, 255, 255), 0)
 end
 
 local VoiceChatTexture = surface.GetTextureID("voice/icntlk_pl")
@@ -504,6 +504,9 @@ function DisableDrawInfo()
 	return false
 end
 hook.Add("HUDDrawTargetID", "DisableDrawInfo", DisableDrawInfo)
+
+
+
 
 /*-- Draw HUD Elements --*/
 local function DrawTCB()
