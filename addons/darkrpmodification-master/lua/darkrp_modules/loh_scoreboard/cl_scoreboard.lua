@@ -171,7 +171,6 @@ local function CreateScoreboard()
                 draw.SimpleText(v:Ping(), "scoreboard.player", w - 20, h / 2, color_white, TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
                 
                 -- Player country
-                print(country)
                 surface.SetDrawColor(color_white)
                 surface.SetMaterial(country)
                 surface.DrawTexturedRect(w - 75 - 75, h / 2 - 5, 20, 10) 
