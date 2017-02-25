@@ -114,7 +114,7 @@ DarkRP.createAmmoType("AirboatGun", {
 	name = "Патроны для винчестера",
 	model = "models/Items/sniper_round_box.mdl",
 	price = 1000,
-	amountGiven = 60
+	amountGiven = 16
 })
 
 

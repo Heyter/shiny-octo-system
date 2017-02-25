@@ -138,8 +138,7 @@ TEAM_DETECTIVE = DarkRP.createJob("Детектив", {
 
 TEAM_SWAT = DarkRP.createJob("SWAT Штурмовик", {
     color = Color(25, 80, 180, 255),
-    model = {
-        "models/player/bfh_enforcer.mdl"},
+    model ="models/player/bfh_enforcer.mdl",
     description = [[Тот, кто вооружен и опасен.]],
     weapons = {"arrest_stick", "unarrest_stick", "m9k_mp5sd", "door_ram", "weaponchecker"},
     command = "swat",
@@ -156,8 +155,7 @@ TEAM_SWAT = DarkRP.createJob("SWAT Штурмовик", {
 
 TEAM_SWATLEADER = DarkRP.createJob("SWAT Лидер", {
     color = Color(25, 80, 180, 255),
-    model = {
-        "models/player/bfh_mechanic.mdl"},
+    model ="models/player/bfh_mechanic.mdl",
     description = [[Тот, кто командует SWAT.]],
     weapons = {"arrest_stick", "unarrest_stick", "m9k_jackhammer", "door_ram", "weaponchecker"},
     command = "swatleader",
@@ -177,8 +175,7 @@ TEAM_SWATLEADER = DarkRP.createJob("SWAT Лидер", {
 
 TEAM_SWATMEDIC = DarkRP.createJob("SWAT Медик", {
     color = Color(25, 80, 180, 255),
-    model = {
-        "models/player/bfh_operator.mdl"},
+    model ="models/player/bfh_operator.mdl",
     description = [[Тот, лечит союзников.]],
     weapons = {"arrest_stick", "unarrest_stick", "m9k_sig_p229r", "door_ram", "weaponchecker", "med_kit"},
     command = "swatmedic",
@@ -195,8 +192,7 @@ TEAM_SWATMEDIC = DarkRP.createJob("SWAT Медик", {
 
 TEAM_SWATSNIPER = DarkRP.createJob("SWAT Снайпер", {
     color = Color(25, 80, 180, 255),
-    model = {
-        "models/player/bfh_pro.mdl"},
+    model = "models/player/bfh_pro.mdl",
     description = [[Тот, кто следит за тобой.]],
     weapons = {"arrest_stick", "unarrest_stick", "m9k_svu", "door_ram", "weaponchecker"},
     command = "swatsniper",
@@ -217,15 +213,12 @@ TEAM_SWATSNIPER = DarkRP.createJob("SWAT Снайпер", {
 TEAM_CHIEF = DarkRP.createJob("Шериф полиции", {
     color = Color(20, 20, 255, 255),
     model = {
-        "models/humans/nypd1940/male_02.mdl",
-        "models/humans/nypd1940/male_03.mdl",
-        "models/humans/nypd1940/male_04.mdl",
-        "models/humans/nypd1940/male_05.mdl",
-        "models/humans/nypd1940/male_06.mdl",
-        "models/humans/nypd1940/male_07.mdl",
-        "models/humans/nypd1940/male_08.mdl",
-        "models/humans/nypd1940/male_09.mdl",
-        "models/humans/nypd1940/male_01.mdl"},
+        "models/portal2/patrol_02.mdl",
+        "models/portal2/patrol_04.mdl",
+        "models/portal2/patrol_06.mdl",
+        "models/portal2/patrol_07.mdl",
+        "models/portal2/patrol_08.mdl",
+        "models/portal2/patrol_09.mdl",},
     description = [[Тот, кто руководит полицией.]],
     weapons = {"arrest_stick", "unarrest_stick", "m9k_coltpython", "stunstick", "door_ram", "weaponchecker"},
     command = "chief",

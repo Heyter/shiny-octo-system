@@ -23,3 +23,4 @@ resource.AddWorkshop("844787757") -- radio and mic
 resource.AddWorkshop("464609424") -- BF Hardline SWAT playermodels
 resource.AddWorkshop("128091208") -- M9K Heavy
 resource.AddWorkshop("128089118") -- M9K Assault
+resource.AddWorkshop("844378422") -- some french Cop model
