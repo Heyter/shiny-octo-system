@@ -43,11 +43,10 @@ end
 
 function PANEL:MakeList()
 	for i,k in pairs(cl_inv) do 
-		for c = 1,k do
-			self.DLayout.numberOfItems = self.DLayout.numberOfItems + 1
-			ListItem = self.DLayout:Add( "DPanel" ) 
-			self:ProcessPanel(ListItem,i,"item")
-		end
+		self.DLayout.numberOfItems = self.DLayout.numberOfItems + 1
+		ListItem = self.DLayout:Add( "DPanel" ) 
+		self:ProcessPanel(ListItem,i,"item")
+		
 	end
 	for c = self.DLayout.numberOfItems,29 do
 		ListItem = self.DLayout:Add( "DPanel" )
@@ -85,13 +84,14 @@ function PANEL:ProcessPanel(panel, itemk, type)
 	local model = ""
 	local namestr = ""
 	if type == "item" then
-		local item = items[itemk]
+		local item = cl_inv[itemk]
 		model = item.model
 		namestr = item.name
 
 		dropf = function()
 			net.Start( "dropitem" )
-				net.WriteString(itemk)
+				net.WriteBool(false)
+				net.WriteInt(itemk,32)
 			net.SendToServer()
 			self.DLayout.numberOfItems = self.DLayout.numberOfItems - 1
 			panel:Remove()
@@ -99,8 +99,9 @@ function PANEL:ProcessPanel(panel, itemk, type)
 		end
 
 		usef = function()
-			net.Start( "useitem" )
-				net.WriteString(itemk)
+			net.Start( "dropitem" )
+				net.WriteBool(true)
+				net.WriteInt(itemk,32)
 			net.SendToServer()
 			self.DLayout.numberOfItems = self.DLayout.numberOfItems - 1
 			panel:Remove()
