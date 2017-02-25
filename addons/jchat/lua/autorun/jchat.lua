@@ -4,7 +4,7 @@
 
 JChat = {} --Let's prevent any breaking.
 --Various data 
-
+local _R = debug.getregistry()
 if SERVER then
 	AddCSLuaFile("autorun/jchat.lua")
 	local oldchatprint = _R.Player.ChatPrint
@@ -165,7 +165,7 @@ function JChat.ChatboxPanel:DrawLine(num, data)
 	end --But our team of scientific trained ninja monkeys is working on this aspect
 	if data.icon then
 		surface.SetDrawColor(Color(255, 255, 255, (self.TextEntry:IsVisible() and 255 or data.alpha)))
-		surface.SetTexture(surface.GetTextureID(data.icon))
+		surface.SetMaterial(Material(data.icon))
 		surface.DrawTexturedRect(2, h + self.ScrollY * -1, JChat.LineSpacing - 2, JChat.LineSpacing - 2)                                                       
 	end                                                                                                                
 	surface.SetTextColor(color_white) --Reset the color                                                                 
@@ -350,15 +350,23 @@ usermessage.Hook("JChat.SendChatPrint", function(um)
 end)
 
 hook.Add("OnPlayerChat", "JCAHR", function(ply)
-	if ply:IsSuperAdmin() then
-		JChat.PlayerChatIcon = "gui/silkicons/star"
+	if isArchitector(ply) then
+		JChat.PlayerChatIcon = "icon16/key.png"
 		return
 	end
-	if ply:IsAdmin() then
-		JChat.PlayerChatIcon = "gui/silkicons/shield"
+	if isSuperAdmin(ply) then
+		JChat.PlayerChatIcon = "icon16/shield_add.png"
 		return
 	end
-	JChat.PlayerChatIcon = "gui/silkicons/user"
+	if isAdmin(ply) then
+		JChat.PlayerChatIcon = "icon16/shield.png"
+		return
+	end
+	if isDonator(ply) then
+		JChat.PlayerChatIcon = "icon16/star.png"
+		return
+	end
+	JChat.PlayerChatIcon = "icon16/user.png"
 end)
 
 hook.Add("ChatText","mein_chat", function(index, nick, text, messagetype)
@@ -372,7 +380,7 @@ hook.Add("ChatText","mein_chat", function(index, nick, text, messagetype)
 				for s in string.gmatch(text, "%s?[(%S)]+[^.]?") do --HEIL PATTERN
 					table.insert(args, s)
 				end
-				JChat.ChatBox:AddLine({icon = "gui/silkicons/world", textdata = args})
+				JChat.ChatBox:AddLine({icon = "icon16/world.png", textdata = args})
 				JChat.SentChatPrintLine = false
 				return
 			end
@@ -391,7 +399,7 @@ hook.Add("ChatText","mein_chat", function(index, nick, text, messagetype)
 				for s in string.gmatch(text, "%s?[(%S)]+[^.]?") do --HEIL PATTERN
 					table.insert(args, s)
 				end
-				JChat.ChatBox:AddLine({icon = "gui/silkicons/world", textdata = args})
+				JChat.ChatBox:AddLine({icon = "icon16/world.png", textdata = args})
 				return 
 			end
 			if messagetype == "none" then
@@ -404,7 +412,7 @@ hook.Add("ChatText","mein_chat", function(index, nick, text, messagetype)
 				for s in string.gmatch(text, "%s?[(%S)]+[^.]?") do
 					table.insert(args, s)
 				end
-			JChat.ChatBox:AddLine({icon = "gui/silkicons/world", textdata = args})
+			JChat.ChatBox:AddLine({icon = "icon16/world.png", textdata = args})
 			end
 		end
 	end)
