@@ -32,7 +32,8 @@ if SERVER then
 		umsg.End()
 	end)
 else
-
+JChat.Alpha = 255
+JChat.IsFaiding = false
 JChat.ScrollSpeed = 3.52
 JChat.ChatFont = CreateClientConVar("jchat_chatfont", "ChatFont"):GetString()
 JChat.UseIcons = true
@@ -151,10 +152,14 @@ function JChat.ChatboxPanel:DrawLine(num, data)
 	local num = num - 1
 	local w, h = 0, 0
 	h = h + JChat.LineSpacing * num
-	data.alpha = math.Approach(data.alpha, 0, (self.TextEntry:IsVisible() and 0 or JChat.FadeTime))
+	if data.alpha == nil then data.alpha = 255 end
+	if not self.TextEntry:HasFocus() and data.alpha > 0 then
+		data.alpha = data.alpha - 1
+	end 
+	
 	for _, elem in pairs(data.textdata) do
 		if type(elem) == "table" and elem.r and elem.g and elem.b then
-			surface.SetTextColor(Color(elem.r, elem.g, elem.b, (self.TextEntry:IsVisible() and 255 or data.alpha)))
+			surface.SetTextColor(Color(elem.r, elem.g, elem.b, (self.TextEntry:HasFocus() and 255 or data.alpha)))
 		end
 		if type(elem) == "string" then
 			w, _ = surface.GetTextSize(elem)
@@ -164,7 +169,7 @@ function JChat.ChatboxPanel:DrawLine(num, data)
 		end
 	end --But our team of scientific trained ninja monkeys is working on this aspect
 	if data.icon then
-		surface.SetDrawColor(Color(255, 255, 255, (self.TextEntry:IsVisible() and 255 or data.alpha)))
+		surface.SetDrawColor(Color(255, 255, 255, (self.TextEntry:HasFocus() and 255 or data.alpha)))
 		surface.SetMaterial(Material(data.icon))
 		surface.DrawTexturedRect(2, h + self.ScrollY * -1, JChat.LineSpacing - 2, JChat.LineSpacing - 2)                                                       
 	end                                                                                                                
