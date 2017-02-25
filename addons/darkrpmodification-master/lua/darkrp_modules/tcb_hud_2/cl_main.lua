@@ -5,6 +5,7 @@
 	To view a copy of this license, visit http://creativecommons.org/licenses/by-nc-sa/4.0/
 	
 ---------------------------------------------------------------------------*/
+--#NoSimplerr#
 
 surface.CreateFont( "HUDLarge", {
 	font = "Trebuchet MS",
@@ -299,7 +300,7 @@ local function PlayerIcons()
 		surface.SetDrawColor(25,25,25,255)
 	end
 	surface.SetMaterial(Material(IconLicense))
-	surface.DrawTexturedRect( HUD.PosX + HUD.Width - 50 + 15, HUD.PosY + 15, 20, 20)
+	surface.DrawTexturedRect( HUD.PosX + HUD.Width - 50 + 15, HUD.PosY + 20, 20, 20)
 	
 	if LocalPlayer():getDarkRPVar("wanted") then
 		surface.SetDrawColor(255,255,255,255)
@@ -418,21 +419,19 @@ local function DrawPlayerInfo(ply)
 	draw.DrawText(ply:Nick(), "TCB_F4Menu_Medium", pos.x + 1, pos.y + 5 + 1, Color(0,0,0,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	draw.DrawText(ply:Nick(), "TCB_F4Menu_Medium", pos.x, pos.y + 5, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	
-	draw.DrawText(DarkRP.getPhrase("health", ply:Health()), "TCB_F4Menu_Small", pos.x + 1, pos.y + 31 + 1, Color(0,0,0,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	draw.DrawText(DarkRP.getPhrase("health", ply:Health()), "TCB_F4Menu_Small", pos.x, pos.y + 31, Color(192, 57, 43, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	
 	local teamname = team.GetName(ply:Team())
-	draw.DrawText("Работа: "..ply:getDarkRPVar("job") or teamname, "TCB_F4Menu_Small", pos.x + 1, pos.y + 46 + 1, Color(0,0,0,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	draw.DrawText("Работа: "..ply:getDarkRPVar("job") or teamname, "TCB_F4Menu_Small", pos.x, pos.y + 46, team.GetColor(ply:Team()), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
 	if ply:getDarkRPVar("HasGunlicense") then
 		surface.SetMaterial(Material(IconLicense))
 		surface.SetDrawColor(255,255,255,255)
-		surface.DrawTexturedRect(pos.x - 93, pos.y + 39, 20, 20)
+		surface.DrawTexturedRect(pos.x - 93, pos.y + 32, 16, 16)
 	else
 		surface.SetMaterial(Material(IconLicense))
 		surface.SetDrawColor(25,25,25,255)
-		surface.DrawTexturedRect(pos.x - 93, pos.y + 39, 20, 20)
+		surface.DrawTexturedRect(pos.x - 93, pos.y + 30, 16, 16)
 	end
 
 end
