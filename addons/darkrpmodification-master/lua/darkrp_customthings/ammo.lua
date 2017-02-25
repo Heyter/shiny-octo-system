@@ -104,7 +104,7 @@ DarkRP.createAmmoType("ar2", {
 })
 
 DarkRP.createAmmoType("SniperPenetratedRound", {
-	name = "Патроны для снайперской винтовки",
+	name = "Патроны для снайп. винтовки",
 	model = "models/Items/sniper_round_box.mdl",
 	price = 1000,
 	amountGiven = 60
