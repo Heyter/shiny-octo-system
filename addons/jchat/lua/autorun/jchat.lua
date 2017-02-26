@@ -154,7 +154,7 @@ function JChat.ChatboxPanel:DrawLine(num, data)
 	h = h + JChat.LineSpacing * num
 	if data.alpha == nil then data.alpha = 255 end
 	if not self.TextEntry:HasFocus() and data.alpha > 0 then
-		data.alpha = data.alpha - 1
+		data.alpha = data.alpha - 0.4
 	end 
 	
 	for _, elem in pairs(data.textdata) do
