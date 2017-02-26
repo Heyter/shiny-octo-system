@@ -98,11 +98,21 @@ function PANEL:Init()
 		draw.RoundedBox( 0, 0, 0, w - 0, h - 0, TCB_Settings.SoftBlack )
 
 		if self.button.Type == 1 then
-			draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Green1Color )
-			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Green2Color )
+			if self.button.Hover == true then
+				draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Green2Color )
+				draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.SoftBlack )
+			else
+				draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Green1Color )
+				draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Green2Color )
+			end
 		else
-			draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Blue1Color )
-			draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Blue2Color )
+			if self.button.Hover == true then
+				draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Blue2Color )
+				draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.SoftBlack )
+			else
+				draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Blue1Color )
+				draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Blue2Color )
+			end
 		end
 
 		draw.DrawText( self.button.Text, "Trebuchet24", w / 2 + 1, 5 + 1, TCB_Settings.BlackColor, 1 )
