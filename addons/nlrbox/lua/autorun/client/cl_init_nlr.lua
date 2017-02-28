@@ -1,6 +1,6 @@
-function NLRBox()
- 
-       
+AddCSLuaFile()
+net.Receive("NLRBox",
+    function()
     ///// NFrame ///// - This contains the title of the whole NLR Box, BackGround Blur and if you can drag the box around the screen.
     local titletext = "На пол минуты в Чистилище" --Here you can change the title of the box
     local backgroundblur = true --Enable or disable blur around the box
@@ -93,7 +93,8 @@ function NLRBox()
             return
         else
             NFrame:Close()
-            RunConsoleCommand("nlrspawn")
+            net.Start("NLRBox")
+            net.SendToServer()
         end
     end
     timer.Create("maintimer",timerwait+1,1,function() NButton:SetText(buttontext)
@@ -101,6 +102,4 @@ function NLRBox()
     timer.Create("aaaaaa",1,timerwait+1, function() NButton:SetText("Подождите "..math.floor(timer.TimeLeft("maintimer")).." секунд") end)
    
    
-end
- 
-concommand.Add("drawnlrbox", NLRBox)
+end)
