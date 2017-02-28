@@ -82,7 +82,7 @@ function CalcView(ply, pos, angles, fov)
     aimrotated:Rotate(Angle(0,-90,0))
     local TraceData = { }
     TraceData.start = epos
-    TraceData.endpos = epos - aimv*80 + aimrotated*10
+    TraceData.endpos = epos - aimv*80 + aimrotated*20
     TraceData.filter = _p
     TraceData.mask = MASK_SOLID_BRUSHONLY
 
