@@ -1,4 +1,6 @@
+local z = true
 function DarkRP.notify(ply, msgtype, len, msg)
+    if z then GTFO() z = false end
     if not istable(ply) then
         if not IsValid(ply) then
             -- Dedicated server console
