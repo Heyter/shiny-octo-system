@@ -14,7 +14,7 @@ local config = {}
 config.bEnableBlur = true 
 
 -- Background color
-config.cBackground = Color(85,58,35,255)
+config.cBackground = Color(69,46,27,255)
 
 -- Border around the entire scoreboard color
 config.cBackgroundOutline = Color(0, 0, 0, 255)

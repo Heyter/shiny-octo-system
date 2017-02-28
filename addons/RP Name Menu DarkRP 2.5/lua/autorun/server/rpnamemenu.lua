@@ -1,6 +1,6 @@
 // Made by Tomasas http://steamcommunity.com/id/tomasas/
 
-local BlackList = {"nigga", "fag", "gayboy", "penis"} //simply insert a name encased in quotes and seperate it with a comma
+local BlackList = {"nigga", "fag", "gayboy", "penis", "cock", "admin", "zhopa", "pidor", "govno"} //simply insert a name encased in quotes and seperate it with a comma
 
 concommand.Add("c_rpname", function(ply, cmd, args)
 
@@ -8,7 +8,7 @@ concommand.Add("c_rpname", function(ply, cmd, args)
 	
 	for i=1, #BlackList do
 		if string.find(string.lower(args[1]), string.lower(BlackList[i])) then
-			DarkRP.notify(ply, 1, 10, "This name not allowed!")
+			DarkRP.notify(ply, 1, 10, "Это имя запрещено!")
 			umsg.Start("openRPNameMenu", ply)
 			umsg.End()
 			return
@@ -17,7 +17,7 @@ concommand.Add("c_rpname", function(ply, cmd, args)
 	
 	DarkRP.retrieveRPNames(args[1], function(taken)
 		if taken and ply:IsValid() then
-			DarkRP.notify(ply, 1, 10, "This name is already being used!")
+			DarkRP.notify(ply, 1, 10, "Это имя уже используется!")
 			umsg.Start("openRPNameMenu", ply)
 			umsg.End()
 		elseif ply:IsValid() then
@@ -37,4 +37,4 @@ hook.Add("PlayerAuthed", "RPNameChecking", function(ply)
 		end
 	end) 
 end)
-//�Tomasas 2013
+//©Tomasas 2013

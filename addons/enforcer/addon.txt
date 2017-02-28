@@ -1,0 +1,9 @@
+"AddonInfo"
+{
+	"name"			"Enforcer / No Minge"
+	"version"		"1.1"
+	"author_name"		"Luke"
+	"author_url"		""
+	"info"			"Read the scriptfodder stuff please."
+	"override"		"0"
+}
