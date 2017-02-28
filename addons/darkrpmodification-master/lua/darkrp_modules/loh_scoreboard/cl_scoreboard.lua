@@ -125,9 +125,9 @@ local function CreateScoreboard()
             -- Get the color
             local clr = team.GetColor(v:Team())
             -- Reduces opacity
-            clr.a = 100
+            clr.a = 170
 
-            -- Get name, job
+            -- Get name, job, country
             local name = v:Name()
             local job = v:getJobTable().name
             local icon = config.mIconGroups[v:GetUserGroup()] or config.mIconGroups.guest
@@ -157,7 +157,7 @@ local function CreateScoreboard()
                 surface.DrawOutlinedRect(0, 0, w, h)
 
                 -- Player name
-                draw.SimpleText(name, "scoreboard.player.big", 40, h / 2, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+                draw.SimpleText(name, "scoreboard.player", 40, h / 2, color_white, TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
                 -- Player job
                 draw.SimpleText(job, "scoreboard.player", w / 2 + 5, h / 2, color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)

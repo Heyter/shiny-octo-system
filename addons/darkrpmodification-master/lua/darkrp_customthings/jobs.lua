@@ -91,7 +91,7 @@ TEAM_ADMINONDUTY = DarkRP.createJob("Администратор", {
 })
 
 TEAM_POLICE = DarkRP.createJob("Офицер полиции", {
-    color = Color(25, 25, 170, 255),
+    color = Color(34, 130, 220, 255),
     model = {
 		"models/humans/nypd1940/male_02.mdl",
 		"models/humans/nypd1940/male_03.mdl",
@@ -103,7 +103,7 @@ TEAM_POLICE = DarkRP.createJob("Офицер полиции", {
 		"models/humans/nypd1940/male_08.mdl",
 		"models/humans/nypd1940/male_09.mdl"},
 	description = [[Тот, кто сохраняет порядок в городе.]],
-    weapons = {"arrest_stick", "unarrest_stick", "m9k_colt1911", "stunstick", "door_ram", "weaponchecker"},
+    weapons = {"weapon_policebaton", "m9k_colt1911", "door_ram", "weaponchecker"},
     command = "cp",
     max = 10,
     salary = GAMEMODE.Config.normalsalary * 1.45,
@@ -117,10 +117,10 @@ TEAM_POLICE = DarkRP.createJob("Офицер полиции", {
 })
 
 TEAM_DETECTIVE = DarkRP.createJob("Детектив", {
-    color = Color(56,38,22,255),
+    color = Color(206,141,83,255),
     model = "models/sirgibs/ragdolls/detective_magnusson_player.mdl",
     description = [[Тот, кто ведет расследования.]],
-    weapons = {"arrest_stick", "unarrest_stick", "stunstick", "door_ram", "weaponchecker", "m9k_model627"},
+    weapons = {"weapon_policebaton", "weaponchecker", "m9k_model627"},
     command = "detective",
     max = 2,
     salary = GAMEMODE.Config.normalsalary * 2,
@@ -136,11 +136,36 @@ TEAM_DETECTIVE = DarkRP.createJob("Детектив", {
     CustomCheckFailMsg = "Извините, только для Премиум игроков",
 })
 
+TEAM_CHIEF = DarkRP.createJob("Шериф полиции", {
+    color = Color(36, 100, 233, 255),
+    model = {
+        "models/portal2/patrol_02.mdl",
+        "models/portal2/patrol_04.mdl",
+        "models/portal2/patrol_06.mdl",
+        "models/portal2/patrol_07.mdl",
+        "models/portal2/patrol_08.mdl",
+        "models/portal2/patrol_09.mdl",},
+    description = [[Тот, кто руководит полицией.]],
+    weapons = {"m9k_coltpython", "weapon_policebaton", "door_ram", "weaponchecker"},
+    command = "chief",
+    max = 1,
+    salary = GAMEMODE.Config.normalsalary * 1.67,
+    admin = 0,
+    vote = false,
+    hasLicense = true,
+    chief = true,
+    NeedToChangeFrom = TEAM_POLICE,
+    ammo = {
+        ["357"] = 18,
+    },
+    category = "Civil Protection",
+})
+
 TEAM_SWAT = DarkRP.createJob("SWAT Штурмовик", {
-    color = Color(25, 80, 180, 255),
+    color = Color(133, 73, 238, 255),
     model ="models/player/bfh_enforcer.mdl",
     description = [[Тот, кто вооружен и опасен.]],
-    weapons = {"arrest_stick", "unarrest_stick", "m9k_mp5sd", "door_ram", "weaponchecker"},
+    weapons = {"weapon_policebaton", "m9k_mp5sd", "door_ram", "weaponchecker", "weapon_shield"},
     command = "swat",
     max = 8,
     salary = GAMEMODE.Config.normalsalary * 1.8,
@@ -154,10 +179,10 @@ TEAM_SWAT = DarkRP.createJob("SWAT Штурмовик", {
 })
 
 TEAM_SWATLEADER = DarkRP.createJob("SWAT Лидер", {
-    color = Color(25, 80, 180, 255),
+    color = Color(133, 73, 238, 255),
     model ="models/player/bfh_mechanic.mdl",
     description = [[Тот, кто командует SWAT.]],
-    weapons = {"arrest_stick", "unarrest_stick", "m9k_jackhammer", "door_ram", "weaponchecker"},
+    weapons = {"weapon_policebaton", "m9k_jackhammer", "door_ram", "weaponchecker"},
     command = "swatleader",
     max = 1,
     salary = GAMEMODE.Config.normalsalary * 2,
@@ -174,10 +199,10 @@ TEAM_SWATLEADER = DarkRP.createJob("SWAT Лидер", {
 })
 
 TEAM_SWATMEDIC = DarkRP.createJob("SWAT Медик", {
-    color = Color(25, 80, 180, 255),
+    color = Color(133, 73, 238, 255),
     model ="models/player/bfh_operator.mdl",
     description = [[Тот, лечит союзников.]],
-    weapons = {"arrest_stick", "unarrest_stick", "m9k_sig_p229r", "door_ram", "weaponchecker", "med_kit"},
+    weapons = {"weapon_policebaton", "m9k_sig_p229r", "door_ram", "weaponchecker", "med_kit"},
     command = "swatmedic",
     max = 3,
     salary = GAMEMODE.Config.normalsalary * 1.8,
@@ -191,10 +216,10 @@ TEAM_SWATMEDIC = DarkRP.createJob("SWAT Медик", {
 })
 
 TEAM_SWATSNIPER = DarkRP.createJob("SWAT Снайпер", {
-    color = Color(25, 80, 180, 255),
+    color = Color(133, 73, 238, 255),
     model = "models/player/bfh_pro.mdl",
     description = [[Тот, кто следит за тобой.]],
-    weapons = {"arrest_stick", "unarrest_stick", "m9k_svu", "door_ram", "weaponchecker"},
+    weapons = {"weapon_policebaton", "m9k_svu", "door_ram", "weaponchecker"},
     command = "swatsniper",
     max = 1,
     salary = GAMEMODE.Config.normalsalary * 2,
@@ -208,31 +233,6 @@ TEAM_SWATSNIPER = DarkRP.createJob("SWAT Снайпер", {
     customCheck = isDonator,
     isDonator = true,
     CustomCheckFailMsg = "Извините, только для Премиум игроков",
-})
-
-TEAM_CHIEF = DarkRP.createJob("Шериф полиции", {
-    color = Color(20, 20, 255, 255),
-    model = {
-        "models/portal2/patrol_02.mdl",
-        "models/portal2/patrol_04.mdl",
-        "models/portal2/patrol_06.mdl",
-        "models/portal2/patrol_07.mdl",
-        "models/portal2/patrol_08.mdl",
-        "models/portal2/patrol_09.mdl",},
-    description = [[Тот, кто руководит полицией.]],
-    weapons = {"arrest_stick", "unarrest_stick", "m9k_coltpython", "stunstick", "door_ram", "weaponchecker"},
-    command = "chief",
-    max = 1,
-    salary = GAMEMODE.Config.normalsalary * 1.67,
-    admin = 0,
-    vote = false,
-    hasLicense = true,
-    chief = true,
-    NeedToChangeFrom = TEAM_POLICE,
-    ammo = {
-        ["357"] = 18,
-    },
-    category = "Civil Protection",
 })
 
 TEAM_GANG = DarkRP.createJob("Бандит", {
@@ -417,7 +417,7 @@ TEAM_RADIOHOST = DarkRP.createJob("Ведущий радио", {
     weapons = {},
     command = "radiohost",
     max = 1,
-    salary = GAMEMODE.Config.normalsalary,
+    salary = GAMEMODE.Config.normalsalary*2,
     admin = 0,
     vote = false,
     hasLicense = false,

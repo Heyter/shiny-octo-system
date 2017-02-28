@@ -24,9 +24,26 @@ surface.CreateFont( "HUDLarge", {
 	outline = false,
 } )
 
+surface.CreateFont( "HUDSemiLarge", {
+	font = "Trebuchet MS",
+	size = 23,
+	weight = 1000,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
 surface.CreateFont( "HUDMedium", {
 	font = "Trebuchet MS",
-	size = 18,
+	size = 19,
 	weight = 1000,
 	blursize = 0,
 	scanlines = 0,
@@ -72,7 +89,7 @@ HUD.HealthColor = Color(192, 57, 43, 255)
 HUD.ArmorColor 	= Color(41, 128, 185, 255)
 
 -- Don't edit anything below this line.
-HUD.Width 	= 400
+HUD.Width 	= 350
 HUD.Height 	= 150
 
 HUD.Border 	= 15
@@ -147,7 +164,7 @@ HUD.BHeight1 = HUD.BHeight / 2 - 10
 HUD.BPosY1 = HUD.BPosY + 3
 HUD.BPosY2 = HUD.BPosY + 27
 
-HUD.BarWidth = HUD.Width - 90
+HUD.BarWidth = HUD.Width - 120
 
 HUD.HHeight = HUD.Height / 2 + 11
 
@@ -215,19 +232,19 @@ local function Health()
 	local DrawHealth = math.Min(Health/GAMEMODE.Config.startinghealth, 1)
 	
 	-- Title
-	draw.DrawText("ЗДОРОВЬЕ", "HUDSmall", HUD.PosX + 6 + 1, HUD.BPosY1 + 6 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText("ЗДОРОВЬЕ", "HUDSmall", HUD.PosX + 6, HUD.BPosY1 + 6, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+--	draw.DrawText("ЗДОРОВЬЕ", "HUDSmall", HUD.PosX + 6 + 1, HUD.BPosY1 + 6 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+--	draw.DrawText("ЗДОРОВЬЕ", "HUDSmall", HUD.PosX + 6, HUD.BPosY1 + 6, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	
 	-- Background Bar
-	draw.RoundedBox(4, HUD.PosX + 80, HUD.BPosY1 + 5, HUD.BarWidth, HUD.BHeight1, Color(30,30,30,255))
+	draw.RoundedBox(4, HUD.PosX + 110, HUD.BPosY1 + 5, HUD.BarWidth, HUD.BHeight1, Color(30,30,30,255))
 	
 	-- Bar
 	if Health != 0 then
-		draw.RoundedBox(4, HUD.PosX + 80 + 1, HUD.BPosY1 + 5 + 1, (HUD.BarWidth - 2) * DrawHealth, HUD.BHeight1 - 2, HUD.HealthColor)
+		draw.RoundedBox(4, HUD.PosX + 110 + 1, HUD.BPosY1 + 5 + 1, (HUD.BarWidth - 2) * DrawHealth, HUD.BHeight1 - 2, HUD.HealthColor)
 	end
 	
-	draw.DrawText(FullHealth, "HUDMedium", HUD.PosX + 80 + HUD.BarWidth / 2, HUD.BPosY1 + 6 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-	draw.DrawText(FullHealth, "HUDMedium", HUD.PosX + 80 + HUD.BarWidth / 2, HUD.BPosY1 + 6, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	draw.DrawText(FullHealth, "HUDMedium", HUD.PosX + 110 + HUD.BarWidth / 2, HUD.BPosY1 + 6 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	draw.DrawText(FullHealth, "HUDMedium", HUD.PosX + 110 + HUD.BarWidth / 2, HUD.BPosY1 + 6, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	
 end
 
@@ -239,58 +256,65 @@ local function Armor()
 	if Armor < 0 then Armor = 0 elseif Armor > 100 then Armor = 100 end
 	
 	-- Title
-	draw.DrawText("БРОНЯ", "HUDSmall", HUD.PosX + 15 + 1, HUD.BPosY2 + 6 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText("БРОНЯ", "HUDSmall", HUD.PosX + 15, HUD.BPosY2 + 6, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+--	draw.DrawText("БРОНЯ", "HUDSmall", HUD.PosX + 15 + 1, HUD.BPosY2 + 6 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+--	draw.DrawText("БРОНЯ", "HUDSmall", HUD.PosX + 15, HUD.BPosY2 + 6, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	
 	-- Background Bar
-	draw.RoundedBox(4, HUD.PosX + 80, HUD.BPosY2 + 5, HUD.BarWidth, HUD.BHeight1, Color(30,30,30,255))
+	draw.RoundedBox(4, HUD.PosX + 110, HUD.BPosY2 + 5, HUD.BarWidth, HUD.BHeight1, Color(30,30,30,255))
 	
 	-- Bar
 	if Armor != 0 then
-		draw.RoundedBox(4, HUD.PosX + 80 + 1, HUD.BPosY2 + 5 + 1, (HUD.BarWidth - 2) * Armor / 100, HUD.BHeight1 - 2, HUD.ArmorColor)
+		draw.RoundedBox(4, HUD.PosX + 110 + 1, HUD.BPosY2 + 5 + 1, (HUD.BarWidth - 2) * Armor / 100, HUD.BHeight1 - 2, HUD.ArmorColor)
 	end
 	
-	draw.DrawText(Armor, "HUDMedium", HUD.PosX + 80 + HUD.BarWidth / 2, HUD.BPosY2 + 6 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-	draw.DrawText(Armor, "HUDMedium", HUD.PosX + 80 + HUD.BarWidth / 2, HUD.BPosY2 + 6, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	draw.DrawText(Armor, "HUDMedium", HUD.PosX + 110 + HUD.BarWidth / 2, HUD.BPosY2 + 6 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+	draw.DrawText(Armor, "HUDMedium", HUD.PosX + 110 + HUD.BarWidth / 2, HUD.BPosY2 + 6, Color(255, 255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 	
 end
 
 local function PlayerInfo()
+	for k, v in pairs(player.GetAll()) do
 
 	-- Values
 	local VAL_Name 		= LocalPlayer():Nick() or ""
 	local VAL_Job 		= LocalPlayer():getDarkRPVar("job") or ""
 	local VAL_Wallet 	= "$"..formatNumber(LocalPlayer():getDarkRPVar("money") or 0)
 	local VAL_Salary 	= "$"..formatNumber(LocalPlayer():getDarkRPVar("salary") or 0)
+	player.GetAll()
 
 	-- Name
-	draw.DrawText("ИМЯ: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 0 + 2.5 * 1 + 1, Color(0, 0, 0,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText("ИМЯ: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 0 + 2.5 * 1, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Name, "HUDMedium", HUD.PosX + 180 + 1, HUD.PosY + 18 * 0 + 2.5 * 1 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Name, "HUDMedium", HUD.PosX + 180, HUD.PosY + 18 * 0 + 2.5 * 1, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+--	draw.DrawText("ИМЯ: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 0 + 2.5 * 1 + 1, Color(0, 0, 0,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+--	draw.DrawText("ИМЯ: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 0 + 2.5 * 1, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Name, "HUDSemiLarge", HUD.PosX + 125 + 1, HUD.PosY + 12, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Name, "HUDSemiLarge", HUD.PosX + 125, HUD.PosY + 12, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	
 	-- Job
-	draw.DrawText("РАБОТА: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 1 + 2.5 * 2 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText("РАБОТА: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 1 + 2.5 * 2, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Job, "HUDMedium", HUD.PosX + 180 + 1, HUD.PosY + 18 * 1 + 2.5 * 2 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Job, "HUDMedium", HUD.PosX + 180, HUD.PosY + 18 * 1 + 2.5 * 2, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+--	draw.DrawText("РАБОТА: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 1 + 2.5 * 2 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+--	draw.DrawText("РАБОТА: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 1 + 2.5 * 2, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Job, "HUDMedium", HUD.PosX + 125 + 1, HUD.PosY + 50, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Job, "HUDMedium", HUD.PosX + 125, HUD.PosY + 50,  team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	
 	-- Wallet
-	draw.DrawText("НАЛИЧНЫЕ: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 2 + 2.5 * 3 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText("НАЛИЧНЫЕ: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 2 + 2.5 * 3, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Wallet, "HUDMedium", HUD.PosX + 180 + 1, HUD.PosY + 18 * 2 + 2.5 * 3 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Wallet, "HUDMedium", HUD.PosX + 180, HUD.PosY + 18 * 2 + 2.5 * 3, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+--	draw.DrawText("НАЛИЧНЫЕ: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 2 + 2.5 * 3 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+--	draw.DrawText("НАЛИЧНЫЕ: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 2 + 2.5 * 3, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Wallet, "HUDMedium", HUD.PosX + 28 + 1, HUD.PosY + 97, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Wallet, "HUDMedium", HUD.PosX + 28, HUD.PosY + 97, Color(79, 191, 94, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	
 	-- Salary
-	draw.DrawText("ЗАРПЛАТА: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 3 + 2.5 * 4 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText("ЗАРПЛАТА: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 3 + 2.5 * 4, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Salary, "HUDMedium", HUD.PosX + 180 + 1, HUD.PosY + 18 * 3 + 2.5 * 4 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Salary, "HUDMedium", HUD.PosX + 180, HUD.PosY + 18 * 3 + 2.5 * 4, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	
+--	draw.DrawText("ЗАРПЛАТА: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 3 + 2.5 * 4 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+--	draw.DrawText("ЗАРПЛАТА: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 3 + 2.5 * 4, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Salary, "HUDMedium", HUD.PosX + 28 + 1, HUD.PosY + 124, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Salary, "HUDMedium", HUD.PosX + 28, HUD.PosY + 124, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+
+	end
 end
 
 local IconLicense 	= "icon16/page_red.png"
 local IconWanted	= "icon16/exclamation.png"
+local IconName      = "icon16/user.png"
+local IconJob       = "icon16/lightbulb.png"
+local IconCash      = "icon16/money_dollar.png"
+local IconSallary   = "icon16/money_add.png"
 
 local function PlayerIcons()
 
@@ -309,7 +333,14 @@ local function PlayerIcons()
 	end
 	surface.SetMaterial(Material(IconWanted))
 	surface.DrawTexturedRect( HUD.PosX + HUD.Width - 50 + 15, HUD.PosY + 50, 20, 20)
-	
+
+	surface.SetDrawColor(255,255,255,255)
+	surface.SetMaterial(Material(IconCash))
+	surface.DrawTexturedRect( HUD.PosX - 310 + HUD.Width - 50 + 15, HUD.PosY + 97, 18, 18)
+
+	surface.SetDrawColor(255,255,255,255)
+	surface.SetMaterial(Material(IconSallary))
+	surface.DrawTexturedRect( HUD.PosX - 310 + HUD.Width - 50 + 15, HUD.PosY + 124, 18, 18)
 end
 
 /*-- Default HUD Elements --*/

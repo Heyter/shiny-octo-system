@@ -18,7 +18,7 @@ Set to true or false.
 -- voice3D - Enable/disable 3DVoice is enabled.
 GM.Config.voice3D                       = true
 -- AdminsCopWeapons - Enable/disable admins spawning with cop weapons.
-GM.Config.AdminsCopWeapons              = true
+GM.Config.AdminsCopWeapons              = false
 -- adminBypassJobCustomCheck - Enable/disable whether an admin can force set a job with whenever customCheck returns false.
 GM.Config.adminBypassJobRestrictions    = false
 -- allow people getting their own custom jobs.
@@ -332,6 +332,7 @@ GM.Config.DisallowDrop = {
     ["weapon_physgun"] = true,
     ["weaponchecker"] = true,
     ["selfportrait_camera"] = true,
+    ["weapon_policebaton"] = true,
 }
 
 -- The list of weapons people spawn with.
@@ -401,7 +402,6 @@ GM.Config.DefaultLaws = {
     "Запрещено нападать на граждан, исключение - самооборона.",
     "Запрещено проникать в чужие дома и воровать.",
     "Денежные принтеры и наркотики запрещены.",
-    "Запрещено использовать оружие без лицензии.",
 }
 
 GM.Config.PocketBlacklist = {
