@@ -58,41 +58,49 @@ DarkRP.createEntity("Принтер первого уровня", {
     ent = "k_printer_t1",
     model = "models/props_lab/reciever01a.mdl",
     price = 1500,
-    max = 3,
-    cmd = "buymoneyprinter1"
+    max = 4,
+    cmd = "buymoneyprinter1",
+    customCheck = function(ply) print ("pines1") print(ply:CanBuyPrinter()) return ply:CanBuyPrinter() end,
+    CustomCheckFailMsg = "Слишком много принтеров"
 })
 
 DarkRP.createEntity("Принтер второго уровня", {
     ent = "k_printer_t2",
     model = "models/props_lab/reciever01a.mdl",
     price = 3000,
-    max = 2,
-    cmd = "buymoneyprinter2"
+    max = 4,
+    cmd = "buymoneyprinter2",
+    customCheck = function(ply) print ("pines1") print(ply:CanBuyPrinter()) return ply:CanBuyPrinter() end,
+    CustomCheckFailMsg = "Слишком много принтеров"
 })
 
 DarkRP.createEntity("Принтер третьего уровня", {
     ent = "k_printer_t3",
     model = "models/props_lab/reciever01a.mdl",
     price = 4500,
-    max = 2,
-    cmd = "buymoneyprinter3"
+    max = 4,
+    cmd = "buymoneyprinter3",
+    customCheck = function(ply) print ("pines1") print(ply:CanBuyPrinter()) return ply:CanBuyPrinter() end,
+    CustomCheckFailMsg = "Слишком много принтеров"
 })
 
 DarkRP.createEntity("Принтер четвертого уровня", {
     ent = "k_printer_t4",
     model = "models/props_lab/reciever01a.mdl",
     price = 6500,
-    max = 1,
-    cmd = "buymoneyprinter4"
+    max = 4,
+    cmd = "buymoneyprinter4",
+    customCheck = function(ply) print ("pines1") print(ply:CanBuyPrinter()) return ply:CanBuyPrinter() end,
+    CustomCheckFailMsg = "Слишком много принтеров"
 })
 
 DarkRP.createEntity("Принтер пятого уровня", {
     ent = "k_printer_t5",
     model = "models/props_lab/reciever01a.mdl",
     price = 10000,
-    max = 1,
+    max = 4,
     cmd = "f4091876df6a5d39e6690b7395a95399",
-    customCheck = isDonator
+    customCheck = function(ply)  print ("pines1") print(ply:CanBuyPrinter()) return ply:CanBuyPrinter() and isDonator(ply) end
 })
 
 DarkRP.createEntity("Улучшение принтера", {

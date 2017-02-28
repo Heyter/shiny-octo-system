@@ -36,6 +36,7 @@ function ENT:Initialize()
 		self:SetNWBool( "CoolantToggle", true );
 	end;
 	timer.Simple( 0.1, function() PrintMore( self ) end );
+	self:Getowning_ent():AddPrinter()
 end;
 
 function ENT:OnTakeDamage( dmg )
@@ -177,4 +178,5 @@ function ENT:OnRemove()
 	if self.sound then
 		self.sound:Stop();
 	end;
+	self:Getowning_ent():RemovePrinter()
 end;
