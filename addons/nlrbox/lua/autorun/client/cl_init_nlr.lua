@@ -4,19 +4,19 @@ net.Receive("NLRBox",
     ///// NFrame ///// - This contains the title of the whole NLR Box, BackGround Blur and if you can drag the box around the screen.
     local titletext = "На пол минуты в Чистилище" --Here you can change the title of the box
     local backgroundblur = true --Enable or disable blur around the box
-    local makedraggable = false --Here you can change if you want the box to be drag-gable by your mouse
+    local makedraggable = false  --Here you can change if you want the box to be drag-gable by your mouse
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  
-    ///// NPanel /////
+    ///// NPa asdnel /////
     --[[NOTHING TO CONFIGURE HERE]]--
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
- 
+  
     ///// NLabel ///// - This is the text that shows up inside the NLR Box. Customize it how you please.
     local warningtext = [[Умерли ли вы по собственной глупости или вас убили - не важно. 
-Вам запрещено возвращаться на место собственной смерти в течение трех минут, 
-и запрещено мстить убийце. 
+    Вам запрещено возвращаться на место собственной смерти в течение трех минут, 
+    и запрещено мстить убийце. 
     Начните жизнь с чистого листа.]]
-    local lfont = "DermaDefault"
+    local lfont = "DermaDefault" 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  
     ///// NButton ///// -  This contains the button text, timer wait, and the timer text.
@@ -24,7 +24,7 @@ net.Receive("NLRBox",
     local buttontext = "В мир живых" --Here you can change the spawn button text
     local bfont = "HUDSmall" -- Here you can change the button
     local tfont = "HUDSmall" -- Here you can change the countdown font to whatever you would like
-    local timerwait = 10 --Here you can change how long you want to wait for the timer to countdown
+    local timerwait = isAdmin(LocalPlayer()) and 5 or isDonator(LocalPlayer()) and 10 or 20 --Here you can change how long you want to wait for the timer to countdown
     local timertext = "Подождите "..tostring(timerwait).." секунд" --Here you can change the timer button text
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
  

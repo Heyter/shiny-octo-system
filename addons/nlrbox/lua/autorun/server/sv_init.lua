@@ -11,5 +11,6 @@ function PlayerRespawn(ply,cmd,args)
 	if( !ply:Alive() ) then 
 		 ply:Spawn() 
 	end 
-end 
+end
+
 net.Receive("NLRBox",function(len,ply) return PlayerRespawn(ply) end)
