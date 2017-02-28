@@ -1,0 +1,5 @@
+"UnlitGeneric"
+{
+	"$basetexture" "icon32_t/cancel"
+	"$translucent" 1
+}
