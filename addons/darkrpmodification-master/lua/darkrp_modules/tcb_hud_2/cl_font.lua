@@ -91,3 +91,9 @@ surface.CreateFont( "TCB_F4Menu_Small", {
 	outline = false,
 } )
 
+surface.CreateFont("elegantPlyDoors", {
+    font = "Arial",
+    size = 128,
+    weight = 600,
+    antialias = true,
+})

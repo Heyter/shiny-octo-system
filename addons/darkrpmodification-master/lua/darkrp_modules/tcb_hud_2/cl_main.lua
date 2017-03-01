@@ -535,7 +535,9 @@ function DisableDrawInfo()
 end
 hook.Add("HUDDrawTargetID", "DisableDrawInfo", DisableDrawInfo)
 
-
+hook.Add("HUDDrawDoorData","Disabledoordraw",function( )
+	return true
+end)
 
 
 /*-- Draw HUD Elements --*/
@@ -565,3 +567,125 @@ local function DrawTCB()
 	
 end
 hook.Add("HUDPaint", "DrawTCB", DrawTCB)
+
+maxDist = 400
+function DrawDoorHUD()
+    local shouldDraw = hook.Call("HUDShouldDraw", GAMEMODE, "ElegantHUD_Door_Titles")
+    if shouldDraw == false then return end
+ 
+    if !LocalPlayer() then return end
+    local inSphere = ents.FindInSphere(LocalPlayer():GetPos(),maxDist)
+ 
+    surface.SetTextColor(255, 255, 255, 255)
+ 
+    for k,v in pairs(inSphere) do
+           
+        if IsValid(v) and v:isKeysOwnable() and !v:IsVehicle() then
+               
+            local dist = LocalPlayer():GetPos():Distance(v:GetPos())
+           
+           
+            local s = LocalPlayer():LocalToWorld(LocalPlayer():OBBCenter())
+            local e = v:LocalToWorld(v:OBBCenter()) 
+
+            s.z = e.z
+   
+            local trace = {}
+            trace.start = s
+            trace.endpos = e
+            local t = {}
+            for i,ent in pairs(inSphere) do
+                if ent != LocalPlayer() && ent != v then
+                    table.insert(t,ent)
+                end
+            end
+            trace.filter = t
+            trace = util.TraceLine(trace)
+           
+            --                      This bit is for making sure you don't see the name of it on the side of it
+            if trace.Entity == v && e:Distance(trace.HitPos) < 10 then
+               
+                local pos = trace.HitPos+trace.HitNormal+Vector(0,0,10)
+                local ang = trace.HitNormal:Angle()
+                local alpha = math.max(0,(maxDist-dist)/maxDist*255)
+               
+               
+                cam.Start3D2D(pos, ang + Angle(0, 90, 90), .03)
+                    /*
+                    local unownable     = v:GetNWBool("Unownable")
+                    local title         = v:getKeysTitle()
+                    local property      = v:GetNWBool("Property")
+                    local buyable       = !v:GetNWBool("Bought")
+                   
+                    if (title == "" or !title) then title = "Elegant Doors" end --Set default door title
+                   
+                    if unownable && !property then --If its unownable.
+                        draw.DrawText("Unownable", "elegantPlyDoors", 0, 0, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    elseif !unownable && property then --If its ownable.
+                        draw.DrawText("For Sale", "elegantPlyDoors", 0, 0, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    end
+                    */
+                    local blocked = v:getKeysNonOwnable()
+                    local superadmin = LocalPlayer():IsSuperAdmin()
+                    local doorTeams = v:getKeysDoorTeams()
+                    local doorGroup = v:getKeysDoorGroup()
+                    local playerOwned = v:isKeysOwned() or table.GetFirstValue(v:getKeysCoOwners() or {}) ~= nil
+                    local owned = playerOwned or doorGroup or doorTeams
+ 
+                    local doorInfo = {}
+ 
+                    local title = v:getKeysTitle()
+                    if title then table.insert(doorInfo, title) end
+ 
+                    if owned then
+                        table.insert(doorInfo, "Owned By\n")
+                    end
+ 
+                    if playerOwned then
+                        if v:isKeysOwned() then table.insert(doorInfo, v:getDoorOwner():Nick()) end
+                        for k,v in pairs(v:getKeysCoOwners() or {}) do
+                            local ent = Player(k)
+                            if not IsValid(ent) or not ent:IsPlayer() then continue end
+                            table.insert(doorInfo, ent:Nick())
+                        end
+ 
+                        local allowedCoOwn = v:getKeysAllowedToOwn()
+                        if allowedCoOwn and not fn.Null(allowedCoOwn) then
+                            table.insert(doorInfo, DarkRP.getPhrase("keys_other_allowed"))
+ 
+                            for k,v in pairs(allowedCoOwn) do
+                                local ent = Player(k)
+                                if not IsValid(ent) or not ent:IsPlayer() then continue end
+                                table.insert(doorInfo, ent:Nick())
+                            end
+                        end
+                    elseif doorGroup then
+                        table.insert(doorInfo, doorGroup)
+                    elseif doorTeams then
+                        for k, v in pairs(doorTeams) do
+                            if not v or not RPExtraTeams[k] then continue end
+ 
+                            table.insert(doorInfo, RPExtraTeams[k].name)
+                        end
+                    elseif blocked and superadmin then
+                        table.insert(doorInfo, DarkRP.getPhrase("keys_allow_ownership"))
+                    elseif not blocked then
+                        table.insert(doorInfo, "Unowned\nPress F2 to buy")
+                        /*if superadmin then
+                            table.insert(doorInfo, DarkRP.getPhrase("keys_disallow_ownership"))
+                        end*/
+                    end
+                    //draw.DrawText(, "elegantPlyDoors", 0, -100, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+ 
+                    draw.DrawText(table.concat(doorInfo, "\n"), "elegantPlyDoors", 0+1, -100+1, Color(0, 0, 0, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                    draw.DrawText(table.concat(doorInfo, "\n"), "elegantPlyDoors", 0, -100, Color(255, 255, 255, alpha), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+                   
+                cam.End3D2D()
+            end
+           
+        end
+           
+    end
+   
+end
+hook.Add("PostDrawOpaqueRenderables","doorHUDStuff",DrawDoorHUD)
