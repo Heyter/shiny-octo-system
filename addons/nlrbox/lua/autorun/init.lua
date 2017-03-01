@@ -1,2 +1,5 @@
-AddCSLuaFile( "autorun/client/cl_init.lua" )
-AddCSLuaFile( "autorun/server/sv_init.lua" )
+AddCSLuaFile("autorun/client/cl_init_nlr.lua" )
+
+if CLIENT then
+	include("autorun/client/cl_init_nlr.lua")
+end
