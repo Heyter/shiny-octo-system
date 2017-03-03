@@ -10,7 +10,7 @@ if CLIENT then
     print("HUI ====================================================")
 end
 
-SWEP.PrintName = "Pocket"
+SWEP.PrintName = "Инвентарь"
 SWEP.Slot = 1
 SWEP.SlotPos = 1
 SWEP.DrawAmmo = false
@@ -19,7 +19,7 @@ SWEP.DrawCrosshair = true
 SWEP.Base = "weapon_cs_base2"
 
 SWEP.Author = "DarkRP Developers"
-SWEP.Instructions = "Left click to pick up\nRight click to open inv"
+SWEP.Instructions = "Левый клик чтобы положить вещь в инвентарь\nПравый клик чтобы открыть инвентарь"
 SWEP.Contact = ""
 SWEP.Purpose = ""
 SWEP.IsDarkRPPocket = true
