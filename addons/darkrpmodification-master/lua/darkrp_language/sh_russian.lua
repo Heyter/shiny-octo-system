@@ -48,7 +48,7 @@ local russian = {
 	-- Денежные операции:
 	price = "Цена: %s%d",
 	priceTag = "Цена: %s",
-	reset_money = "%s сбросить деньги всех игроков!",
+	reset_money = "%s сбросил деньги всех игроков!",
 	has_given = "%s дал Вам %s",
 	you_gave = "Вы дали %s %s",
 	npc_killpay = "%s за убийство NPC!",
@@ -70,16 +70,16 @@ local russian = {
 	property_tax_cant_afford = "Вы не смогли заплатить налоги! Ваше имущество было изъято у Вас!",
 	taxday = "День оплаты налогов! %s%% из Вашего дохода было изъято!",
 
-	found_cheque = "Вы нашли %s%s в чеке, выписанный на вас от %s.",
+	found_cheque = "Вы нашли %s%s в чеке, который выписал %s.",
 	cheque_details = "Это чек, выписанный на %s.",
 	cheque_torn = "Вы разорвали чек",
-	cheque_pay = "Выплачено: %s",
-	signed = "Подписаный: %s",
+	cheque_pay = "Сумма: %s",
+	signed = "Подпись: %s",
 
 	found_cash = "Вы нашли %s%d!", -- backwards compatibility
 	found_money = "Вы нашли %s!",
 
-	owner_poor = "%s владелец слишком беден, чтобы субсидировать продажу!",
+	owner_poor = "%s слишком беден, чтобы субсидировать продажу!",
 
 	-- Полиция
 	wanted = "Разыскивается полицией!\nПричина: %s",
@@ -92,9 +92,9 @@ local russian = {
 	warrant_request = "%s требует ордер на обыск %s\nПричина: %s",
 	warrant_request2 = "Запрос ордера на обыск был отправлен мэру %s!",
 	warrant_approved = "Ордер на обыск был одобрен для %s!\nПричина: %s\nЗапросил: %s",
-	warrant_approved2 = "Теперь Вы можете произвести обыск его дома.",
+	warrant_approved2 = "Теперь Вы можете произвести обыск.",
 	warrant_denied = "Мэр %s отклонил Ваш запрос ордера на обыск.",
-	warrant_expired = "Ордер на обыск для %s истек!",
+	warrant_expired = "Ордер на обыск %s истек!",
 	warrant_required = "Вам требуется ордер на обыск, чтобы открыть эту дверь.",
 	warrant_required_unfreeze = "Вам нужен ордер на разморозку пропа.",
 	warrant_required_unweld = "Вам нужен ордер на снятие сварных швов этого пропа.",
@@ -237,7 +237,7 @@ local russian = {
 	shipment_antispam_wait = "Пожалуйста, подождите перед спавном нового товара.",
 
 	-- Talking
-	hear_noone = "Никто не слышит твой %s!",
+	hear_noone = "Никто не слышит вашу %s!",
 	hear_everyone = "Тебя все слышат!",
 	hear_certain_persons = "Игроки, которые могут Вас слышать %s: ",
 
@@ -253,7 +253,7 @@ local russian = {
 	radio_x = "Радио %d",
 
 	talk = "сказать",
-	speak = "говорить",
+	speak = "речь",
 
 	speak_in_ooc = "говорить в OOC",
 	perform_your_action = "выполнять свои действия",

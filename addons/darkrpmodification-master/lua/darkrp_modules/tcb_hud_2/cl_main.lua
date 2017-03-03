@@ -673,4 +673,4 @@ function DrawDoorHUD()
     end
    
 end
-hook.Add("PostDrawOpaqueRenderables","doorHUDStuff",DrawDoorHUD)
+//hook.Add("PostDrawOpaqueRenderables","doorHUDStuff",DrawDoorHUD)
