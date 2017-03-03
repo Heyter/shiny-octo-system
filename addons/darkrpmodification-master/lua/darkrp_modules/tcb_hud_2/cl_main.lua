@@ -196,17 +196,21 @@ end
 
 local timeSinceLastHUDPaint = 0
 
-local function PlayerModel()
+local function PlayerModelF()
 
 	PlayerModel = vgui.Create("ModelImage", self)
 	function PlayerModel:LayoutEntity( Entity ) return end
 	PlayerModel:SetModel( LocalPlayer():GetModel() )
 	PlayerModel:SetPos(HUD.PosX, HUD.PosY)
 	PlayerModel:SetSize(85, 85)
+	--PlayerModel:SetVisible(false)
+	PlayerModel:SetPaintedManually(true)
+	timer.Create("ModelUpdater101",1,0,function()
+		PlayerModel:SetModel( LocalPlayer():GetModel() ) end)
 
 end
 
-hook.Add("InitPostEntity", "PlayerModel", PlayerModel)
+hook.Add("InitPostEntity", "PlayerModel", PlayerModelF)
 
 local function Health()
 	
@@ -546,6 +550,7 @@ local function DrawTCB()
 	--
 	DrawEntityDisplay()
 	timeSinceLastHUDPaint = os.time()
+	PlayerModel:PaintManual()
 
 
 	
