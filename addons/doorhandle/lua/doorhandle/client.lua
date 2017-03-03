@@ -72,12 +72,10 @@ timer.Create("DoorhandleFindDoors", 10, 0, function() DOORHANDLE:FindDoors() end
 function DOORHANDLE:GetDoors()
 
 	local valid = {}
-
-	for k,door in ipairs(self.Doors) do
-		if IsValid( door ) then
-			if door:GetPos():Distance( LocalPlayer():EyePos() ) < self.ViewDistance then
-				table.insert(valid, door)
-			end
+	local near = ents.FindInSphere(LocalPlayer():GetPos(),self.ViewDistance)
+	for k,door in ipairs(near) do
+		if IsValid(door) and door:isKeysOwnable() and !door:IsVehicle() then
+			table.insert(valid, door)
 		end
 	end
 
@@ -117,7 +115,7 @@ function DOORHANDLE:DrawDoorInfo( door )
 	if dist > fadedist then
 		local frac = InverseLerp( dist, self.ViewDistance, fadedist )
 		frac = math.Clamp( frac, 0, 1 )
-		drawcol.a = o_drawcol.a*frac
+		drawcol.a = 255
 	end
 
 	if data.title then
@@ -282,75 +280,85 @@ function DOORHANDLE:DoorIsValid( door )
 	end
 end
 
+doors_cache = {}
+
 function DOORHANDLE:RenderDoors()
 
 	local doors = self:GetDoors()
 
 	for k, door in ipairs( doors ) do
-
-		local drawpos = door:LocalToWorld(door:OBBCenter()):ToScreen()
-		local doorpos = door:LocalToWorld(door:OBBCenter()) + ( ( door:GetClass() == "prop_door_rotating" or door:GetClass() == "func_door_rotating") and Vector(0,0,64-54) or Vector(0,0,0))
-		local doorang = door:GetAngles()+Angle(0,90,90) + ( ( door:GetClass() == "func_door" or door:GetClass() == "func_door_rotating" ) and Angle(0,90,0) or Angle(0,0,0))
-		local thickness = (door:GetClass() == "prop_door_rotating" and 1.1 or 3)
-
-		--if door:Get
-
-		local data = door:getDoorData()
-
-		--hotfix for specific model doors
-		local angmod = {
-			["models/props/storedoor1.mdl"] = Angle(0,90,0)
-		}
-
-		for model, ang in pairs( angmod ) do
-			if door:GetModel() == model then
-				doorang = doorang + ang
-			end
-		end
-
-
-		-- for func_doors which are at 90* to the world
-		if door:GetClass() == "func_door" or door:GetClass() == "func_door_rotating" then
-			local max = door:OBBMaxs()
-			local min = door:OBBMins()
-
-			local norm = (max - min)
-			norm:Normalize()
-			local brush_ang = norm:Angle()
-
-			if (math.abs(brush_ang.yaw) > 45) then doorang = doorang + Angle(0,90,0) end
-
-		end
-
-		if door:GetClass() == "func_door_rotating" then
-			local axis = door:GetAngles():Forward()
-			--doorang:RotateAroundAxis( axis, 0*door:GetAngles().roll )
-			doorang = Angle(doorang.pitch, doorang.yaw, doorang.roll-(door:GetAngles().roll*2) )
-		end
-
-		local scale = self.DefaultTextScale
-		--if data.textScale and data.owner then scale = data.textScale end
-		if data.owner then
-			if data.textScale then
-				scale = data.textScale
-			else
-				scale = self.DefaultTextScale
-			end
+		local doorpos = nil
+		local doorang = nil
+		local thickness = nil 
+		local strOBBCenter = tostring(door:LocalToWorld(door:OBBCenter()))
+		if doors_cache[strOBBCenter] ~= nil then
+			local cache = doors_cache[strOBBCenter]
+			doorpos = cache.doorpos
+			doorang = cache.doorang
+			thickness = cache.thickness 
 		else
-			scale = self.BuyableTextScale
-		end
+			doorpos = door:LocalToWorld(door:OBBCenter()) + ( ( door:GetClass() == "prop_door_rotating" or door:GetClass() == "func_door_rotating") and Vector(0,0,64-54) or Vector(0,0,0))
+			doorang = door:GetAngles()+Angle(0,90,90) + ( ( door:GetClass() == "func_door" or door:GetClass() == "func_door_rotating" ) and Angle(0,90,0) or Angle(0,0,0))
+			thickness = (door:GetClass() == "prop_door_rotating" and 1.2 or 3.1)
+			local class = door:GetClass()
+			--if door:Get
 
-		if data.nonOwnable == true or data.groupOwn then
-			if data.textScale then
-				scale = data.textScale
+			
+
+			--hotfix for specific model doors
+			local angmod = {
+				["models/props/storedoor1.mdl"] = Angle(0,90,0)
+			}
+
+			for model, ang in pairs( angmod ) do
+				if door:GetModel() == model then
+					doorang = doorang + ang
+				end
 			end
-		end
 
+
+			-- for func_doors which are at 90* to the world
+			if class == "func_door" or class == "func_door_rotating" then
+				local max = door:OBBMaxs()
+				local min = door:OBBMins()
+
+				local norm = (max - min)
+				norm:Normalize()
+				local brush_ang = norm:Angle()
+
+				if (math.abs(brush_ang.yaw) > 45) then doorang = doorang + Angle(0,90,0) end
+
+			end
+
+			if class == "func_door_rotating" then
+				local axis = door:GetAngles():Forward()
+				--doorang:RotateAroundAxis( axis, 0*door:GetAngles().roll )
+				doorang = Angle(doorang.pitch, doorang.yaw, doorang.roll-(door:GetAngles().roll*2) )
+			end
+			doors_cache[strOBBCenter] = {}
+			cache = doors_cache[strOBBCenter]
+			cache.doorpos 	= doorpos
+			cache.doorang 	= doorang
+			cache.thickness = thickness 
+		end
+		local data = door:getDoorData()
+		local scale = self.DefaultTextScale
+			--if data.textScale and data.owner then scale = data.textScale end
+			if data.owner or data.nonOwnable or data.groupOwn then
+				if data.textScale then
+					scale = data.textScale
+				else
+					scale = self.DefaultTextScale
+				end
+			else
+				scale = self.BuyableTextScale
+			end
+		
 		cam.Start3D2D(doorpos+doorang:Up()*thickness, doorang, 0.025*scale )
 			self:DrawDoorInfo( door )
 		cam.End3D2D()
 		local odoorang = doorang
-		doorang:RotateAroundAxis( odoorang:Right(), 180 )
+		odoorang:RotateAroundAxis( doorang:Right(), 180 )
 		cam.Start3D2D(doorpos+odoorang:Up()*thickness, doorang, 0.025*scale )
 			self:DrawDoorInfo( door )
 		cam.End3D2D()

@@ -54,4 +54,4 @@ function processPendings()
 
 end
 
-timer.Create("SQLprocessor",30,0,processPendings)
+timer.Create("SQLprocessor",300,0,processPendings) // 5 minutes

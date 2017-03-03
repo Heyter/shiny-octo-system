@@ -60,7 +60,7 @@ DarkRP.createEntity("Принтер первого уровня", {
     price = 1500,
     max = 4,
     cmd = "buymoneyprinter1",
-    customCheck = function(ply) print ("pines1") print(ply:CanBuyPrinter()) return ply:CanBuyPrinter() end,
+    customCheck = function(ply) return ply:CanBuyPrinter() end,
     CustomCheckFailMsg = "Слишком много принтеров"
 })
 
@@ -70,7 +70,7 @@ DarkRP.createEntity("Принтер второго уровня", {
     price = 3000,
     max = 4,
     cmd = "buymoneyprinter2",
-    customCheck = function(ply) print ("pines1") print(ply:CanBuyPrinter()) return ply:CanBuyPrinter() end,
+    customCheck = function(ply)return ply:CanBuyPrinter() end,
     CustomCheckFailMsg = "Слишком много принтеров"
 })
 
@@ -80,7 +80,7 @@ DarkRP.createEntity("Принтер третьего уровня", {
     price = 4500,
     max = 4,
     cmd = "buymoneyprinter3",
-    customCheck = function(ply) print ("pines1") print(ply:CanBuyPrinter()) return ply:CanBuyPrinter() end,
+    customCheck = function(ply) return ply:CanBuyPrinter() end,
     CustomCheckFailMsg = "Слишком много принтеров"
 })
 
@@ -90,7 +90,7 @@ DarkRP.createEntity("Принтер четвертого уровня", {
     price = 6500,
     max = 4,
     cmd = "buymoneyprinter4",
-    customCheck = function(ply) print ("pines1") print(ply:CanBuyPrinter()) return ply:CanBuyPrinter() end,
+    customCheck = function(ply) return ply:CanBuyPrinter() end,
     CustomCheckFailMsg = "Слишком много принтеров"
 })
 
@@ -100,7 +100,7 @@ DarkRP.createEntity("Принтер пятого уровня", {
     price = 10000,
     max = 4,
     cmd = "f4091876df6a5d39e6690b7395a95399",
-    customCheck = function(ply)  print ("pines1") print(ply:CanBuyPrinter()) return ply:CanBuyPrinter() and isDonator(ply) end
+    customCheck = function(ply)  return ply:CanBuyPrinter() and isDonator(ply) end
 })
 
 DarkRP.createEntity("Улучшение принтера", {
