@@ -182,6 +182,9 @@ local function Base()
 	-- Borders
 	draw.RoundedBox(0, HUD.PosX, HUD.BPosY-4, HUD.Width, 2, Color(43,29,17,255))
 	draw.RoundedBox(0, HUD.PosX, HUD.BPosY-2, HUD.Width, 2, Color(84,57,34,255))
+
+	draw.RoundedBox(0, HUD.PosX+77, HUD.BPosY-45, 220, 2, Color(43,29,17,255))
+	draw.RoundedBox(0, HUD.PosX+77, HUD.BPosY-43, 220, 2, Color(84,57,34,255))
 	
 	draw.RoundedBox(0, HUD.PosX + HUD.Width - 50 - 4, HUD.PosY, 2, HUD.HHeight, Color(43,29,17,255))
 	draw.RoundedBox(0, HUD.PosX + HUD.Width - 50 - 2, HUD.PosY, 2, HUD.HHeight, Color(84,57,34,255))
@@ -195,29 +198,11 @@ local timeSinceLastHUDPaint = 0
 
 local function PlayerModel()
 
-	PlayerModel = vgui.Create("DModelPanel")
+	PlayerModel = vgui.Create("ModelImage", self)
 	function PlayerModel:LayoutEntity( Entity ) return end
 	PlayerModel:SetModel( LocalPlayer():GetModel() )
 	PlayerModel:SetPos(HUD.PosX, HUD.PosY)
-	PlayerModel:SetSize(75, HUD.HHeight)
-	PlayerModel:SetCamPos(Vector( 16, 0, 65 ))
-	PlayerModel:SetLookAt(Vector( 0, 0, 65 ))
-   
-	timer.Create( "UpdatePlayerModel", 0.5, 0, function()
-		local time = os.time()
-		if time - timeSinceLastHUDPaint > 0.3 then PlayerModel:SetVisible(false)
-			else PlayerModel:SetVisible(true) end
-			if LocalPlayer():GetModel() != PlayerModel.Entity:GetModel() then
-					PlayerModel:Remove()
-					PlayerModel = vgui.Create("DModelPanel")
-					function PlayerModel:LayoutEntity( Entity ) return end         
-					PlayerModel:SetModel( LocalPlayer():GetModel())
-					PlayerModel:SetPos(HUD.PosX, HUD.PosY)
-					PlayerModel:SetSize(75, HUD.HHeight)
-					PlayerModel:SetCamPos(Vector( 16, 0, 65 ))
-					PlayerModel:SetLookAt(Vector( 0, 0, 65 ))
-			end
-	end)
+	PlayerModel:SetSize(85, 85)
 
 end
 
@@ -285,20 +270,20 @@ local function PlayerInfo()
 	-- Name
 --	draw.DrawText("ИМЯ: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 0 + 2.5 * 1 + 1, Color(0, 0, 0,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 --	draw.DrawText("ИМЯ: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 0 + 2.5 * 1, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Name, "HUDSemiLarge", HUD.PosX + 125 + 1, HUD.PosY + 12, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Name, "HUDSemiLarge", HUD.PosX + 125, HUD.PosY + 12, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Name, "HUDSemiLarge", HUD.PosX + 95 + 1, HUD.PosY + 12, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Name, "HUDSemiLarge", HUD.PosX + 95, HUD.PosY + 12, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	
 	-- Job
 --	draw.DrawText("РАБОТА: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 1 + 2.5 * 2 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 --	draw.DrawText("РАБОТА: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 1 + 2.5 * 2, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Job, "HUDMedium", HUD.PosX + 125 + 1, HUD.PosY + 50, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Job, "HUDMedium", HUD.PosX + 125, HUD.PosY + 50,  team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Job, "HUDMedium", HUD.PosX + 95 + 1, HUD.PosY + 57, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Job, "HUDMedium", HUD.PosX + 95, HUD.PosY + 57,  team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	
 	-- Wallet
 --	draw.DrawText("НАЛИЧНЫЕ: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 2 + 2.5 * 3 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 --	draw.DrawText("НАЛИЧНЫЕ: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 2 + 2.5 * 3, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	draw.DrawText(VAL_Wallet, "HUDMedium", HUD.PosX + 28 + 1, HUD.PosY + 97, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Wallet, "HUDMedium", HUD.PosX + 28, HUD.PosY + 97, Color(79, 191, 94, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Wallet, "HUDMedium", HUD.PosX + 28, HUD.PosY + 97, Color(75, 229, 126, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	
 	-- Salary
 --	draw.DrawText("ЗАРПЛАТА: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 3 + 2.5 * 4 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
@@ -492,7 +477,7 @@ local function DrawEntityDisplay()
 	for k, ply in pairs(players or player.GetAll()) do
 		if not ply:Alive() or ply == LocalPlayer() then continue end
 		local hisPos = ply:GetShootPos()
-		if ply:getDarkRPVar("wanted") then DrawWantedInfo(ply) end
+		if ply:getDarkRPVar("wanted") and hisPos:DistToSqr(shootPos) < 160000 then DrawWantedInfo(ply) end
 
 		if GAMEMODE.Config.globalshow then
 			DrawPlayerInfo(ply)

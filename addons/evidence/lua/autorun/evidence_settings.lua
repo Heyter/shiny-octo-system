@@ -63,7 +63,7 @@ Evidence.Settings.ShowToAllPlayers		= true
 -- Evidence.Settings.AllowCP --		-- Are all cops allowed to investigate evidences? Uses isCP() check, so you need to set the CP job's into darkrp's job.lua to be in CivilProtection
 -- http://i.gyazo.com/ca453db731163ff363551f8b60426c3c.png -- Example, all those jobs can investigate the evidence if this is set to true.
 -- Enabling this will overwrite Evidence.Settings.AllowJobName
-Evidence.Settings.AllowCP				= true
+Evidence.Settings.AllowCP				= false
  
 -- if Evidence.Settings.AllowCP is set to false Evidence.Settings.AllowJobName defines what job can investigate Evidence.Settings. This uses the job's name, not the uniqname(not TEAM_POLICE, but uses DarkRP.createJob("Detective"...)
 -- http://i.gyazo.com/85a7a36da00281627e8d65366b5ee348.png -- the selected & green part 
