@@ -8,8 +8,6 @@ if DOORHANDLE.French == true then
 	DOORHANDLE.strings = DOORHANDLE.fr_strings
 end
 
-DOORHANDLE.Doors = {}
-
 function DOORHANDLE:CreateFonts()
 	local hookData = hook.Run( "DOORHANDLE_AddExtraFonts", DOORHANDLE.PresetFonts )
 	if hookData then DOORHANDLE.PresetFonts = hookData end
@@ -44,30 +42,6 @@ function DOORHANDLE:CreateFonts()
 end
 
 DOORHANDLE:CreateFonts()
-
-function DOORHANDLE:FindDoors()
-	local rotating = ents.FindByClass("prop_door_rotating")
-	local brush = ents.FindByClass("func_door")
-	local brush2 = ents.FindByClass("func_door_rotating")
-	self.Doors = {}
-	for k,v in ipairs(rotating) do
-		table.insert(self.Doors, v)
-	end
-	for k,v in ipairs(brush) do
-		table.insert(self.Doors, v)
-	end
-	for k,v in ipairs(brush2) do
-		table.insert(self.Doors, v)
-	end
-	--PrintTable( self.Doors )
-end
-
-hook.Add("InitPostEntity","DOORHANDLE:FindDoors", function()
-	DOORHANDLE:FindDoors()
-end)
-
-DOORHANDLE:FindDoors() -- for some reason, this needs to be re-called every now and then.
-timer.Create("DoorhandleFindDoors", 10, 0, function() DOORHANDLE:FindDoors() end)
 
 function DOORHANDLE:GetDoors()
 
@@ -343,8 +317,8 @@ function DOORHANDLE:RenderDoors()
 		end
 		local data = door:getDoorData()
 		local scale = self.DefaultTextScale
-			--if data.textScale and data.owner then scale = data.textScale end
-			if data.owner or data.nonOwnable or data.groupOwn then
+		if data.textScale then scale = data.textScale end
+			/*if data.owner or data.nonOwnable or data.groupOwn then
 				if data.textScale then
 					scale = data.textScale
 				else
@@ -352,7 +326,7 @@ function DOORHANDLE:RenderDoors()
 				end
 			else
 				scale = self.BuyableTextScale
-			end
+			end*/
 		
 		cam.Start3D2D(doorpos+doorang:Up()*thickness, doorang, 0.025*scale )
 			self:DrawDoorInfo( door )

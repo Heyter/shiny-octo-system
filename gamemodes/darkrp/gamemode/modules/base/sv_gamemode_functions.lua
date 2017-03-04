@@ -720,6 +720,7 @@ function GM:PlayerSpawn(ply)
 
     hook.Call("PlayerLoadout", self, ply)
     hook.Call("PlayerSetModel", self, ply)
+    hook.Call("PlayerPostLoadout",nil,ply)
 
     local ent, pos = hook.Call("PlayerSelectSpawn", self, ply)
     ply:SetPos(pos or ent:GetPos())

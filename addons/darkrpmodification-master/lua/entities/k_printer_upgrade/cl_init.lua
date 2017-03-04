@@ -16,4 +16,4 @@ function ENT:Draw()
 	--DrawInformation()
 end
 
-hook.Add( "HUDPaint", "KUpgradeNotif", DrawInformation );
+--hook.Add( "HUDPaint", "KUpgradeNotif", DrawInformation );
