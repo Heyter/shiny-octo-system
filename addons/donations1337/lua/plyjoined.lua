@@ -24,12 +24,13 @@ function meta:Process()
 				PrintTable(weps)
 				self.pweapons = {}
 				for k,v in pairs(weps) do
-					table.insert(self.pweapons,#self.pweapons,k)
+					table.insert(self.pweapons,#self.pweapons+1,v)
 				end
 
 			end
 			
 		end
+		self.initSpawnEnded = true
 	end)
 end
 

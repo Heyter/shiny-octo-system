@@ -93,5 +93,21 @@ end
 function getPWeapons(id)
 	local query = prepareAndRun(SQLPatterns.selPly,id)
 	if query:isRunning() then query:wait() end
-	return split(query:getData()[1]['permaweapons'])
+	local data = query:getData()
+	if #data == 0 then return false end
+	return split(dara[1]['permaweapons'])
 end
+
+function givePWeapons(ply)
+	if not ply.initSpawnEnded then
+		timer.Simple(1,function() print("timered") givePWeapons(ply) end)
+		return
+	end
+	if ply:isArrested() then return end
+	if #ply.pweapons == 0 then return end
+	for k,v in pairs(ply.pweapons) do
+		ply:Give(v)
+	end
+end
+
+hook.Add("PlayerPostLoadout","permaweapons",givePWeapons) 

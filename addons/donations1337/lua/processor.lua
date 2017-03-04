@@ -66,10 +66,8 @@ function processPendings()
 			local wep = v.addargs
 			local time = os.time() + UNIX_1_DAY*v.amount
 			local weps = getPWeapons(ply) or {}
-			PrintTable(weps)
 			table.RemoveByValue(weps,wep)
 			table.insert(weps, #weps+1, wep)
-			PrintTable(weps)
 			local stringweps = table.concat(weps, ' ')
 			local trans = db:createTransaction()
 				trans:addQuery(prepareNotRun(SQLPatterns.updatePStatus, id))
