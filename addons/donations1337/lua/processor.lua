@@ -3,7 +3,7 @@ function processPendings()
 	local pendings = prepareAndRun(SQLPatterns.getpending,os.time())
 	if pendings:isRunning() then pendings:wait() end
 	local data = pendings:getData()
-	print("Processing ".. #data.." pendings now")
+	--print("Processing ".. #data.." pendings now")
 	for k,v in pairs(data) do
 		if v.type == "addmoney" then
 			local ply = player.GetBySteamID64(tostring(v.steamid64))
