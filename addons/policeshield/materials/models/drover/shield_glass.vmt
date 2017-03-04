@@ -1,0 +1,22 @@
+VertexLitGeneric
+{
+	$basetexture "models/drover/shield"
+	$bumpmap "models/drover/shield_nm"
+	$surfaceprop Glass
+
+	$translucent 1
+	$additive 1
+
+	$envmap "env_cubemap"
+	$envmaptint "[0.58 0.58 0.58]"
+	$envmapsaturation 0.83
+
+	$phong 1
+	$phongfresnelranges "[10 0.9 5]"
+	$phongexponent 33
+	$phongboost 0.05
+
+	$nodecal 1
+
+	$model 1
+}
