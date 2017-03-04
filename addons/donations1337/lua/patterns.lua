@@ -8,3 +8,4 @@ SQLPatterns.addPending		= "INSERT INTO pending (`steamid64`, `addedon`, `type` )
 SQLPatterns.checkPending	= "SELECT * FROM pending WHERE `steamid64` = ? AND `addedon` > ? AND `status` = 0 AND `type` = ?"
 SQLPatterns.updatePending	= "UPDATE pending SET `addedon` = ? WHERE `id` = ?"
 SQLPatterns.updateUGroup	= "UPDATE players SET `usergroup` = ? WHERE `steamid64` = ?"
+SQLPatterns.updatePWeps		= "UPDATE players SET `permaweapons` = ? WHERE `steamid64` = ?"

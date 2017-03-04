@@ -17,7 +17,17 @@ function meta:Process()
 							os.time()	)
 			
 		else
+			local pweapons = selectPlayer:getData()
+			pweapons = pweapons[1].permaweapons
+			if #pweapons > 0 then
+				local weps = split(pweapons,' ')
+				PrintTable(weps)
+				self.pweapons = {}
+				for k,v in pairs(weps) do
+					table.insert(self.pweapons,#self.pweapons,k)
+				end
 
+			end
 			
 		end
 	end)
