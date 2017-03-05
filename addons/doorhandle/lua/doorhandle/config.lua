@@ -30,8 +30,8 @@ DOORHANDLE.MinTextScale = 0.25
 
 -- appendix I
 
-DOORHANDLE.DefaultTextScale = 3.5 -- this must be a number between MaxTextScale and MinTextScale
-DOORHANDLE.BuyableTextScale = 2 -- this is how big the text is when the door has not been purchased.
+DOORHANDLE.DefaultTextScale = 2.5 -- this must be a number between MaxTextScale and MinTextScale
+DOORHANDLE.BuyableTextScale = 1.1 -- this is how big the text is when the door has not been purchased.
 DOORHANDLE.DisplayBuyableText = true -- change this to false to hide the "Press F2 to purchase" text.
 
 -- appendix II
