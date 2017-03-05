@@ -104,7 +104,7 @@ function givePWeapons(ply)
 		return
 	end
 	if ply:isArrested() then return end
-	if #ply.pweapons == 0 then return end
+	if #ply.pweapons == 0 or ply.pweapons == nil then return end
 	for k,v in pairs(ply.pweapons) do
 		ply:Give(v)
 	end

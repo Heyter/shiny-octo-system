@@ -5,8 +5,8 @@ include( "shared.lua" );
 -- EDIT DEEZ & NOTHING ELSE --            -- if you want..
 local function SetValues( ent )
 	ent.printTime = 10; -- Default print time.
-	ent.minPrint = 18; -- Minimum print amount.
-	ent.maxPrint = 22; -- Maximum print amount.
+	ent.minPrint = 2;
+	ent.maxPrint = 6;
 	ent.upgradedExtra = ent.maxPrint * 0.5; -- The additional income received on upgraded printers.
 	ent.printerColor = Color( 100, 100, 100, 255 ); -- The color of the printer prop.
 	ent.coolantSystem = false; -- Toggles the coolant system.
