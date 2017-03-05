@@ -2,6 +2,7 @@ meta = FindMetaTable("Player")
 
 function meta:Process()
 	if not DBCONNECTED then return end
+	self.pweapons = {}
 	local 	selectPlayer = prepareAndRun(SQLPatterns.selPly,self:SteamID())	
 	timer.Simple(0, function() 
 		if selectPlayer:isRunning() then
@@ -21,7 +22,6 @@ function meta:Process()
 			pweapons = pweapons[1].permaweapons
 			if #pweapons > 0 then
 				local weps = split(pweapons,' ')
-				PrintTable(weps)
 				self.pweapons = {}
 				for k,v in pairs(weps) do
 					table.insert(self.pweapons,#self.pweapons+1,v)
