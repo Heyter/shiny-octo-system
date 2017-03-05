@@ -64,6 +64,50 @@ function addOrUpdateRemove(ply64,time,type)
 	end
 
 end
+
+function notify(p,s)
+	local ply = player.GetBySteamID(p)
+	if not ply then return end
+	DarkRP.notify(ply,0,10,s)
+end
+function notify64(p,s)
+	local ply = player.GetBySteamID64(p)
+	if not ply then return end
+	DarkRP.notify(ply,0,10,s)
+end
+
 function writeDBLog(str)
 	prepareAndRun(SQLPatterns.sendLog, os.time(), str)
 	end
+
+function split(s)
+	local ret = {}
+	if #s>0 then
+		for i in string.gmatch(s, "%S+") do
+	   		table.insert(ret,#ret+1,i)
+		end
+		return ret
+	else return false end
+end
+
+function getPWeapons(id)
+	local query = prepareAndRun(SQLPatterns.selPly,id)
+	if query:isRunning() then query:wait() end
+	local data = query:getData()
+	if #data == 0 then return false end
+	return split(dara[1]['permaweapons'])
+end
+
+function givePWeapons(ply)
+	if not ply.initSpawnEnded then
+		timer.Simple(1,function() print("timered") givePWeapons(ply) end)
+		return
+	end
+	if ply:isArrested() then return end
+	if #ply.pweapons == 0 then return end
+	for k,v in pairs(ply.pweapons) do
+		ply:Give(v)
+	end
+end
+
+hook.Add("PlayerPostLoadout","permaweapons",givePWeapons) 
