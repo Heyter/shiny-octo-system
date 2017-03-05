@@ -57,9 +57,11 @@ function addOrUpdateRemove(ply64,time,type)
 	local sel = prepareAndRun(SQLPatterns.checkPending,ply64,os.time(),type)
 	if sel:isRunning() then sel:wait() end
 	data = sel:getData()
+
 	if #data == 0 then
 		return prepareNotRun(SQLPatterns.addPending,ply64,time,type)
 	else
+		time = data[1]['addedon'] + (time - os.time())
 		return prepareNotRun(SQLPatterns.updatePending,time,data[1]['id'])
 	end
 
@@ -100,7 +102,7 @@ end
 
 function givePWeapons(ply)
 	if not ply.initSpawnEnded then
-		timer.Simple(1,function() print("timered") givePWeapons(ply) end)
+		timer.Simple(1,function() givePWeapons(ply) end)
 		return
 	end
 	if ply:isArrested() then return end
@@ -111,3 +113,10 @@ function givePWeapons(ply)
 end
 
 hook.Add("PlayerPostLoadout","permaweapons",givePWeapons) 
+
+function chatAnnounce(text)
+	for k,p in pairs(player.GetAll()) do
+		print(k,p)
+		p:ChatPrint(text)
+	end
+end
