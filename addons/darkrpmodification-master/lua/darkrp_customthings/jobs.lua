@@ -105,7 +105,7 @@ TEAM_POLICE = DarkRP.createJob("Офицер полиции", {
 	description = [[Тот, кто сохраняет порядок в городе.]],
     weapons = {"weapon_policebaton", "m9k_colt1911", "door_ram", "weaponchecker"},
     command = "cp",
-    max = 10,
+    max = 13,
     salary = GAMEMODE.Config.normalsalary * 1.45,
     admin = 0,
     vote = true,
@@ -165,9 +165,9 @@ TEAM_SWAT = DarkRP.createJob("SWAT Штурмовик", {
     color = Color(133, 73, 238, 255),
     model ="models/player/bfh_enforcer.mdl",
     description = [[Тот, кто вооружен и опасен.]],
-    weapons = {"weapon_policebaton", "m9k_mp5sd", "door_ram", "weaponchecker", "weapon_shield"},
+    weapons = {"weapon_policebaton", "m9k_mp5sd", "door_ram", "weaponchecker", "weapon_policeshield"},
     command = "swat",
-    max = 8,
+    max = 4,
     salary = GAMEMODE.Config.normalsalary * 1.8,
     admin = 0,
     vote = true,
@@ -182,7 +182,7 @@ TEAM_SWATLEADER = DarkRP.createJob("SWAT Лидер", {
     color = Color(133, 73, 238, 255),
     model ="models/player/bfh_mechanic.mdl",
     description = [[Тот, кто командует SWAT.]],
-    weapons = {"weapon_policebaton", "m9k_jackhammer", "door_ram", "weaponchecker"},
+    weapons = {"weapon_policebaton", "m9k_jackhammer", "door_ram", "weaponchecker", "weapon_policeshield"},
     command = "swatleader",
     max = 1,
     salary = GAMEMODE.Config.normalsalary * 2,
@@ -204,7 +204,7 @@ TEAM_SWATMEDIC = DarkRP.createJob("SWAT Медик", {
     description = [[Тот, лечит союзников.]],
     weapons = {"weapon_policebaton", "m9k_sig_p229r", "door_ram", "weaponchecker", "med_kit"},
     command = "swatmedic",
-    max = 3,
+    max = 2,
     salary = GAMEMODE.Config.normalsalary * 1.8,
     admin = 0,
     vote = true,
@@ -426,6 +426,34 @@ TEAM_RADIOHOST = DarkRP.createJob("Ведущий радио", {
     customCheck = isDonator,
     isDonator = true,
     CustomCheckFailMsg = "Извините, только для Премиум игроков",
+})
+
+TEAM_DOG = DarkRP.createJob("Собака", {
+    color = Color(238, 166, 80, 255),
+    model = "models/doge_player/doge_player.mdl",
+    description = [[Тот, кто постоянно лает.]],
+    weapons = {},
+    command = "dog",
+    max = 10,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    candemote = false,
+})
+
+TEAM_WHORE = DarkRP.createJob("Проститука", {
+    color = Color(238, 99, 140, 255),
+    model = "models/player/alyx.mdl",
+    description = [[Тот, кто торгует телом.]],
+    weapons = {"weapon_hooker"},
+    command = "whore",
+    max = 4,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    cook = true,
 })
 
 if not DarkRP.disabledDefaults["modules"]["hungermod"] then

@@ -23,7 +23,7 @@ DarkRP.createShipment("Colt 1911", {
     price = 850,
     amount = 10,
     separate = true,
-    pricesep = 2600,
+    pricesep = 650,
     noship = true,
     allowed = {TEAM_GUN},
     category = "Pistols",
@@ -35,7 +35,7 @@ DarkRP.createShipment("HK USP", {
     price = 0,
     amount = 10,
     separate = true,
-    pricesep = 3500,
+    pricesep = 875,
     noship = true,
     allowed = {TEAM_GUN},
     category = "Pistols",
@@ -47,7 +47,7 @@ DarkRP.createShipment("M92 Beretta", {
     price = 0,
     amount = 10,
     separate = true,
-    pricesep = 3400,
+    pricesep = 850,
     noship = true,
     allowed = {TEAM_GUN},
     category = "Pistols",
@@ -59,7 +59,7 @@ DarkRP.createShipment("Desert Eagle", {
     price = 0,
     amount = 10,
     separate = true,
-    pricesep = 4500,
+    pricesep = 1125,
     noship = true,
     allowed = {TEAM_GUN},
     category = "Pistols",
@@ -68,10 +68,10 @@ DarkRP.createShipment("Desert Eagle", {
 DarkRP.createShipment("S&W Model 627", {
     model = "models/weapons/w_sw_model_627.mdl",
     entity = "m9k_model627",
-    price = 2450,
+    price = 1150,
     amount = 10,
     separate = true,
-    pricesep = 4600,
+    pricesep = 11150,
     noship = true,
     allowed = {TEAM_GUN},
     category = "Pistols",
@@ -80,10 +80,10 @@ DarkRP.createShipment("S&W Model 627", {
 DarkRP.createShipment("Uzi", {
         model = "models/weapons/w_uzi_imi.mdl",
         entity = "m9k_uzi",
-        price = 1000,
+        price = 2000,
         amount = 1,
         seperate = true,
-        pricesep = 8000,
+        pricesep = 2000,
         noship = true,
         allowed = {TEAM_GUN}
 })
@@ -94,7 +94,7 @@ DarkRP.createShipment("Thommy Gun", {
     price = 2450,
     amount = 10,
     separate = true,
-    pricesep = 20000,
+    pricesep = 5000,
     noship = true,
     allowed = {TEAM_GUN},
     category = "Rifles",
@@ -103,7 +103,7 @@ DarkRP.createShipment("Thommy Gun", {
 DarkRP.createShipment("Double Barrel Shotgun", {
         model = "models/weapons/w_double_barrel_shotgun.mdl",
         entity = "m9k_dbarrel",
-        price = 1000,
+        price = 2375,
         amount = 1,
         seperate = true,
         pricesep = 9500,
@@ -114,7 +114,7 @@ DarkRP.createShipment("Double Barrel Shotgun", {
 DarkRP.createShipment("AK-47", {
         model = "models/weapons/w_ak47_m9k.mdl",
         entity = "m9k_ak47",
-        price = 1000,
+        price = 2500,
         amount = 1,
         seperate = true,
         pricesep = 10000,
@@ -128,7 +128,7 @@ DarkRP.createShipment("M16A4", {
         price = 1000,
         amount = 1,
         seperate = true,
-        pricesep = 11000,
+        pricesep = 2750,
         noship = true,
         allowed = {TEAM_GUN}
 })
@@ -139,7 +139,7 @@ DarkRP.createShipment("Winchester-73", {
         price = 1000,
         amount = 1,
         seperate = true,
-        pricesep = 12000,
+        pricesep = 3000,
         noship = true,
         allowed = {TEAM_GUN}
 })
@@ -150,7 +150,7 @@ DarkRP.createShipment("SVT 40", {
         price = 1000,
         amount = 1,
         seperate = true,
-        pricesep = 14000,
+        pricesep = 3500,
         noship = true,
         allowed = {TEAM_GUN}
 })
@@ -161,7 +161,7 @@ DarkRP.createShipment("Отмычка", {
     price = 1000,
     amount = 10,
     separate = true,
-    pricesep = 800,
+    pricesep = 500,
     noship = true,
     allowed = {TEAM_ILLEGALDEALER},
 })
@@ -172,7 +172,7 @@ DarkRP.createShipment("Устройство для взлома", {
     price = 1000,
     amount = 10,
     separate = true,
-    pricesep = 1200,
+    pricesep = 800,
     noship = true,
     allowed = {TEAM_ILLEGALDEALER},
 })

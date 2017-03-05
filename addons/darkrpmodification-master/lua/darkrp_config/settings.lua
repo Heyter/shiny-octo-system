@@ -189,19 +189,19 @@ GM.Config.babygodtime                   = 8
 -- Leave this on at least a few seconds to prevent people from spamming sounds. Set to 0 to disable.
 GM.Config.chatsoundsdelay               = 5
 -- deathfee - the amount of money someone drops when dead.
-GM.Config.deathfee                      = 200
+GM.Config.deathfee                      = 50
 -- decaltimer - Sets the time to clear clientside decals (in seconds).
 GM.Config.decaltimer                    = 120
 -- demotetime - Number of seconds before a player can rejoin a team after demotion from that team.
 GM.Config.demotetime                    = 300
 -- doorcost - Sets the cost of a door.
-GM.Config.doorcost                      = 50
+GM.Config.doorcost                      = 5
 -- entremovedelay - how long to wait before removing a bought entity after disconnect.
 GM.Config.entremovedelay                = 0
 -- gunlabweapon - The weapon that the gunlab spawns.
 GM.Config.gunlabweapon                  = "weapon_p2282"
 -- jailtimer - Sets the jailtimer (in seconds).
-GM.Config.jailtimer                     = 120
+GM.Config.jailtimer                     = 1180
 -- lockdowndelay - The amount of time a mayor must wait before starting the next lockdown.
 GM.Config.lockdowndelay                 = 120
 -- maxadvertbillboards - The maximum number of /advert billboards a player can place.
@@ -229,7 +229,7 @@ GM.Config.moneyRemoveTime               = 600
 -- mprintamount - Value of the money printed by the money printer.
 GM.Config.mprintamount                  = 250
 -- normalsalary - Sets the starting salary for newly joined players.
-GM.Config.normalsalary                  = 45
+GM.Config.normalsalary                  = 12
 -- npckillpay - Sets the money given for each NPC kill.
 GM.Config.npckillpay                    = 10
 -- paydelay - Sets how long it takes before people get salary.

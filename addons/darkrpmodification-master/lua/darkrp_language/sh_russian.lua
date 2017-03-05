@@ -249,7 +249,7 @@ local russian = {
 	request = "(ЗАПРОС!)",
 	group = "(группа)",
 	demote = "(РАЗЖАЛОВАН)",
-	ooc = "OOC",
+	ooc = "Глобальный",
 	radio_x = "Радио %d",
 
 	talk = "сказать",
@@ -473,7 +473,7 @@ local russian = {
 
 	x_options = "%s опции",
 	sell_x = "Продать %s",
-	set_x_title = "Установить %s название",
+	set_x_title = "Установить название %s ",
 	set_x_title_long = "Установить название %s you are looking at.",
 	jobs = "Работы",
 	buy_x = "Купить %s",

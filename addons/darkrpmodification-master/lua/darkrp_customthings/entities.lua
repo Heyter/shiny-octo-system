@@ -21,7 +21,7 @@ Add entities under the following line:
 DarkRP.createEntity("Бронежилет", {
     ent = "armor",
     model = "models/weapons/w_defuser.mdl",
-    price = 2000,
+    price = 500,
     max = 10,
     cmd = "buyarmor",
     allowed = {TEAM_ILLEGALDEALER},
@@ -30,7 +30,7 @@ DarkRP.createEntity("Бронежилет", {
 DarkRP.createEntity("Аптечка", {
     ent = "health_pack",
     model = "models/healthvial.mdl",
-    price = 1000,
+    price = 250,
     max = 10,
     cmd = "buyhealthpack",
     allowed = {TEAM_MEDIC},
@@ -39,7 +39,7 @@ DarkRP.createEntity("Аптечка", {
 DarkRP.createEntity("Радио", {
     ent = "re_radio",
     model = "models/props_lab/citizenradio.mdl",
-    price = 200,
+    price = 50,
     max = 2,
     cmd = "buyradio",
 })
@@ -57,7 +57,7 @@ DarkRP.createEntity("Микрофон", {
 DarkRP.createEntity("Принтер первого уровня", {
     ent = "k_printer_t1",
     model = "models/props_lab/reciever01a.mdl",
-    price = 1500,
+    price = 1000,
     max = 4,
     cmd = "buymoneyprinter1",
     customCheck = function(ply) return ply:CanBuyPrinter() end,
@@ -67,7 +67,7 @@ DarkRP.createEntity("Принтер первого уровня", {
 DarkRP.createEntity("Принтер второго уровня", {
     ent = "k_printer_t2",
     model = "models/props_lab/reciever01a.mdl",
-    price = 3000,
+    price = 2000,
     max = 4,
     cmd = "buymoneyprinter2",
     customCheck = function(ply)return ply:CanBuyPrinter() end,
@@ -77,7 +77,7 @@ DarkRP.createEntity("Принтер второго уровня", {
 DarkRP.createEntity("Принтер третьего уровня", {
     ent = "k_printer_t3",
     model = "models/props_lab/reciever01a.mdl",
-    price = 4500,
+    price = 3000,
     max = 4,
     cmd = "buymoneyprinter3",
     customCheck = function(ply) return ply:CanBuyPrinter() end,
@@ -87,7 +87,7 @@ DarkRP.createEntity("Принтер третьего уровня", {
 DarkRP.createEntity("Принтер четвертого уровня", {
     ent = "k_printer_t4",
     model = "models/props_lab/reciever01a.mdl",
-    price = 6500,
+    price = 4000,
     max = 4,
     cmd = "buymoneyprinter4",
     customCheck = function(ply) return ply:CanBuyPrinter() end,
@@ -97,7 +97,7 @@ DarkRP.createEntity("Принтер четвертого уровня", {
 DarkRP.createEntity("Принтер пятого уровня", {
     ent = "k_printer_t5",
     model = "models/props_lab/reciever01a.mdl",
-    price = 10000,
+    price = 5000,
     max = 4,
     cmd = "f4091876df6a5d39e6690b7395a95399",
     customCheck = function(ply)  return ply:CanBuyPrinter() and isDonator(ply) end
@@ -106,7 +106,7 @@ DarkRP.createEntity("Принтер пятого уровня", {
 DarkRP.createEntity("Улучшение принтера", {
     ent = "k_printer_upgrade",
     model = "models/props_lab/box01a.mdl",
-    price = 2000,
+    price = 500,
     max = 1,
     cmd = "buyprinterupgrade"
 })
@@ -114,7 +114,7 @@ DarkRP.createEntity("Улучшение принтера", {
 DarkRP.createEntity("Охладитель", {
     ent = "k_coolant_cell",
     model = "models/Items/battery.mdl",
-    price = 500,
+    price = 200,
     max = 5,
     cmd = "buycoolantcell"
 })

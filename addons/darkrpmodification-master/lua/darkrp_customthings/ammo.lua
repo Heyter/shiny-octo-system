@@ -71,49 +71,49 @@ Add new ammo types under the next line!
 DarkRP.createAmmoType("pistol", {
 	name = "Патроны для пистолета",
 	model = "models/Items/BoxSRounds.mdl",
-	price = 500,
+	price = 120,
 	amountGiven = 24
 })
 
 DarkRP.createAmmoType("357", {
 	name = "Патроны для револьверов",
 	model = "models/Items/357ammo.mdl",
-	price = 600,
+	price = 145,
 	amountGiven = 18
 })
 
 DarkRP.createAmmoType("smg1", {
 	name = "Патроны для пистолета-пулемета",
 	model = "models/Items/BoxMRounds.mdl",
-	price = 700,
+	price = 180,
 	amountGiven = 60
 })
 
 DarkRP.createAmmoType("buckshot", {
 	name = "Патроны для дробовика",
 	model = "models/Items/BoxBuckshot.mdl",
-	price = 800,
+	price = 200,
 	amountGiven = 8
 })
 
 DarkRP.createAmmoType("ar2", {
 	name = "Патроны для винтовки",
 	model = "models/Items/BoxMRounds.mdl",
-	price = 800,
+	price = 180,
 	amountGiven = 60
 })
 
 DarkRP.createAmmoType("SniperPenetratedRound", {
 	name = "Патроны для снайп. винтовки",
 	model = "models/Items/sniper_round_box.mdl",
-	price = 1000,
-	amountGiven = 60
+	price = 200,
+	amountGiven = 20
 })
 
 DarkRP.createAmmoType("AirboatGun", {
 	name = "Патроны для винчестера",
 	model = "models/Items/sniper_round_box.mdl",
-	price = 1000,
+	price = 190,
 	amountGiven = 16
 })
 
