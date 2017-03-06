@@ -236,7 +236,7 @@ TEAM_SWATSNIPER = DarkRP.createJob("SWAT Снайпер", {
 })
 
 TEAM_GANG = DarkRP.createJob("Бандит", {
-    color = Color(75, 75, 75, 255),
+    color = Color(130, 130, 130, 255),
     model = {
         "models/humans/mafia/male_02.mdl",
         "models/humans/mafia/male_04.mdl",
@@ -258,7 +258,7 @@ TEAM_GANG = DarkRP.createJob("Бандит", {
 })
 
 TEAM_THIEF = DarkRP.createJob("Вор", {
-    color = Color(50, 50, 50, 255),
+    color = Color(130, 130, 130, 255),
     model = "models/player/group01/cookies114.mdl",
     description = [[Тот, кто обворовывает людей.]],
     weapons = {"lockpick","keypad_cracker"},
@@ -272,7 +272,7 @@ TEAM_THIEF = DarkRP.createJob("Вор", {
 })
 
 TEAM_MOB = DarkRP.createJob("Босс мафии", {
-    color = Color(25, 25, 25, 255),
+    color = Color(40, 40, 40, 255),
     model = "models/vito.mdl",
     description = [[Тот, кто руководит бандитами.]],
     weapons = {"lockpick", "unarrest_stick"},
@@ -435,7 +435,7 @@ TEAM_DOG = DarkRP.createJob("Собака", {
     weapons = {},
     command = "dog",
     max = 10,
-    salary = GAMEMODE.Config.normalsalary,
+    salary = 0,
     admin = 0,
     vote = false,
     hasLicense = false,
