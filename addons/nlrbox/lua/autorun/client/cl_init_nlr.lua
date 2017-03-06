@@ -35,7 +35,7 @@ net.Receive("NLRBox",
     NFrame:SetPos( (surface.ScreenWidth()/2)-300, (surface.ScreenHeight()/2)-100)
     NFrame:SetSize( 600, 200)
     NFrame:SetTitle(titletext)
-    NFrame:SetBackgroundBlur( backgroundblur )
+    NFrame:SetBackgroundBlur( true )
     NFrame:SetVisible( true)
     NFrame:SetDraggable(makedraggable)
     NFrame:ShowCloseButton( false )

@@ -198,15 +198,14 @@ local timeSinceLastHUDPaint = 0
 
 local function PlayerModelF()
 
-	PlayerModel = vgui.Create("ModelImage", self)
-	function PlayerModel:LayoutEntity( Entity ) return end
-	PlayerModel:SetModel( LocalPlayer():GetModel() )
+	PlayerModel = vgui.Create("SpawnIcon", self)
+	PlayerModel:SetModel( DarkRP.getPreferredJobModel(LocalPlayer():Team()) )
 	PlayerModel:SetPos(HUD.PosX, HUD.PosY)
 	PlayerModel:SetSize(85, 85)
 	--PlayerModel:SetVisible(false)
 	PlayerModel:SetPaintedManually(true)
 	timer.Create("ModelUpdater101",1,0,function()
-		PlayerModel:SetModel( LocalPlayer():GetModel() ) end)
+		PlayerModel:SetModel( DarkRP.getPreferredJobModel(LocalPlayer():Team()) ) end)
 
 end
 
@@ -262,14 +261,13 @@ local function Armor()
 end
 
 local function PlayerInfo()
-	for k, v in pairs(player.GetAll()) do
+
 
 	-- Values
 	local VAL_Name 		= LocalPlayer():Nick() or ""
 	local VAL_Job 		= LocalPlayer():getDarkRPVar("job") or ""
 	local VAL_Wallet 	= "$"..formatNumber(LocalPlayer():getDarkRPVar("money") or 0)
 	local VAL_Salary 	= "$"..formatNumber(LocalPlayer():getDarkRPVar("salary") or 0)
-	player.GetAll()
 
 	-- Name
 --	draw.DrawText("ИМЯ: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 0 + 2.5 * 1 + 1, Color(0, 0, 0,255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
@@ -281,7 +279,7 @@ local function PlayerInfo()
 --	draw.DrawText("РАБОТА: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 1 + 2.5 * 2 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 --	draw.DrawText("РАБОТА: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 1 + 2.5 * 2, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	draw.DrawText(VAL_Job, "HUDMedium", HUD.PosX + 95 + 1, HUD.PosY + 57, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Job, "HUDMedium", HUD.PosX + 95, HUD.PosY + 57,  team.GetColor(v:Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Job, "HUDMedium", HUD.PosX + 95, HUD.PosY + 57,  team.GetColor(LocalPlayer():Team()), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	
 	-- Wallet
 --	draw.DrawText("НАЛИЧНЫЕ: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 2 + 2.5 * 3 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
@@ -295,7 +293,6 @@ local function PlayerInfo()
 	draw.DrawText(VAL_Salary, "HUDMedium", HUD.PosX + 28 + 1, HUD.PosY + 124, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	draw.DrawText(VAL_Salary, "HUDMedium", HUD.PosX + 28, HUD.PosY + 124, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
-	end
 end
 
 local IconLicense 	= "icon16/page_red.png"

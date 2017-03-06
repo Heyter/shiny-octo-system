@@ -25,3 +25,5 @@ resource.AddWorkshop("128091208") -- M9K Heavy
 resource.AddWorkshop("128089118") -- M9K Assault
 resource.AddWorkshop("844378422") -- some french Cop model
 resource.AddWorkshop("656834283") -- DOGE
+resource.AddWorkshop("673698301") -- Vape SWEPs
+resource.AddWorkshop("105841291") -- More Materials

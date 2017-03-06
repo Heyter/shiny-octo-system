@@ -13,7 +13,7 @@ end;
 
 function ENT:Draw()
 	self.Entity:DrawModel()
-	DrawInformation()
+--	DrawInformation()
 end
 
-hook.Add( "HUDPaint", "KCoolantNotif", DrawInformation );
+--hook.Add( "HUDPaint", "KCoolantNotif", DrawInformation );
