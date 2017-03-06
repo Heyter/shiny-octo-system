@@ -44,29 +44,93 @@ local CommandsTable = {
 
 },
 {
-	type 	= 2,
+	type 	= 1,
 	cmd 	= "/drop", 
 	text 	= "Выбросить текущее оружие", 
 	args 	= { arg1_show = false, arg1_text = "", arg2_show = false, arg2_text = "" } 
 },
 {
-	type 	= 2,
+	type 	= 1,
 	cmd 	= "/makeshipment", 
 	text 	= "Сделать партию", 
 	args 	= { arg1_show = false, arg1_text = "", arg2_show = false, arg2_text = "" } 
 },
 {
-	type 	= 2,
+	type 	= 1,
 	cmd 	= "/unownalldoors", 
 	text 	= "Продать все двери", 
 	args 	= { arg1_show = false, arg1_text = "", arg2_show = false, arg2_text = "" } 
 },
 {
-	type 	= 2,
+	type 	= 1,
 	cmd 	= "/requestlicense", 
 	text 	= "Запросить лицензию", 
 	args 	= { arg1_show = false, arg1_text = "", arg2_show = false, arg2_text = "" } 
 },
+}
+local policeCommands = {
+	{
+	type 	= 2,
+	cmd 	= "/Wanted", 
+	text 	= "Объявить розыск", 
+	args 	= { arg1_show = true, arg1_text = "Имя игрока", arg2_show = true, arg2_text = "Причина" } 
+	},{
+	type 	= 2,
+	cmd 	= "/warrant", 
+	text 	= "Запросить ордер", 
+	args 	= { arg1_show = true, arg1_text = "Имя игрока", arg2_show = true, arg2_text = "Причина" }
+	},{
+	type 	= 2,
+	cmd 	= "/unwanted", 
+	text 	= "Снять розыск", 
+	args 	= { arg1_show = true, arg1_text = "Имя игрока", arg2_show = false, arg2_text = "Причина" }
+	},
+}
+
+local policeChiefCommands = table.Copy(policeCommands)
+table.insert(policeChiefCommands,
+{
+	type 	= 2,
+	cmd 	= "/givelicense", 
+	text 	= "Выдать лицензию", 
+	args 	= { arg1_show = false, arg1_text = "Имя игрока", arg2_show = false, arg2_text = "Причина" }
+})
+
+local mayorCommands = {
+	{
+	type 	= 3,
+	cmd 	= "/placelaws", 
+	text 	= "Экран с законами", 
+	args 	= { arg1_show = false, arg1_text = "Имя игрока", arg2_show = false, arg2_text = "Причина" }
+	},
+
+{
+	type 	= 3,
+	cmd 	= "/addlaw", 
+	text 	= "Добавить закон", 
+	args 	= { arg1_show = true, arg1_text = "Закон", arg2_show = false, arg2_text = "Причина" }
+	},
+
+{
+	type 	= 3,
+	cmd 	= "/removelaw", 
+	text 	= "Убрать закон", 
+	args 	= { arg1_show = true, arg1_text = "Номер линии", arg2_show = false, arg2_text = "Причина" }
+	},
+
+{
+	type 	= 3,
+	cmd 	= "/lottery", 
+	text 	= "Начать лотерею", 
+	args 	= { arg1_show = false, arg1_text = "Имя игрока", arg2_show = false, arg2_text = "Причина" }
+	},
+
+{
+	type 	= 3,
+	cmd 	= "/givelicense", 
+	text 	= "Выдать лицензию", 
+	args 	= { arg1_show = false, arg1_text = "Имя игрока", arg2_show = false, arg2_text = "Причина" }
+	},
 }
 -- Variables
 local PANEL = {}
@@ -105,13 +169,21 @@ function PANEL:Init()
 				draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Green1Color )
 				draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Green2Color )
 			end
-		else
+		elseif self.button.Type == 2 then
 			if self.button.Hover == true then
 				draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Blue2Color )
 				draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.SoftBlack )
 			else
 				draw.RoundedBox( 0, 2, 2, w - 4, h - 4, TCB_Settings.Blue1Color )
 				draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.Blue2Color )
+			end
+		else
+			if self.button.Hover == true then
+				draw.RoundedBox( 0, 2, 2, w - 4, h - 4, Color(220,62,62) )
+				draw.RoundedBox( 0, 4, 4, w - 8, h - 8, TCB_Settings.SoftBlack )
+			else
+				draw.RoundedBox( 0, 2, 2, w - 4, h - 4, Color(220,62,62) )
+				draw.RoundedBox( 0, 4, 4, w - 8, h - 8, Color(206,57,57) )
 			end
 		end
 
@@ -303,6 +375,15 @@ function PANEL:Init()
 	self.popup:SetVisible(false)
 	-- Fill Data
 	self:FillData( TCB_Scroll )
+	if LocalPlayer():isMayor() then
+		self:FillData(TCB_Scroll,self.lastY+20,mayorCommands)
+	elseif LocalPlayer():isCP() then
+		if LocalPlayer():Team() == TEAM_CHIEF then
+			self:FillData(TCB_Scroll,self.lastY+20,policeChiefCommands)
+		else
+			self:FillData(TCB_Scroll,self.lastY+20,policeCommands)
+		end
+	end
 
 	hook.Add("TCB_F4Menu_Close","Closef4popup",function()
 		self.popup:SetVisible(false)
@@ -310,13 +391,14 @@ function PANEL:Init()
 end
 
 -- Fill Data
-function PANEL:FillData( parent )
+function PANEL:FillData( parent ,startY, items)
 
-	local StartYPosl = 0
-	local StartYPosr = 0
+	local StartYPosl = startY or 0
+	local StartYPosr = startY or 0
 	local StartXPos = 0
+
 	local StartYPos = 0
-	local ItemTable = CommandsTable
+	local ItemTable = items or CommandsTable
 	for i, item in ipairs( ItemTable ) do
 
 		CurrentItem = vgui.Create( "tcb_panel_item_cmd", parent )
@@ -344,6 +426,7 @@ function PANEL:FillData( parent )
 		
 	
 	end
+	self.lastY = StartYPosl
 
 end
 
@@ -358,11 +441,20 @@ function PANEL:RefillData()
 	
 	-- Fill Items
 	self:FillData( TCB_Scroll )
+	if LocalPlayer():isMayor() then
+		self:FillData(TCB_Scroll,self.lastY+20,mayorCommands)
+	elseif LocalPlayer():isCP() then
+		if LocalPlayer():Team() == TEAM_CHIEF then
+			self:FillData(TCB_Scroll,self.lastY+20,policeChiefCommands)
+		else
+			self:FillData(TCB_Scroll,self.lastY+20,policeCommands)
+		end
+	end
 
 end
 
 function PANEL:OnClose()
-	print("asdasdasd")
+
 end
 -- Derma 
 vgui.Register( "tcb_panel_commands", PANEL, "DPanel" )
