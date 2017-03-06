@@ -151,6 +151,7 @@ function meta:changeTeam(t, force, suppressNotification)
         self:applyPlayerClassVars(false)
         gamemode.Call("PlayerSetModel", self)
         gamemode.Call("PlayerLoadout", self)
+        hook.Call("PlayerPostLoadout",nil,self)
     else
         self:KillSilent()
     end

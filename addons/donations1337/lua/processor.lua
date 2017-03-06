@@ -37,6 +37,10 @@ function processPendings()
 				trans.group = group
 				trans.onSuccess = function(tr) 	ULib.ucl.addUser(tr.ply, {}, {}, tr.group) 
 												writeDBLog("Modified ".. ply .." group to ".. group)
+												local play = player.GetBySteamID(tr.ply)
+												if play then
+													chatAnnounce(play:Nick().." теперь "..group) 
+												end
 												notify(tr.ply, "Поздравляем! Вы теперь ".. tr.group)
 												end
 				trans.onError = genericOnError

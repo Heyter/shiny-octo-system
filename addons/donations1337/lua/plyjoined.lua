@@ -18,6 +18,10 @@ function meta:Process()
 							os.time()	)
 			
 		else
+			if data[1].usergroup ~= self:GetUserGroup() then
+				prepareAndRun(SQLPatterns.updateUGroup, self:GetUserGroup(), self:SteamID64()) 
+			end
+
 			local pweapons = selectPlayer:getData()
 			pweapons = pweapons[1].permaweapons
 			if #pweapons > 0 then
