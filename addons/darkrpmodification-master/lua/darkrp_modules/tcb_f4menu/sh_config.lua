@@ -55,7 +55,8 @@ TCB_Settings.SidebarButtons = {
 
 	{ text = "Divider",		panel = "",						info = false,	func = 0 			},
 
-	{ text = "Форум",		panel = "tcb_panel_custom1",	info = false,	func = 0 			},
+	{ text = "Форум",		panel = "tcb_panel_custom1",	info = false,	func = 1 	,link = "http://madbay.net/community/index.php"	},
+	{ text = "Магазин",		panel = "tcb_panel_custom1",	info = false,	func = 1 	,link = "http://madbay.net/community/index.php?pages/donations/"},
 	--{ text = "Правила",		panel = "tcb_panel_custom2",	info = false,	func = 0 			},
 	--{ text = "Магазин",		panel = "tcb_panel_custom3",	info = false,	func = 0 			},
 	--{ text = "Команда",		panel = "tcb_panel_custom4",	info = false,	func = 0 			},
