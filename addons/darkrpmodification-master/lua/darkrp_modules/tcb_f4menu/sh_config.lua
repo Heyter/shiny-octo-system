@@ -45,7 +45,7 @@ TCB_Settings.Gray3Color			= Color( 255, 255, 255, 25 )
 -- Custom Web Panels (If Enabled Below)
 TCB_Settings.WebPanel_1		= "http://madbay.net/community/index.php"
 TCB_Settings.WebPanel_2		= "http://www.thecodingbeast.com"
-TCB_Settings.WebPanel_3		= "http://www.thecodingbeast.com"
+TCB_Settings.WebPanel_3		= "http://madbay.net/community/index.php?pages/donations/"
 TCB_Settings.WebPanel_4		= "http://www.thecodingbeast.com" 
 
 -- Buttons
@@ -57,7 +57,7 @@ TCB_Settings.SidebarButtons = {
 
 	{ text = "Форум",		panel = "tcb_panel_custom1",	info = false,	func = 0 			},
 	--{ text = "Правила",		panel = "tcb_panel_custom2",	info = false,	func = 0 			},
-	--{ text = "Магазин",		panel = "tcb_panel_custom3",	info = false,	func = 0 			},
+	{ text = "Магазин",		panel = "tcb_panel_custom3",	info = false,	func = 0 			},
 	--{ text = "Команда",		panel = "tcb_panel_custom4",	info = false,	func = 0 			},
 
 	{ text = "Divider",		panel = "",						info = false,	func = 0 			},
