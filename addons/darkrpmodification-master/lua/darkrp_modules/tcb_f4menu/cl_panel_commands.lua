@@ -51,20 +51,8 @@ local CommandsTable = {
 },
 {
 	type 	= 1,
-	cmd 	= "/makeshipment", 
-	text 	= "Сделать партию", 
-	args 	= { arg1_show = false, arg1_text = "", arg2_show = false, arg2_text = "" } 
-},
-{
-	type 	= 1,
 	cmd 	= "/unownalldoors", 
 	text 	= "Продать все двери", 
-	args 	= { arg1_show = false, arg1_text = "", arg2_show = false, arg2_text = "" } 
-},
-{
-	type 	= 1,
-	cmd 	= "/requestlicense", 
-	text 	= "Запросить лицензию", 
 	args 	= { arg1_show = false, arg1_text = "", arg2_show = false, arg2_text = "" } 
 },
 }
