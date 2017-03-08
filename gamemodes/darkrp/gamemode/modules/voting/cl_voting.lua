@@ -68,7 +68,7 @@ local function MsgDoVote(msg)
 
     local label = vgui.Create("DLabel")
     label:SetParent(panel)
-    label:SetPos(5, 25)
+    label:SetPos(5, 40)
     label:SetText(DarkRP.deLocalise(question))
     label:SizeToContents()
     label:SetVisible(true)
