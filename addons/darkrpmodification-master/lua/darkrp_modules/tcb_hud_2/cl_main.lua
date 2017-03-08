@@ -171,13 +171,13 @@ HUD.HHeight = HUD.Height / 2 + 11
 local function Base()
 	
 	-- Background
-	draw.RoundedBox(4, HUD.PosX-1, HUD.PosY-1, HUD.Width+2, HUD.Height+2, Color(56,38,22,255))
-	draw.RoundedBox(4, HUD.PosX, HUD.PosY, HUD.Width, HUD.Height, Color(56,38,22,255))
+	draw.RoundedBox(3, HUD.PosX-1, HUD.PosY-1, HUD.Width+2, HUD.Height+2, Color(56,38,22,255))
+	draw.RoundedBox(3, HUD.PosX, HUD.PosY, HUD.Width, HUD.Height, Color(56,38,22,255))
 
 	-- Sections
-	draw.RoundedBoxEx(4, HUD.PosX, HUD.BPosY, HUD.Width, HUD.BHeight, Color(69,46,27,255), false, false, true, true)
-	draw.RoundedBoxEx(4, HUD.PosX + HUD.Width - 50, HUD.PosY, 50, HUD.HHeight, Color(69,46,27,255), false, true, false, false)
-	draw.RoundedBoxEx(4, HUD.PosX, HUD.PosY, 75, HUD.HHeight, Color(69,46,27,255), true, false, false, false)
+	draw.RoundedBoxEx(3, HUD.PosX, HUD.BPosY, HUD.Width, HUD.BHeight, Color(69,46,27,255), false, false, true, true)
+	draw.RoundedBoxEx(3, HUD.PosX + HUD.Width - 50, HUD.PosY, 50, HUD.HHeight, Color(69,46,27,255), false, true, false, false)
+	draw.RoundedBoxEx(3, HUD.PosX, HUD.PosY, 75, HUD.HHeight, Color(69,46,27,255), true, false, false, false)
 	
 	-- Borders
 	draw.RoundedBox(0, HUD.PosX, HUD.BPosY-4, HUD.Width, 2, Color(43,29,17,255))
@@ -335,11 +335,11 @@ local function Agenda()
 	local agenda = LocalPlayer():getAgendaTable()
 	if not agenda then return end
 
-	draw.RoundedBox(10, 10, 10, 403, 90, Color(36, 36, 36, 255 ))
-	draw.RoundedBox(10, 12, 12, 400, 87, Color(84, 57, 34, 255))
-	draw.RoundedBox(10, 12, 12, 400, 20, Color(43, 29, 17, 255))
+	draw.RoundedBox(3, 10, 10, 403, 90, Color(36, 36, 36, 255 ))
+	draw.RoundedBox(3, 12, 12, 400, 87, Color(84, 57, 34, 255))
+	draw.RoundedBox(3, 12, 12, 400, 20, Color(43, 29, 17, 255))
 
-	draw.DrawNonParsedText(agenda.Title, "HUDMedium", 30, 12, Color(245, 206, 34, 255 ), 0)
+	draw.DrawNonParsedText(agenda.Title, "HUDSmall", 30, 12, Color(245, 206, 34, 255 ), 0)
 
 	local text = LocalPlayer():getDarkRPVar("agenda") or ""
 
