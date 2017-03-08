@@ -128,6 +128,7 @@ end
 
 local emoticons = {}
 
+/*
 emoticons[":)"] = "icon16/emoticon_smile.png"
 emoticons[":D"] = "icon16/emoticon_happy.png"
 emoticons[":O"] = "icon16/emoticon_surprised.png"
@@ -145,6 +146,7 @@ emoticons[":unhappy:"] = "icon16/emoticon_unhappy.png"
 emoticons[":suprised:"] = "icon16/emoticon_surprised.png"
 emoticons[":exclamation:"] = "icon16/exclamation.png"
 emoticons[":information:"] = "icon16/information.png"
+*/
 
 for match, data in pairs(emoticons) do
 	local expression = atlaschat.expression.New(match, match)
