@@ -23,6 +23,15 @@ local function MsgDoVote(msg)
     panel.btnMaxim:SetVisible(false)
     panel.btnMinim:SetVisible(false)
     panel:SetDraggable(false)
+
+    panel.Paint = function( pnl, w, h )
+        draw.RoundedBox( 3, 0, 0, 140, 140, Color(69,46,27,255), true, true, false, false )
+        draw.RoundedBox( 3, 0, 0, 140, 23, Color(43,29,17,255), true, true, false, false )
+
+
+    end
+
+
     function panel:Close()
         PanelNum = PanelNum - 140
         VoteVGUI[voteid .. "vote"] = nil
@@ -78,11 +87,26 @@ local function MsgDoVote(msg)
     ybutton:SetPos(25, panel:GetTall() - 25)
     ybutton:SetSize(40, 20)
     ybutton:SetCommand("!")
+    ybutton.Hover   = false
+    ybutton.Active  = false
+    ybutton.OnCursorEntered = function() ybutton.Hover = true  end
+    ybutton.OnCursorExited  = function() ybutton.Hover = false end
     ybutton:SetText(DarkRP.getPhrase("yes"))
+    ybutton:SetTextColor( Color( 0, 0, 0, 255 ) )
     ybutton:SetVisible(true)
     ybutton.DoClick = function()
         LocalPlayer():ConCommand("vote " .. voteid .. " yea\n")
         panel:Close()
+    end
+    ybutton.Paint = function( pnl, w, h )
+
+        draw.RoundedBox( 3, 0, 0, w, h, Color(227, 210, 161, 255) )
+
+        if ybutton.Hover == false then
+            draw.RoundedBox( 3, 0, 0, w, h, Color(227, 210, 161, 255) )
+        else
+            draw.RoundedBox( 3, 0, 0, w, h, Color(186, 175, 140, 255) )
+        end
     end
 
     local nbutton = vgui.Create("Button")
@@ -90,11 +114,26 @@ local function MsgDoVote(msg)
     nbutton:SetPos(70, panel:GetTall() - 25)
     nbutton:SetSize(40, 20)
     nbutton:SetCommand("!")
+    nbutton.Hover   = false
+    nbutton.Active  = false
+    nbutton.OnCursorEntered = function() nbutton.Hover = true  end
+    nbutton.OnCursorExited  = function() nbutton.Hover = false end
     nbutton:SetText(DarkRP.getPhrase("no"))
+    nbutton:SetTextColor( Color( 0, 0, 0, 255 ) )
     nbutton:SetVisible(true)
     nbutton.DoClick = function()
         LocalPlayer():ConCommand("vote " .. voteid .. " nay\n")
         panel:Close()
+    end
+      nbutton.Paint = function( pnl, w, h )
+
+        draw.RoundedBox( 3, 0, 0, w, h, Color(227, 210, 161, 255) )
+
+        if nbutton.Hover == false then
+            draw.RoundedBox( 3, 0, 0, w, h, Color(227, 210, 161, 255) )
+        else
+            draw.RoundedBox( 3, 0, 0, w, h, Color(186, 175, 140, 255) )
+        end
     end
 
     PanelNum = PanelNum + 140
