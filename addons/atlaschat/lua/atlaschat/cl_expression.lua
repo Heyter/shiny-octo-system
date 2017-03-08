@@ -128,25 +128,25 @@ end
 
 local emoticons = {}
 
-/*
-emoticons[":)"] = "icon16/emoticon_smile.png"
-emoticons[":D"] = "icon16/emoticon_happy.png"
-emoticons[":O"] = "icon16/emoticon_surprised.png"
-emoticons[":p"] = "icon16/emoticon_tongue.png"
-emoticons[":P"] = "icon16/emoticon_tongue.png"
-emoticons[":("] = "icon16/emoticon_unhappy.png"
-emoticons["garry"] = {"atlaschat/emoticons/garry.png", 64, 64}
-emoticons["gaben"] = {"atlaschat/emoticons/gaben.png", 64, 64}
 
-emoticons[":smile:"] = "icon16/emoticon_smile.png"
+//emoticons[":)"] = "icon16/emoticon_smile.png"
+//emoticons[":D"] = "icon16/emoticon_happy.png"
+//emoticons[":O"] = "icon16/emoticon_surprised.png"
+//emoticons[":p"] = "icon16/emoticon_tongue.png"
+//emoticons[":P"] = "icon16/emoticon_tongue.png"
+//emoticons[":("] = "icon16/emoticon_unhappy.png"
+//emoticons["garry"] = {"atlaschat/emoticons/garry.png", 64, 64}
+//emoticons["gaben"] = {"atlaschat/emoticons/gaben.png", 64, 64}
+
+//emoticons[":smile:"] = "icon16/emoticon_smile.png"
 emoticons[":online:"] = "icon16/status_online.png"
-emoticons[":tongue:"] = "icon16/emoticon_tongue.png"
+//emoticons[":tongue:"] = "icon16/emoticon_tongue.png"
 emoticons[":offline:"] = "icon16/status_offline.png"
-emoticons[":unhappy:"] = "icon16/emoticon_unhappy.png"
-emoticons[":suprised:"] = "icon16/emoticon_surprised.png"
+//emoticons[":unhappy:"] = "icon16/emoticon_unhappy.png"
+//emoticons[":suprised:"] = "icon16/emoticon_surprised.png"
 emoticons[":exclamation:"] = "icon16/exclamation.png"
 emoticons[":information:"] = "icon16/information.png"
-*/
+
 
 for match, data in pairs(emoticons) do
 	local expression = atlaschat.expression.New(match, match)
