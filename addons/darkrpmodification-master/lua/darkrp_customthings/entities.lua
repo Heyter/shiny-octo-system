@@ -58,7 +58,7 @@ DarkRP.createEntity("Принтер первого уровня", {
     ent = "k_printer_t1",
     model = "models/props_lab/reciever01a.mdl",
     price = 1000,
-    max = 4,
+    max = 3,
     cmd = "buymoneyprinter1",
     customCheck = function(ply) return ply:CanBuyPrinter() end,
     CustomCheckFailMsg = "Слишком много принтеров"
@@ -68,7 +68,7 @@ DarkRP.createEntity("Принтер второго уровня", {
     ent = "k_printer_t2",
     model = "models/props_lab/reciever01a.mdl",
     price = 2000,
-    max = 4,
+    max = 2,
     cmd = "buymoneyprinter2",
     customCheck = function(ply)return ply:CanBuyPrinter() end,
     CustomCheckFailMsg = "Слишком много принтеров"
@@ -78,7 +78,7 @@ DarkRP.createEntity("Принтер третьего уровня", {
     ent = "k_printer_t3",
     model = "models/props_lab/reciever01a.mdl",
     price = 3000,
-    max = 4,
+    max = 2,
     cmd = "buymoneyprinter3",
     customCheck = function(ply) return ply:CanBuyPrinter() end,
     CustomCheckFailMsg = "Слишком много принтеров"
@@ -88,7 +88,7 @@ DarkRP.createEntity("Принтер четвертого уровня", {
     ent = "k_printer_t4",
     model = "models/props_lab/reciever01a.mdl",
     price = 4000,
-    max = 4,
+    max = 1,
     cmd = "buymoneyprinter4",
     customCheck = function(ply) return ply:CanBuyPrinter() end,
     CustomCheckFailMsg = "Слишком много принтеров"
@@ -98,7 +98,7 @@ DarkRP.createEntity("Принтер пятого уровня", {
     ent = "k_printer_t5",
     model = "models/props_lab/reciever01a.mdl",
     price = 5000,
-    max = 4,
+    max = 1,
     cmd = "f4091876df6a5d39e6690b7395a95399",
     customCheck = function(ply)  return ply:CanBuyPrinter() and isDonator(ply) end
 })

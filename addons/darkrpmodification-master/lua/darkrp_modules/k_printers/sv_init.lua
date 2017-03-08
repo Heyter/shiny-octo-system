@@ -17,6 +17,6 @@ function meta:RemovePrinter()
 end
 local function plyjoin(ply)
 	ply.printers = 0
-	ply.maxprinters = 4
+	ply.maxprinters = 3
 end
 hook.Add("PlayerInitialSpawn","PrinterJoin",plyjoin)
