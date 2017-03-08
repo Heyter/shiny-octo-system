@@ -129,3 +129,33 @@ end
 
 -- Derma 
 vgui.Register( "tcb_panel_custom4", PANEL, "DPanel" )
+PANEL = {}
+function PANEL:Init()
+	self:SetTitle("")
+	self:SetSize( 300, 100 )
+	self:Center()
+	self.Paint = function()
+
+		draw.RoundedBoxEx( 0, 0, 0, self:GetWide(), self:GetTall(), TCB_Settings.BaseColor, false, true, false, false )
+
+		
+
+	end
+	self.label = vgui.Create("DLabel",self)
+	self.label:SetPos(15,15)
+	self.label:SetSize(250,30)
+	self.label:SetText("Внимание, ссылка откроется в браузере")
+
+	self.urllable = vgui.Create( "DLabelURL", self )
+	self.urllable:SetURL("http://madbay.net/community/index.php")
+	self.urllable:SetText("Открыть в браузере")
+	--self.urllable:SetFont("Trebuchet24")
+	self.urllable:SetPos(15,40)
+	self.urllable:SetSize(250,20)
+	self.urllable:SetTextColor(TCB_Settings.PrimaryColor)
+	hook.Add("TCB_F4Menu_Close","CloseBrowserPopup",function() self:Remove() end)
+end
+function PANEL:SetLink(str)
+	self.urllable:SetURL(str)
+end
+vgui.Register( "TCB_Browser_Popup", PANEL, "DFrame" )

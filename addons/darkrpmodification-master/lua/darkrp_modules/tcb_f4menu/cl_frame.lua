@@ -292,6 +292,13 @@ function PANEL:Frame()
 				CurButton.Active = true
 
 			end
+			if button['func'] == 1 then
+				CurButton.DoClick = function()
+					if not IsValid(self.browserPop) then
+						self.browserPop = vgui.Create("TCB_Browser_Popup",self) end
+					self.browserPop:SetLink(button['link'])
+				end
+			end
 
 			CurButton.Paint = function( pnl, w, h )
 
