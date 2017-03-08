@@ -317,8 +317,8 @@ function DOORHANDLE:RenderDoors()
 		end
 		local data = door:getDoorData()
 		local scale = self.DefaultTextScale
-		if data.textScale then scale = data.textScale end
-			/*if data.owner or data.nonOwnable or data.groupOwn then
+		//if data.textScale then scale = data.textScale end
+			if data.owner or data.nonOwnable or data.groupOwn then
 				if data.textScale then
 					scale = data.textScale
 				else
@@ -326,7 +326,7 @@ function DOORHANDLE:RenderDoors()
 				end
 			else
 				scale = self.BuyableTextScale
-			end*/
+			end
 		
 		cam.Start3D2D(doorpos+doorang:Up()*thickness, doorang, 0.025*scale )
 			self:DrawDoorInfo( door )
@@ -512,10 +512,26 @@ hook.Add("InitPostEntity", "DOORHANDLE_AddButtonsAndPropertiesMenu", function()
 		-- add this shizz to the keys menu
 		-- thanks Partixel for this code :)
 		local function AddButtonToFrame(Frame)
-			Frame:SetTall(Frame:GetTall() + 110)
+			Frame:SetTall(Frame:GetTall() + 70)
 			local button = vgui.Create("DButton", Frame)
-			button:SetPos(10, Frame:GetTall() - 110)
-			button:SetSize(180, 100)
+			button:SetPos(20, Frame:GetTall() - 70)
+			button:SetSize(360, 50)
+			button.Hover   = false
+    		button.Active  = false
+    		button:SetTextColor(Color(0,0,0,255))
+    		button:SetFont("HUDSmall")
+    		button.OnCursorEntered = function() button.Hover = true  end
+    		button.OnCursorExited  = function() button.Hover = false end
+    		button.Paint = function( pnl, w, h )
+
+        		draw.RoundedBox( 3, 0, 0, w, h, Color(227, 210, 161, 255) )
+
+        		if button.Hover == false then
+            		draw.RoundedBox( 3, 0, 0, w, h, Color(227, 210, 161, 255) )
+        		else
+            		draw.RoundedBox( 3, 0, 0, w, h, Color(186, 175, 140, 255) )
+        		end
+    		end
 			return button
 		end
 		hook.Add("onKeysMenuOpened", "doorHandleMenu", function( ent, Frame)
