@@ -1,12 +1,32 @@
+--#NoSimplerr#
+AddCSLuaFile()
+
 local function AddButtonToFrame(Frame)
-    Frame:SetTall(Frame:GetTall() + 110)
+    Frame:SetTall(Frame:GetTall() + 60)
 
     local button = vgui.Create("DButton", Frame)
-    button:SetPos(10, Frame:GetTall() - 110)
-    button:SetSize(180, 100)
+    button:SetPos(20, Frame:GetTall()-60)
+    button:SetSize(360, 50)
+    button.Hover   = false
+    button.Active  = false
+    button:SetTextColor(Color(0,0,0,255))
+    button:SetFont("HUDSmall")
+    button.OnCursorEntered = function() button.Hover = true  end
+    button.OnCursorExited  = function() button.Hover = false end
+    button.Paint = function( pnl, w, h )
+
+        draw.RoundedBox( 3, 0, 0, w, h, Color(227, 210, 161, 255) )
+
+        if button.Hover == false then
+            draw.RoundedBox( 3, 0, 0, w, h, Color(227, 210, 161, 255) )
+        else
+            draw.RoundedBox( 3, 0, 0, w, h, Color(186, 175, 140, 255) )
+        end
+    end
 
     Frame.buttonCount = (Frame.buttonCount or 0) + 1
     Frame.lastButton = button
+
     return button
 end
 
@@ -50,12 +70,16 @@ local function openMenu(setDoorOwnerAccess, doorSettingsAccess)
 
     KeyFrameVisible = true
     local Frame = vgui.Create("DFrame")
-    Frame:SetSize(200, 30) -- Base size
+    Frame:SetSize(400, 45) -- Base size
     Frame.btnMaxim:SetVisible(false)
     Frame.btnMinim:SetVisible(false)
     Frame:SetVisible(true)
     Frame:MakePopup()
-
+    Frame.Paint = function(panel,w,h)
+        draw.RoundedBox( 3, 0, 0, w, h, Color(69,46,27,255), true, true, false, false )
+        draw.RoundedBox( 3, 0, 0, w, 30, Color(43,29,17,255), true, true, false, false )
+     
+    end
 
 
     function Frame:Think()
