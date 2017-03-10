@@ -68,6 +68,7 @@ function GM:canDropWeapon(ply, weapon)
     if not IsValid(weapon) then return false end
     local class = string.lower(weapon:GetClass())
 
+    if ply.pweapons and #ply.pweapons > 0 and table.HasValue(ply.pweapons,class ) then return false end
     if not GAMEMODE.Config.dropspawnedweapons then
         local jobTable = ply:getJobTable()
         if jobTable.weapons and table.HasValue(jobTable.weapons, class) then return false end
