@@ -101,6 +101,10 @@ function getPWeapons(id)
 end
 
 function givePWeapons(ply)
+	local jobTable = ply:getJobTable()
+	if jobTable.PlayerLoadout and jobTable.PlayerLoadout(ply) then return end
+
+
 	if not ply.initSpawnEnded then
 		timer.Simple(1,function() givePWeapons(ply) end)
 		return
@@ -108,6 +112,9 @@ function givePWeapons(ply)
 	if ply:isArrested() then return end
 	if #ply.pweapons == 0 or ply.pweapons == nil then return end
 	for k,v in pairs(ply.pweapons) do
+		local wep = ents.Create(v)
+		local ammo = wep:GetPrimaryAmmoType()
+		ply:SetAmmo(0,ammo)
 		ply:Give(v)
 	end
 end
