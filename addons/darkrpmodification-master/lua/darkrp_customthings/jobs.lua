@@ -440,6 +440,7 @@ TEAM_DOG = DarkRP.createJob("Собака", {
     vote = false,
     hasLicense = false,
     candemote = false,
+    PlayerLoadout = function(ply) return true end
 })
 
 TEAM_WHORE = DarkRP.createJob("Проститука", {
