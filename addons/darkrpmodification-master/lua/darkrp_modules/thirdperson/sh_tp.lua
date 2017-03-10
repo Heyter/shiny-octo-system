@@ -99,8 +99,8 @@ end
 hook.Add("CalcView", "hzn_CalcView", CalcView)
 
 hook.Add("ShouldDrawLocalPlayer", "hzn_ShouldDrawLocalPlayer", function(ply)
-        if LocalPlayer():Alive() and LocalPlayer():GetActiveWeapon() and LocalPlayer():GetActiveWeapon():GetClass() == "selfportrait_camera" then
-          return true end
+        if ply:Alive() and ply:HasWeapon( "selfportrait_camera" ) and ply:GetActiveWeapon() and ply:GetActiveWeapon():GetClass() == "selfportrait_camera" then
+        return true end
         return enabled
 end)
 local CrosshairS = 5
