@@ -1,6 +1,16 @@
 -- DarkRP scoreboard 
 -- Coded by AC²
+local Countries = {}
 
+
+net.Receive("askCountry",function() 
+	net.Start("askCountry")
+	net.WriteString(system.GetCountry())
+	net.SendToServer()
+end)
+net.Receive("sendCountries",function() 
+	Countries = net.ReadTable()
+end)
 -- Remove these hooks first because FAdmin scoreboard 
 hook.Remove("ScoreboardHide", "FAdmin_scoreboard")
 hook.Remove("ScoreboardShow", "FAdmin_scoreboard")
@@ -131,7 +141,9 @@ local function CreateScoreboard()
             local name = v:Name()
             local job = v:getJobTable().name
             local icon = config.mIconGroups[v:GetUserGroup()] or config.mIconGroups.guest
-            local country = Material("flags16/"..system.GetCountry()..".png")
+            local cstr1 = Countries[v:SteamID()]
+            local cstr2 = system.GetCountry()
+            local country = Material("flags16/"..cstr1 or cstr2..".png")
 
             -- Steamid checks
             if (config.mIconGroups[v:SteamID()]) then
