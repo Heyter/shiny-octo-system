@@ -2,14 +2,15 @@
 -- Coded by AC²
 local Countries = {}
 
-
-net.Receive("askCountry",function() 
+timer.Simple(1,function()
 	net.Start("askCountry")
 	net.WriteString(system.GetCountry())
 	net.SendToServer()
 end)
-net.Receive("sendCountries",function() 
+
+net.Receive("sendCountries",function()
 	Countries = net.ReadTable()
+    PrintTable(Countries)
 end)
 -- Remove these hooks first because FAdmin scoreboard 
 hook.Remove("ScoreboardHide", "FAdmin_scoreboard")
@@ -143,7 +144,7 @@ local function CreateScoreboard()
             local icon = config.mIconGroups[v:GetUserGroup()] or config.mIconGroups.guest
             local cstr1 = Countries[v:SteamID()]
             local cstr2 = system.GetCountry()
-            local country = Material("flags16/"..cstr1 or cstr2..".png")
+            local country = Material("flags16/"..(cstr1 or cstr2)..".png")
 
             -- Steamid checks
             if (config.mIconGroups[v:SteamID()]) then
