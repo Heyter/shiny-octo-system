@@ -99,7 +99,7 @@ end
 hook.Add("CalcView", "hzn_CalcView", CalcView)
 
 hook.Add("ShouldDrawLocalPlayer", "hzn_ShouldDrawLocalPlayer", function(ply)
-        if ply:Alive() and ply:HasWeapon( "selfportrait_camera" ) and ply:GetActiveWeapon() and ply:GetActiveWeapon():GetClass() == "selfportrait_camera" then
+        if ply:Alive() and ply:GetActiveWeapon():IsValid() and ply:GetActiveWeapon():GetClass() == "selfportrait_camera" then
         return true end
         return enabled
 end)
