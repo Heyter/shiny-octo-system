@@ -6,7 +6,7 @@ end
 
 function genericOnError(q, err, sql)
 	ply = {}
-	for k,v in player.GetAll() do
+	for k,v in pairs(player.GetAll()) do
 		if isAdmin(v) then
 			table.insert(ply,v)
 		end
@@ -14,6 +14,22 @@ function genericOnError(q, err, sql)
 	DarkRP.notify(ply,1,10,"Ошибки в SQL! Передай это ближайшему доступному кодеру.")
 	print("An error occured while executing the query: " .. err)
 	print(sql)
+end
+
+function errCall(msg)
+	print("ercall")
+	print(msg)
+	print("ercall")
+	file.Append("DonationsErrLog.txt",msg..'\n')
+	ply = {}
+	for k,v in pairs(player.GetAll()) do
+		print(v)
+		print(isAdmin(v))
+		if isAdmin(v) then
+			table.insert(ply,v)
+		end
+	end
+	DarkRP.notify(ply,1,10,"Ошибки в системе донатов! Передай это ближайшему доступному кодеру.")
 end
 
 function prepareAndRun(query, ...)
@@ -53,13 +69,14 @@ function prepareNotRun(query, ...)
 	return toRun
 end
 
-function addOrUpdateRemove(ply64,time,type)
-	local sel = prepareAndRun(SQLPatterns.checkPending,ply64,os.time(),type)
+function addOrUpdateRemove(ply64,time,type,addargs)
+	addargs = addargs or ""
+	local sel = prepareAndRun(SQLPatterns.checkPending,ply64,os.time(),type,addargs)
 	if sel:isRunning() then sel:wait() end
 	data = sel:getData()
-
+	addargs = addargs or 'none'
 	if #data == 0 then
-		return prepareNotRun(SQLPatterns.addPending,ply64,time,type)
+		return prepareNotRun(SQLPatterns.addPending,ply64,time,type,addargs)
 	else
 		time = data[1]['addedon'] + (time - os.time())
 		return prepareNotRun(SQLPatterns.updatePending,time,data[1]['id'])
@@ -79,6 +96,7 @@ function notify64(p,s)
 end
 
 function writeDBLog(str)
+	print("HUI")
 	prepareAndRun(SQLPatterns.sendLog, os.time(), str)
 	end
 
@@ -97,7 +115,7 @@ function getPWeapons(id)
 	if query:isRunning() then query:wait() end
 	local data = query:getData()
 	if #data == 0 then return false end
-	return split(dara[1]['permaweapons'])
+	return split(data[1]['permaweapons'])
 end
 
 function givePWeapons(ply)

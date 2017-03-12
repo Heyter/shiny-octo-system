@@ -543,10 +543,8 @@ local function DrawTCB()
 	
 	Arrested()
 	AdminTell()
-	
 	--
 	DrawEntityDisplay()
-	timeSinceLastHUDPaint = os.time()
 	PlayerModel:PaintManual()
 
 
