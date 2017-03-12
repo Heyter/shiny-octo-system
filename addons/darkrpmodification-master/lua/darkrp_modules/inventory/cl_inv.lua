@@ -13,14 +13,12 @@ end)
 net.Receive( "item", function()    
 	local k = net.ReadInt(32)
 	local v = net.ReadTable()
-	print("receive",k)
 	
 	cl_inv[k] = v
 end)
 
 net.Receive( "itemr", function()    
 	local k = net.ReadInt(32)
-	print("cl removing",k)
 	cl_inv[k] = nil
 	
 end)
