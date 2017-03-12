@@ -20,7 +20,6 @@ for _, cmd in pairs{"cr", "911", "999", "112", "000"} do
 end
 
 function DarkRP.hooks:canArrest(arrester, arrestee)
-    print("hook 2")
     if IsValid(arrestee) and arrestee:IsPlayer() and arrestee:isCP() and not GAMEMODE.Config.cpcanarrestcp then
         return false, DarkRP.getPhrase("cant_arrest_other_cp")
     end

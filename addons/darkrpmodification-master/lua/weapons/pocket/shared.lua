@@ -7,7 +7,6 @@ end
 
 if CLIENT then
     include("cl_menu.lua")
-    print("HUI ====================================================")
 end
 
 SWEP.PrintName = "Инвентарь"
