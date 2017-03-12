@@ -284,14 +284,14 @@ local function PlayerInfo()
 	-- Wallet
 --	draw.DrawText("НАЛИЧНЫЕ: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 2 + 2.5 * 3 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 --	draw.DrawText("НАЛИЧНЫЕ: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 2 + 2.5 * 3, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Wallet, "HUDMedium", HUD.PosX + 28 + 1, HUD.PosY + 97, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Wallet, "HUDMedium", HUD.PosX + 28, HUD.PosY + 97, Color(75, 229, 126, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Wallet, "HUDSemiLarge", HUD.PosX + 9 + 1, HUD.PosY + 96, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Wallet, "HUDSemiLarge", HUD.PosX + 9, HUD.PosY + 96, Color(75, 229, 126, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 	
 	-- Salary
 --	draw.DrawText("ЗАРПЛАТА: ", "HUDSmall", HUD.PosX + 85 + 1, HUD.PosY + 18 * 3 + 2.5 * 4 + 1, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 --	draw.DrawText("ЗАРПЛАТА: ", "HUDSmall", HUD.PosX + 85, HUD.PosY + 18 * 3 + 2.5 * 4, Color(245, 206, 34, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Salary, "HUDMedium", HUD.PosX + 28 + 1, HUD.PosY + 124, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
-	draw.DrawText(VAL_Salary, "HUDMedium", HUD.PosX + 28, HUD.PosY + 124, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Salary, "HUDMedium", HUD.PosX + 9 + 1, HUD.PosY + 124, Color(0, 0, 0, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
+	draw.DrawText(VAL_Salary, "HUDMedium", HUD.PosX + 9, HUD.PosY + 124, Color(255, 255, 255, 255), TEXT_ALIGN_LEFT, TEXT_ALIGN_CENTER)
 
 end
 
@@ -320,13 +320,13 @@ local function PlayerIcons()
 	surface.SetMaterial(Material(IconWanted))
 	surface.DrawTexturedRect( HUD.PosX + HUD.Width - 50 + 15, HUD.PosY + 50, 20, 20)
 
-	surface.SetDrawColor(255,255,255,255)
-	surface.SetMaterial(Material(IconCash))
-	surface.DrawTexturedRect( HUD.PosX - 310 + HUD.Width - 50 + 15, HUD.PosY + 97, 18, 18)
+	--surface.SetDrawColor(255,255,255,255)
+	--surface.SetMaterial(Material(IconCash))
+	--surface.DrawTexturedRect( HUD.PosX - 310 + HUD.Width - 50 + 15, HUD.PosY + 97, 18, 18)
 
-	surface.SetDrawColor(255,255,255,255)
-	surface.SetMaterial(Material(IconSallary))
-	surface.DrawTexturedRect( HUD.PosX - 310 + HUD.Width - 50 + 15, HUD.PosY + 124, 18, 18)
+	--surface.SetDrawColor(255,255,255,255)
+	--surface.SetMaterial(Material(IconSallary))
+	--surface.DrawTexturedRect( HUD.PosX - 310 + HUD.Width - 50 + 15, HUD.PosY + 124, 18, 18)
 end
 
 /*-- Default HUD Elements --*/
