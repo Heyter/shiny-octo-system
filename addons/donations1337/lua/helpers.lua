@@ -6,7 +6,7 @@ end
 
 function genericOnError(q, err, sql)
 	ply = {}
-	for k,v in player.GetAll() do
+	for k,v in pairs(player.GetAll()) do
 		if isAdmin(v) then
 			table.insert(ply,v)
 		end
@@ -14,6 +14,18 @@ function genericOnError(q, err, sql)
 	DarkRP.notify(ply,1,10,"Ошибки в SQL! Передай это ближайшему доступному кодеру.")
 	print("An error occured while executing the query: " .. err)
 	print(sql)
+end
+
+function errCall(msg)
+	print(msg)
+	file.Append("DonationsErrLog.txt",msg..'\n')
+	ply = {}
+	for k,v in pairs(player.GetAll()) do
+		if isAdmin(v) then
+			table.insert(ply,v)
+		end
+	end
+	DarkRP.notify(ply,1,10,"Ошибки в системе донатов! Передай это ближайшему доступному кодеру.")
 end
 
 function prepareAndRun(query, ...)
@@ -53,13 +65,14 @@ function prepareNotRun(query, ...)
 	return toRun
 end
 
-function addOrUpdateRemove(ply64,time,type)
-	local sel = prepareAndRun(SQLPatterns.checkPending,ply64,os.time(),type)
+function addOrUpdateRemove(ply64,time,type,addargs)
+	addargs = addargs or ""
+	local sel = prepareAndRun(SQLPatterns.checkPending,ply64,os.time(),type,addargs)
 	if sel:isRunning() then sel:wait() end
 	data = sel:getData()
-
+	addargs = addargs or 'none'
 	if #data == 0 then
-		return prepareNotRun(SQLPatterns.addPending,ply64,time,type)
+		return prepareNotRun(SQLPatterns.addPending,ply64,time,type,addargs)
 	else
 		time = data[1]['addedon'] + (time - os.time())
 		return prepareNotRun(SQLPatterns.updatePending,time,data[1]['id'])
@@ -97,33 +110,11 @@ function getPWeapons(id)
 	if query:isRunning() then query:wait() end
 	local data = query:getData()
 	if #data == 0 then return false end
-	return split(dara[1]['permaweapons'])
+	return split(data[1]['permaweapons'])
 end
-
-function givePWeapons(ply)
-	local jobTable = ply:getJobTable()
-	if jobTable.PlayerLoadout and jobTable.PlayerLoadout(ply) then return end
-
-
-	if not ply.initSpawnEnded then
-		timer.Simple(1,function() givePWeapons(ply) end)
-		return
-	end
-	if ply:isArrested() then return end
-	if #ply.pweapons == 0 or ply.pweapons == nil then return end
-	for k,v in pairs(ply.pweapons) do
-		local wep = ents.Create(v)
-		local ammo = wep:GetPrimaryAmmoType()
-		ply:SetAmmo(0,ammo)
-		ply:Give(v)
-	end
-end
-
-hook.Add("PlayerPostLoadout","permaweapons",givePWeapons) 
 
 function chatAnnounce(text)
 	for k,p in pairs(player.GetAll()) do
-		print(k,p)
 		p:ChatPrint(text)
 	end
 end

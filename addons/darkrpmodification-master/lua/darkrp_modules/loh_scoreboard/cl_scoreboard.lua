@@ -10,7 +10,6 @@ end)
 
 net.Receive("sendCountries",function()
 	Countries = net.ReadTable()
-    PrintTable(Countries)
 end)
 -- Remove these hooks first because FAdmin scoreboard 
 hook.Remove("ScoreboardHide", "FAdmin_scoreboard")

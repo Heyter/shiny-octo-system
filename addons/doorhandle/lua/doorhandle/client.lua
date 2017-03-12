@@ -466,7 +466,6 @@ concommand.Add("doorinfo", function()
 	local tr = LocalPlayer():GetEyeTrace()
 	if tr.Entity then
 		if tr.Entity.DoorData then
-			PrintTable(tr.Entity.DoorData)
 		end
 		local max = tr.Entity:OBBMaxs()
 		local min = tr.Entity:OBBMins()
@@ -474,10 +473,6 @@ concommand.Add("doorinfo", function()
 		local norm = (max - min)
 		norm:Normalize()
 		local brush_ang = norm:Angle()
-
-		print(tr.Entity:GetClass())
-		print(tr.Entity:GetAngles())
-		print(tr.Entity:GetModel())
 		
 		
 	end

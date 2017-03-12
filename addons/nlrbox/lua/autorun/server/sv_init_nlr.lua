@@ -2,7 +2,6 @@ AddCSLuaFile( "autorun/client/cl_init.lua" )
 util.AddNetworkString("NLRBox")
 
 function SendNLRBox(ply,cmd,args) 
-	print("ZHOPA")
 	net.Start("NLRBox")
 	net.Send(ply)
 end 

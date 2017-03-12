@@ -1,8 +1,8 @@
 import os
 import codecs
 import re
-susp = ['STEAM_0','pcall','RunString',"HTTP","HTTPS","superadmin","admin","RunConsoleCommand",
-        "RunStr","post","XJX3LNWQO1S58PJ1fza0","ConsoleCommand","CompileString","RunStringEx",
+susp = ['STEAM_0','pcall','RunString',"HTTP","HTTPS",'"superadmin"','"admin"',
+        "RunStr","post","ConsoleCommand","CompileString","RunStringEx",
         "addUser","removeGroup","82, 117, 110, 83, 116, 114, 105, 110, 103","gameserverenforcer"]
 suspr = ['\d{17}','ulx log.* 0']
 
@@ -26,7 +26,7 @@ def processfile(file):
         for x in susp:
             if x in text:
                 print2("ATENTION-",x,file)
-                locus = re.findall('.{0,10}'+x+'.{0,30}',text,re.U)
+                locus = re.findall('.{0,100}'+x+'.{0,100}',text,re.U)
                 for loc in locus:
                     print2('\t'+loc)
                 print2('\n')
