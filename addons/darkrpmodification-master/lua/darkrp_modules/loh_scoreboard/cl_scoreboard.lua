@@ -132,6 +132,18 @@ local function CreateScoreboard()
                 surface.SetDrawColor(config.cPlayerOutline)
                 surface.DrawOutlinedRect(0, 0, w, h)
             end
+
+            -- Profile button
+            local ProfileButton = vgui.Create( "DButton", panel ) 
+			ProfileButton:SetPos( 2, 2 )
+			ProfileButton:SetText("")				
+			ProfileButton:SetSize( 32, 32 )					
+			ProfileButton.DoClick = function()				
+				v:ShowProfile()
+			end
+			ProfileButton.Paint = function()
+				surface.SetDrawColor( 0, 0, 0, 0 ) 
+			end
         
             -- Get the color
             local clr = team.GetColor(v:Team())
