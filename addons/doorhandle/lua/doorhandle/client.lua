@@ -49,7 +49,6 @@ function DOORHANDLE:GetDoors()
 	local near = ents.FindInSphere(LocalPlayer():GetPos(),self.ViewDistance)
 	for k,door in ipairs(near) do
 		if IsValid(door) and door:isKeysOwnable() and door:GetClass() != "func_door" and !door:IsVehicle() then
-			print(door:GetClass())
 			table.insert(valid, door)
 		end
 	end
