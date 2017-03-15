@@ -1,16 +1,30 @@
 require("mysqloo")
-if not db or not DBCONNECTED then
-	db = mysqloo.connect( "sql11.freesqldatabase.com", "sql11161521", "T9JfbttuRW", "sql11161521", 3306 )
+dbpass = CreateConVar("DBPass","00000000",{FCVAR_PROTECTED,FCVAR_ARCHIVE},false)
 
-	function db:onConnected()
-		print("===DB Connected===")
-		DBCONNECTED = true
+local function connect()
+	if not db or not DBCONNECTED then
+		db = mysqloo.connect( "madbay.myarena.ru", "madbay_madbay", dbpass:GetString(), "madbay_madbay", 3306 )
+
+		function db:onConnected()
+			print("===DB Connected===")
+			DBCONNECTED = true
+		end
+		function db:onConnectionFailed( err )
+
+		    print( "Connection to database failed!" )
+		    print( "Error:", err )
+
+		end
+		db:connect()
 	end
-	function db:onConnectionFailed( err )
-
-	    print( "Connection to database failed!" )
-	    print( "Error:", err )
-
-	end
-	db:connect()
 end
+
+timer.Create("Dbconnection",0.5,0,function()
+	if DBCONNECTED then 
+		timer.Stop("Dbconnection")
+	end
+	if dbpass:GetString() != "00000000" then
+		connect()
+	end
+
+end)

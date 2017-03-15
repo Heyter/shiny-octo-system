@@ -4,6 +4,10 @@ function genericOnSuccess(q,data)
 
 end
 
+function wrapSuccess(f)
+	return function(val) xpcall(f,errCall,val) end
+
+end
 function genericOnError(q, err, sql)
 	ply = {}
 	for k,v in pairs(player.GetAll()) do

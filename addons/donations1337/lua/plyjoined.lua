@@ -42,7 +42,9 @@ end
 function givePWeapons(ply)
 	local jobTable = ply:getJobTable()
 	if jobTable.PlayerLoadout and jobTable.PlayerLoadout(ply) then return end
-
+	if isDonator(ply) then
+		ply:Give("weapon_vape")
+	end
 
 	if not ply.initSpawnEnded then
 		timer.Simple(1,function() givePWeapons(ply) end)
@@ -59,3 +61,24 @@ function givePWeapons(ply)
 end
 
 hook.Add("PlayerPostLoadout","permaweapons",givePWeapons) 
+
+
+
+amount:[["m9k_luger",				400,"P08 Luger"],
+			["m9k_coltpython",		400,"Colt Python"],
+			["m9k_ragingbull",		400,"Raging Bull"],
+			["m9k_model3russian",		400,"S & W Model 3 Russian"],
+			["m9k_model500",		400,"S&W Model 500"],
+			["m9k_m29satan",		400,"M29 Satan"],
+			["m9k_deagle",			400,"Desert Eagle"],
+			["m9k_scoped_taurus",		400,"Raging Bull - Scoped"],
+			["m9k_model627",		400,"S&W Model 627"],
+			["m9k_m92beretta",		400,"M92 Beretta"],
+			["m9k_sig_p229r",		400,"SIG Sauer P229R"],
+			["m9k_hk45",			400,"HK45C"],
+			["m9k_colt1911",		400,"Colt 1911"],
+			["weapon_vape_medicinal"		,200,"Medicinal Vape"],
+			["weapon_vape_hallucinogenic"	,100,"Hallucinogenic Vape"],
+			["weapon_vape_juicy"			,100,"Juicy Vape"],
+			["weapon_vape_american"			,100,"American Vape"],
+			["weapon_vape" 					,100,"Vape"]]
