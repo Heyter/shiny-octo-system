@@ -42,7 +42,9 @@ end
 function givePWeapons(ply)
 	local jobTable = ply:getJobTable()
 	if jobTable.PlayerLoadout and jobTable.PlayerLoadout(ply) then return end
-
+	if isDonator(ply) then
+		ply:Give("weapon_vape")
+	end
 
 	if not ply.initSpawnEnded then
 		timer.Simple(1,function() givePWeapons(ply) end)
@@ -59,3 +61,4 @@ function givePWeapons(ply)
 end
 
 hook.Add("PlayerPostLoadout","permaweapons",givePWeapons) 
+

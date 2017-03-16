@@ -8,10 +8,10 @@ function addmoney(v)
 			query.affectedPlayer = ply
 			query.moneyValue = money
 			query.ply64 = v.steamid64
-			query.onSuccess = function(q) 	q.affectedPlayer:addMoney(q.moneyValue) 
+			query.onSuccess = wrapSuccess(function(q) 	q.affectedPlayer:addMoney(q.moneyValue) 
 											writeDBLog("Added ".. money.." dolalrs to "..v.steamid64)
 											notify64(q.ply64, "Вы получили "..q.moneyValue.." долларов")
-											end
+											end)
 			query.onError = gnericOnError
 			query:start()
 end
@@ -28,14 +28,14 @@ function addgroup(v)
 		trans:addQuery(prepareNotRun(SQLPatterns.updateUGroup, group, ply64))
 		trans.ply = ply
 		trans.group = group
-		trans.onSuccess = function(tr) 	ULib.ucl.addUser(tr.ply, {}, {}, tr.group) 
+		trans.onSuccess = wrapSuccess(function(tr) 	ULib.ucl.addUser(tr.ply, {}, {}, tr.group) 
 										writeDBLog("Modified ".. ply .." group to ".. group)
 										local play = player.GetBySteamID(tr.ply)
 										if play then
 											chatAnnounce(play:Nick().." теперь "..group) 
 										end
 										notify(tr.ply, "Поздравляем! Вы теперь ".. tr.group)
-										end
+										end)
 		trans.onError = genericOnError
 		trans:start()
 end
@@ -48,10 +48,10 @@ function removegroup(v)
 		trans:addQuery(prepareNotRun(SQLPatterns.updatePStatus, id))
 		trans:addQuery(prepareNotRun(SQLPatterns.updateUGroup, "user", ply64))
 		trans.ply = ply
-		trans.onSuccess = function(q) 	ULib.ucl.removeUser(q.ply)
+		trans.onSuccess = wrapSuccess(function(q) 	ULib.ucl.removeUser(q.ply)
 										writeDBLog("Removed access from"..ply)
 										notify(q.ply, "Вы снова обычный игрок,  пора продлить подписку")
-										end
+										end)
 		trans.onError = genericOnError
 		trans:start()
 
@@ -73,9 +73,14 @@ function addpweapon(v)
 		trans:addQuery(prepareNotRun(SQLPatterns.updatePWeps, stringweps, ply64))
 		trans.wep = wep
 		trans.ply = ply
-		trans.onSuccess = function(tr)	writeDBLog("Added permaweapon "..tr.wep.." to "..tr.ply)
+		trans.onSuccess = wrapSuccess(function(tr)	writeDBLog("Added permaweapon "..tr.wep.." to "..tr.ply)
 										notify(tr.ply, "Вам пришло новое пермаоружие")
+										local p = player.GetBySteamID(tr.ply)
+										if p and p:IsValid() then
+											p:Process()
+											givePWeapons(p)
 										end
+									end)
 		trans.onError = genericOnError
 		trans:start()
 end
@@ -93,9 +98,14 @@ function removepweapon(v)
 		trans:addQuery(prepareNotRun(SQLPatterns.updatePWeps, stringweps, ply64))
 		trans.wep = wep
 		trans.ply = ply
-		trans.onSuccess = function(tr)	writeDBLog("REmoved permaweapon "..tr.wep.." to "..tr.ply)
+		trans.onSuccess = wrapSuccess(function(tr)	writeDBLog("REmoved permaweapon "..tr.wep.." to "..tr.ply)
 										notify(tr.ply, "Срок действия пермаоружия истек")
+										local ply = player.GetBySteamID(tr.ply)
+										if ply and ply:isValid() then
+											ply:Process()
+											givePWeapons(ply)
 										end
+										end)
 		trans.onError = genericOnError
 		trans:start()
 end
