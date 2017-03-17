@@ -14,7 +14,7 @@ function FixmePlease()
 
 	for i, job in pairs(RPExtraTeams) do
 		if job.team == LocalPlayer():Team() then
-			mod = LocalPlayer():GetModel()
+			mod = LocalPlayer():GetModel() or table.Random(job.model)
 
 		elseif istable(job.model) then
 			mod = table.Random(job.model)

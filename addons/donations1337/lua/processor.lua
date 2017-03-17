@@ -143,5 +143,6 @@ function processPendings()
 	end
 
 end
-
-timer.Create("SQLprocessor", 10, 0, processPendings) // 5 minutes
+timer.Create("SQLprocessor", 10, 0, function()
+	xpcall(processPendings,errCall)
+end) // 5 minutes
