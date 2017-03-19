@@ -1,5 +1,7 @@
 require("mysqloo")
 dbpass = CreateConVar("DBPass","00000000",{FCVAR_PROTECTED,FCVAR_ARCHIVE},false)
+DBCONNECTED = false
+
 
 local function connect()
 	if not db or not DBCONNECTED then

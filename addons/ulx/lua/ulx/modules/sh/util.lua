@@ -168,7 +168,7 @@ function ulx.noclip( calling_ply, target_plys )
 	for i=1, #target_plys do
 		local v = target_plys[ i ]
 
-		if v.NoNoclip then
+		if v.NoNoclip or v:Team() != TEAM_ADMINONDUTY then
 			ULib.tsayError( calling_ply, v:Nick() .. " can't be noclipped right now.", true )
 		else
 			if v:GetMoveType() == MOVETYPE_WALK then
