@@ -198,15 +198,27 @@ local timeSinceLastHUDPaint = 0
 
 local function PlayerModelF()
 
-	PlayerModel = vgui.Create("SpawnIcon", self)
-	PlayerModel:SetModel( DarkRP.getPreferredJobModel(LocalPlayer():Team()) )
+	PlayerModel = vgui.Create("DModelPanel")
+	PlayerModel:SetModel(  LocalPlayer():GetModel() )
 	PlayerModel:SetPos(HUD.PosX, HUD.PosY)
 	PlayerModel:SetSize(75, 85)
+	PlayerModel:SetCamPos(Vector( 16, 0, 65 ))
+	PlayerModel:SetLookAt(Vector( 0, 0, 65 ))
 	--PlayerModel:SetVisible(false)
 	PlayerModel:SetPaintedManually(true)
 	timer.Create("ModelUpdater101",1,0,function()
-		PlayerModel:SetModel( DarkRP.getPreferredJobModel(LocalPlayer():Team()) ) end)
-
+		if LocalPlayer():GetModel() != PlayerModel.Entity:GetModel() then
+			PlayerModel:Remove()
+			PlayerModel = vgui.Create("DModelPanel")
+			function PlayerModel:LayoutEntity( Entity ) return end         
+			PlayerModel:SetModel( LocalPlayer():GetModel())
+			PlayerModel:SetPos(HUD.PosX, HUD.PosY)
+			PlayerModel:SetSize(75, 85)
+			PlayerModel:SetCamPos(Vector( 16, 0, 65 ))
+			PlayerModel:SetLookAt(Vector( 0, 0, 65 ))
+			PlayerModel:SetPaintedManually(true)
+ 			end
+ 	end)
 end
 
 hook.Add("InitPostEntity", "PlayerModel", PlayerModelF)

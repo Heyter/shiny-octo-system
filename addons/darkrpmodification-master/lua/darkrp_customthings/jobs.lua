@@ -493,6 +493,7 @@ GAMEMODE.CivilProtection = {
     [TEAM_SWAT] = true,
     [TEAM_SWATLEADER] = true,
     [TEAM_SWATSNIPER] = true,
+    [TEAM_ADMINONDUTY] = true,
 }
 
 --[[---------------------------------------------------------------------------
