@@ -122,7 +122,7 @@ COLORS.Turq = HexColor("#e67e22")
 COLORS.TurqDark = HexColor("#d35400")
 
 function ArizardShadowText( text, font, x, y, col, ax, ay , d)
-	draw.DrawText( text, font, x+d, y+d, Color(0,0,0,col.a), ax, ay )
+	--draw.DrawText( text, font, x+d, y+d, Color(0,0,0,col.a), ax, ay )
 	draw.DrawText( text, font, x, y, col, ax, ay)
 end
 

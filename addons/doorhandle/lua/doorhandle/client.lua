@@ -48,7 +48,7 @@ function DOORHANDLE:GetDoors()
 	local valid = {}
 	local near = ents.FindInSphere(LocalPlayer():GetPos(),self.ViewDistance)
 	for k,door in ipairs(near) do
-		if IsValid(door) and door:isKeysOwnable() and door:GetClass() != "func_door" and !door:IsVehicle() then
+		if self.ValidDoorClasses[door:GetClass()] then
 			table.insert(valid, door)
 		end
 	end
@@ -62,14 +62,14 @@ function DOORHANDLE:DrawDoorInfo( door )
 
 	local data = door:getDoorData()
 
-	local drawcol = table.Copy( self.DefaultColor )
+	local drawcol = 0
 	local drawFont = "_"..self.PresetFonts[1]
 
 	if data.doorColor then
-		drawcol = table.Copy( data.doorColor )
-	end
-
-	local o_drawcol = table.Copy( drawcol )
+		drawcol = data.doorColor
+	else
+		drawcol = self.DefaultColor
+	end 
 
 	--drawcol.a = 255
 
@@ -82,40 +82,19 @@ function DOORHANDLE:DrawDoorInfo( door )
 	local tr = LocalPlayer():GetEyeTrace()
 
 	-- we want to start fading out 40% before the end of the view distance
-	local dist = door:GetPos():Distance( LocalPlayer():EyePos() )
-	local fadedist = self.ViewDistance * 0.6
+	--[[local dist = door:GetPos():DistToSqr( LocalPlayer():EyePos() )
+	local fadedist = self.ViewDistance * self.ViewDistance * 0.6
 
 
 	if dist > fadedist then
 		local frac = InverseLerp( dist, self.ViewDistance, fadedist )
 		frac = math.Clamp( frac, 0, 1 )
 		drawcol.a = 255
-	end
+	end]]
 
 	if data.title then
-		local candraw = false
+		local candraw = true
 
-		if data.owner and self.LookAt.PlayerOwnedText == true then
-			if tr.Entity then
-				if tr.Entity == door then
-					candraw = true 
-				end
-			end
-		elseif data.groupOwn and self.LookAt.GroupOwnableText == true then
-			if tr.Entity then
-				if tr.Entity == door then
-					candraw = true 
-				end
-			end
-		elseif data.nonOwnable == true and self.LookAt.NonOwnableText == true then
-			if tr.Entity then
-				if tr.Entity == door then
-					candraw = true 
-				end
-			end
-		else
-			candraw = true
-		end
 
 		if candraw == true then
 			ArizardShadowText( string.sub( data.title, 1, 48) , "doorHandle_3D2D_Large"..drawFont, 0, -104, drawcol , TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1)
@@ -132,18 +111,7 @@ function DOORHANDLE:DrawDoorInfo( door )
 			name = owner:Nick()
 		end
 
-		local candraw = false
-		if self.LookAt.PlayerOwnedText == true then
-			candraw = false
-			if tr.Entity then
-				if tr.Entity == door then
-					candraw = true 
-				end
-			end
-		else
-			candraw = true
-		end
-
+		local candraw = true
 		if candraw == true then
 			ArizardShadowText( name.."" , "doorHandle_3D2D_Small"..drawFont, 0, 0, drawcol , TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1)
 
@@ -170,35 +138,13 @@ function DOORHANDLE:DrawDoorInfo( door )
 			end
 		end
 	elseif data.groupOwn then
-		local candraw = false
-
-		if self.LookAt.GroupOwnableText == true then
-			candraw = false
-			if tr.Entity then
-				if tr.Entity == door then
-					candraw = true 
-				end
-			end
-		else
-			candraw = true
-		end
-
+		local candraw = true
 		if candraw then
 			ArizardShadowText( data.groupOwn , "doorHandle_3D2D_Small"..drawFont, 0, 0, drawcol , TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1)
 		end
 	else -- draw the "Purchse this door" text
-		local candraw = false -- purchase text
+		local candraw = true -- purchase text
 
-		if self.LookAt.PurchaseText == true then
-			candraw = false
-			if tr.Entity then
-				if tr.Entity == door then
-					candraw = true 
-				end
-			end
-		else
-			candraw = true
-		end
 
 		if not data.teamOwn then -- test if the door is purchasable by the player.
 			candraw = true
@@ -242,7 +188,6 @@ end
 
 DOORHANDLE.ValidDoorClasses = {
 	["prop_door_rotating"] = true,
-	["func_door"] = true,
 	["func_door_rotating"] = true
 }
 
@@ -255,26 +200,25 @@ function DOORHANDLE:DoorIsValid( door )
 end
 
 doors_cache = {}
-
-local door = FindMetaTable("func_door")
-print(door)
 --[[
-function door:Draw()
-
-	local doorpos = door:LocalToWorld(door:OBBCenter())
-	local doorang = door:GetAngles()+Angle(0,90,90) + Angle(0,90,0)
-	local thicknes = 3.1
-	cam.Start3D2D(doorpos+doorang:Up()*thickness, doorang, 0.025*scale )
+	function meta:Draw()
+		local doorpos = self:LocalToWorld(self:OBBCenter()) + Vector(0,0,64-54)
+		local doorang = self:GetAngles()+Angle(0,90,90) 
+		local thickness = 3.1
+		cam.Start3D2D(doorpos+doorang:Up()*thickness, doorang, 0.025*scale )
 			DOORHANDLE:DrawDoorInfo( self )
-	cam.End3D2D()
-end]]--
+		cam.End3D2D()
+	end
+]]
 
-
+DOORHANDLE.Ticker = false
 function DOORHANDLE:RenderDoors()
+	self.Ticker = not self.Ticker
+	if self.Ticker then
+	self.doors = self:GetDoors()
+	end
 
-	local doors = self:GetDoors()
-
-	for k, door in ipairs( doors ) do
+	for k, door in ipairs( self.doors or {} ) do
 		local doorpos = nil
 		local doorang = nil
 		local thickness = nil 
@@ -298,11 +242,11 @@ function DOORHANDLE:RenderDoors()
 				["models/props/storedoor1.mdl"] = Angle(0,90,0)
 			}
 
-			for model, ang in pairs( angmod ) do
+			--[[for model, ang in pairs( angmod ) do
 				if door:GetModel() == model then
 					doorang = doorang + ang
 				end
-			end
+			end]]
 
 
 			-- for func_doors which are at 90* to the world
