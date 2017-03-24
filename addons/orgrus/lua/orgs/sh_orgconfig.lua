@@ -9,19 +9,19 @@ ORGS_Config = {}
 --Main settings
 
 -- Name for the addon
-ORGS_Config.addonName = "orgs"
+ORGS_Config.addonName = "организаци"
 
 -- Creation Price
-ORGS_Config.createPrice = 50000
+ORGS_Config.createPrice = 30000
 
 -- Key to open the menu
-ORGS_Config.keyToActivate = 93 --Change the value that you want to open the menu (values from Binds.txt)
+ORGS_Config.keyToActivate = 92 --Change the value that you want to open the menu (values from Binds.txt)
 
 
 --NPC Settings
 
 -- NPC model
-ORGS_Config.npcModel = "models/Humans/Group01/male_02.mdl"
+ORGS_Config.npcModel = "models/Barney.mdl"
 
 -- If you want to draw the bubble above the npc's head set it to true else set it to false
 ORGS_Config.npcDrawBubble = false

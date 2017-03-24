@@ -256,6 +256,20 @@ end
 
 doors_cache = {}
 
+local door = FindMetaTable("func_door")
+print(door)
+--[[
+function door:Draw()
+
+	local doorpos = door:LocalToWorld(door:OBBCenter())
+	local doorang = door:GetAngles()+Angle(0,90,90) + Angle(0,90,0)
+	local thicknes = 3.1
+	cam.Start3D2D(doorpos+doorang:Up()*thickness, doorang, 0.025*scale )
+			DOORHANDLE:DrawDoorInfo( self )
+	cam.End3D2D()
+end]]--
+
+
 function DOORHANDLE:RenderDoors()
 
 	local doors = self:GetDoors()

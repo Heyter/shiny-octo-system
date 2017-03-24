@@ -18,7 +18,7 @@ TCB_Settings.CheckVersion	= true
 TCB_Settings.HideWrongJob	= true
 
 TCB_Settings.TitleOne		= "MadBay.Net"
-TCB_Settings.TitleTwo		= "СОРОКОВЫЕ ГОДЫ ПИЗДОС!"
+TCB_Settings.TitleTwo		= "Классический DarkRP"
 
 TCB_Settings.PrimaryColor		= Color(245, 206, 34, 255 )
 TCB_Settings.SecondaryColor		= Color(245, 206, 34, 255 )
@@ -57,6 +57,7 @@ TCB_Settings.SidebarButtons = {
 
 	{ text = "Форум",		panel = "tcb_panel_custom1",	info = false,	func = 1 	,link = "http://madbay.net/community/index.php"	},
 	{ text = "Магазин",		panel = "tcb_panel_custom1",	info = false,	func = 1 	,link = "http://madbay.net/community/index.php?pages/donations/"},
+	{ text = "Помощь",		panel = "tcb_panel_help",       info = false,   func = 0			},
 	--{ text = "Правила",		panel = "tcb_panel_custom2",	info = false,	func = 0 			},
 	--{ text = "Магазин",		panel = "tcb_panel_custom3",	info = false,	func = 0 			},
 	--{ text = "Команда",		panel = "tcb_panel_custom4",	info = false,	func = 0 			},

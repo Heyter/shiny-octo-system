@@ -103,7 +103,7 @@ TEAM_POLICE = DarkRP.createJob("Офицер полиции", {
 		"models/humans/nypd1940/male_08.mdl",
 		"models/humans/nypd1940/male_09.mdl"},
 	description = [[Тот, кто сохраняет порядок в городе.]],
-    weapons = {"weapon_policebaton", "m9k_colt1911", "door_ram", "weaponchecker"},
+    weapons = {"weapon_policebaton", "cw_m1911", "door_ram", "weaponchecker"},
     command = "cp",
     max = 13,
     salary = GAMEMODE.Config.normalsalary * 1.45,
@@ -120,7 +120,7 @@ TEAM_DETECTIVE = DarkRP.createJob("Детектив", {
     color = Color(206,141,83,255),
     model = "models/sirgibs/ragdolls/detective_magnusson_player.mdl",
     description = [[Тот, кто ведет расследования.]],
-    weapons = {"weapon_policebaton", "weaponchecker", "m9k_model627"},
+    weapons = {"weapon_policebaton", "weaponchecker", "cw_mr96"},
     command = "detective",
     max = 2,
     salary = GAMEMODE.Config.normalsalary * 2,
@@ -146,7 +146,7 @@ TEAM_CHIEF = DarkRP.createJob("Шериф полиции", {
         "models/portal2/patrol_08.mdl",
         "models/portal2/patrol_09.mdl",},
     description = [[Тот, кто руководит полицией.]],
-    weapons = {"m9k_coltpython", "weapon_policebaton", "door_ram", "weaponchecker"},
+    weapons = {"cw_mr96", "weapon_policebaton", "door_ram", "weaponchecker"},
     command = "chief",
     max = 1,
     salary = GAMEMODE.Config.normalsalary * 1.67,
@@ -161,11 +161,54 @@ TEAM_CHIEF = DarkRP.createJob("Шериф полиции", {
     category = "Civil Protection",
 })
 
+TEAM_GUN = DarkRP.createJob("Торговец оружием", {
+    color = Color(255, 140, 0, 255),
+    model = "models/player/monk.mdl",
+    description = [[Тот, кто продает гражданам оружие.]],
+    weapons = {},
+    command = "gundealer",
+    max = 4,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    category = "Citizens",
+})
+
+TEAM_ILLEGALDEALER = DarkRP.createJob("Торговец нелегалом", {
+    color = Color(255, 190, 0, 255),
+    model = "models/player/eli.mdl",
+    description = [[Тот, кто продает нелегальные вещи.]],
+    weapons = {},
+    command = "illegaldealer",
+    max = 3,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    category = "Citizens",
+})
+
+TEAM_HEAVYDEALER = DarkRP.createJob("Торговец тяж оружием", {
+    color = Color(255, 190, 0, 255),
+    model = "models/player/guerilla.mdl",
+    description = [[Тот, кто продает нелегальные вещи.]],
+    weapons = {},
+    command = "heavydealer",
+    max = 3,
+    salary = GAMEMODE.Config.normalsalary,
+    admin = 0,
+    vote = false,
+    hasLicense = false,
+    category = "Citizens",
+})
+
+
 TEAM_SWAT = DarkRP.createJob("SWAT Штурмовик", {
     color = Color(133, 73, 238, 255),
     model ="models/player/bfh_enforcer.mdl",
     description = [[Тот, кто вооружен и опасен.]],
-    weapons = {"weapon_policebaton", "m9k_mp5sd", "door_ram", "weaponchecker", "weapon_policeshield"},
+    weapons = {"weapon_policebaton", "cw_ump45", "cw_p99", "cw_flash_grenade", "cw_smoke_grenade", "door_ram", "weaponchecker", "weapon_policeshield"},
     command = "swat",
     max = 4,
     salary = GAMEMODE.Config.normalsalary * 1.8,
@@ -182,7 +225,7 @@ TEAM_SWATLEADER = DarkRP.createJob("SWAT Лидер", {
     color = Color(133, 73, 238, 255),
     model ="models/player/bfh_mechanic.mdl",
     description = [[Тот, кто командует SWAT.]],
-    weapons = {"weapon_policebaton", "m9k_jackhammer", "door_ram", "weaponchecker", "weapon_policeshield"},
+    weapons = {"weapon_policebaton", "cw_p99", "cw_g36c", "door_ram", "cw_flash_grenade", "cw_smoke_grenade", "weaponchecker", "weapon_policeshield"},
     command = "swatleader",
     max = 1,
     salary = GAMEMODE.Config.normalsalary * 2,
@@ -202,7 +245,7 @@ TEAM_SWATMEDIC = DarkRP.createJob("SWAT Медик", {
     color = Color(133, 73, 238, 255),
     model ="models/player/bfh_operator.mdl",
     description = [[Тот, лечит союзников.]],
-    weapons = {"weapon_policebaton", "m9k_sig_p229r", "door_ram", "weaponchecker", "med_kit"},
+    weapons = {"weapon_policebaton", "cw_m3super90", "cw_p99", "cw_flash_grenade", "cw_smoke_grenade", "door_ram", "weaponchecker", "med_kit"},
     command = "swatmedic",
     max = 2,
     salary = GAMEMODE.Config.normalsalary * 1.8,
@@ -219,7 +262,7 @@ TEAM_SWATSNIPER = DarkRP.createJob("SWAT Снайпер", {
     color = Color(133, 73, 238, 255),
     model = "models/player/bfh_pro.mdl",
     description = [[Тот, кто следит за тобой.]],
-    weapons = {"weapon_policebaton", "m9k_svu", "door_ram", "weaponchecker"},
+    weapons = {"weapon_policebaton", "cw_p99", "cw_l115", "cw_flash_grenade", "cw_smoke_grenade", "door_ram", "weaponchecker"},
     command = "swatsniper",
     max = 1,
     salary = GAMEMODE.Config.normalsalary * 2,
@@ -283,34 +326,6 @@ TEAM_MOB = DarkRP.createJob("Босс мафии", {
     vote = false,
     hasLicense = false,
     category = "Gangsters",
-})
-
-TEAM_GUN = DarkRP.createJob("Торговец оружием", {
-    color = Color(255, 140, 0, 255),
-    model = "models/player/monk.mdl",
-    description = [[Тот, кто продает гражданам оружие.]],
-    weapons = {},
-    command = "gundealer",
-    max = 4,
-    salary = GAMEMODE.Config.normalsalary,
-    admin = 0,
-    vote = false,
-    hasLicense = false,
-    category = "Citizens",
-})
-
-TEAM_ILLEGALDEALER = DarkRP.createJob("Торговец нелегалом", {
-    color = Color(255, 190, 0, 255),
-    model = "models/player/guerilla.mdl",
-    description = [[Тот, кто продает нелегальные вещи.]],
-    weapons = {},
-    command = "illegaldealer",
-    max = 3,
-    salary = GAMEMODE.Config.normalsalary,
-    admin = 0,
-    vote = false,
-    hasLicense = false,
-    category = "Citizens",
 })
 
 TEAM_MEDIC = DarkRP.createJob("Доктор", {

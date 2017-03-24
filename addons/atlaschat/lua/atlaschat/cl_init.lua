@@ -212,7 +212,7 @@ hook.Add("player_disconnect", "atlaschat.DisconnectMessage", function(data)
 	local filtered = atlaschat.filterJoinDisconnect:GetBool()
 
 	if (!filtered) then
-		chat.AddText(color_white, ":offline: Игрок ", color_red, data.name, color_grey, " (" .. data.networkid	.. ") ", color_white, "покинул сервер: " .. data.reason)
+		chat.AddText(color_white, ":offline: Игрок ", color_red, data.name, color_grey, " (" .. data.networkid	.. ") ", color_white, "покинул сервер")
 	end
 end)
 

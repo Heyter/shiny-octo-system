@@ -35,7 +35,7 @@ end
 function prepareAndRun(query, ...)
 	if not DBCONNECTED then return false end
 	local args = {...}
-	local toRun = db:prepare(query)
+	local toRun = mysqldb:prepare(query)
 	toRun.onSuccess = genericOnSuccess
 	toRun.onError = genericOnError
 	--PrintTable(args)
@@ -54,7 +54,7 @@ end
 function prepareNotRun(query, ...)
 	if not DBCONNECTED then return false end
 	local args = {...}
-	local toRun = db:prepare(query)
+	local toRun = mysqldb:prepare(query)
 	toRun.onSuccess = genericOnSuccess
 	toRun.onError = genericOnError
 	--PrintTable(args)

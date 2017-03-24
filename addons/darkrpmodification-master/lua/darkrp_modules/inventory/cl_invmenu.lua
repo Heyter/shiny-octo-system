@@ -1,8 +1,6 @@
 --#noSimplerr#
 
 
-
-hook.Call("RebuildInventory",nil,LocalPlayer())
 PANEL = {}
 
 function PANEL:Init()
@@ -87,7 +85,8 @@ function PANEL:ProcessPanel(panel, itemk, type)
 		local item = cl_inv[itemk]
 		model = item.model
 		namestr = item.name
-
+		if namestr == nil then namestr = "Weapon" end
+		print(namestr)
 		dropf = function()
 			net.Start( "dropitem" )
 				net.WriteBool(false)
@@ -118,7 +117,7 @@ function PANEL:ProcessPanel(panel, itemk, type)
 
 	local name = vgui.Create("DLabel", panel)
 		name:SetTextColor(Color(0,0,0))
-		name:SetText(namestr)
+		name:SetText(namestr or "Weapon")
 		name:SizeToContents()
 		name:SetPos((w/2)-name:GetWide()/2, h-20)
 

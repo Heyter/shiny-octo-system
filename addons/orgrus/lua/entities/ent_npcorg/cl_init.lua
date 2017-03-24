@@ -8,7 +8,7 @@ surface.CreateFont( "dialogueFont", {
 
 net.Receive( "orgmenudialogue", function()
 	local mainFrame = vgui.Create("DFrame")
-	mainFrame:SetSize(500, 190)
+	mainFrame:SetSize(500, 210)
 	mainFrame:SetPos(ScrW() / 2 - (500 / 2), ScrH() / 1.5)
 	mainFrame:SetDraggable( true )
 	mainFrame:MakePopup()
@@ -47,11 +47,11 @@ net.Receive( "orgmenudialogue", function()
 
 
 	local panel = vgui.Create("DPanel", mainFrame)
-	panel:SetSize(488, 105)
+	panel:SetSize(488, 125)
 	panel:SetPos(6, 30)
 	local dialogueTextLabel = vgui.Create("DLabel", mainFrame)
 	dialogueTextLabel:SizeToContents()
-	dialogueTextLabel:SetPos(10, 38)
+	dialogueTextLabel:SetPos(10, 30)
 	dialogueTextLabel:SetColor(Color(50, 50, 50))
 	dialogueTextLabel:SetFont("dialogueFont")
 	dialogueTextLabel:SetText( ORGS_Lang.npcLine )
@@ -61,7 +61,7 @@ net.Receive( "orgmenudialogue", function()
 
 	local dialogueButton2 = vgui.Create("DFlatButton", mainFrame)
 	dialogueButton2:SetSize(488, 25)
-	dialogueButton2:SetPos(6, 155)
+	dialogueButton2:SetPos(6, 175)
 	dialogueButton2:SetText( ORGS_Lang.npcleave )
 	dialogueButton2.DoClick = function()
 		LocalPlayer():ConCommand("org_leave")
@@ -70,7 +70,7 @@ net.Receive( "orgmenudialogue", function()
 
 	local dialogueButton1 = vgui.Create("DFlatButton", mainFrame)
 	dialogueButton1:SetSize(488, 25)
-	dialogueButton1:SetPos(6, 128)
+	dialogueButton1:SetPos(6, 148)
 	if LocalPlayer():canAfford(ORGS_Config.createPrice) then
 		dialogueButton1:SetText( ORGS_Lang.npcnew )
 	else
@@ -116,3 +116,10 @@ net.Receive( "orgmenudialogue", function()
 		end)
 	end
 end)
+
+function ENT:onHover()
+	if LocalPlayer():GetPos():DistToSqr(self:GetPos()) > 32500 then return end
+		draw.SimpleTextOutlined("Нажмите \'Е\' чтобы поговорить с","DermaDefault",ScrW()/2,ScrH()/2+20,Color(255,255,255,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER,1,Color(0,0,0))
+		draw.SimpleTextOutlined("Государственным регистратором","DermaDefault",ScrW()/2,ScrH()/2+35,Color(255,255,255,255),TEXT_ALIGN_CENTER,TEXT_ALIGN_CENTER,1,Color(0,0,0))
+
+end

@@ -52,7 +52,7 @@ ORGS_Lang.ranknewmember = "Новичёк"
 
 ORGS_Lang.orghelp1 = "Команды ".. ORGS_Config.addonName .."и."
 ORGS_Lang.orghelp2 = "!orgmenu - Открыть меню ".. ORGS_Config.addonName .."и."
-ORGS_Lang.orghelp3 = "!orgc [Текст] - Поговорить в чате со соклановцами ".. ORGS_Config.addonName .."и"
+ORGS_Lang.orghelp3 = "!orgc [Текст] - Чат ".. ORGS_Config.addonName .."и"
 
 ORGS_Lang.dashboard = "Информация" 
 ORGS_Lang.members = "Участники" 
@@ -135,10 +135,10 @@ ORGS_Lang.meetset = "сделал встречу ".. ORGS_Config.addonName .."и
 
 --[[ NPC ]]--
 
-ORGS_Lang.npcLine = "Хей, у меня вы можете сделать новую группировку или выйти из своей. Создание новой ".. ORGS_Config.addonName .."и обойдется вам ".. ORGS_Config.createPrice .."$. Выберете если готовы создать.\nУдачи!" 
+ORGS_Lang.npcLine = "Доброго здравия, гражданин. Через меня вы можете взаимодействовать с официальным реестром организаций нашего города, например добровольно выйти из организации или создать новую. Зарегистрировать свою организацию получится за небольшую плату, но зато без лишних очередей в других инстанциях. Цена вопроса:".. ORGS_Config.createPrice .."$." 
 ORGS_Lang.npcleave = "Я хочу выйти из своей ".. ORGS_Config.addonName .."и." 
 ORGS_Lang.npcnew = "Я хочу создать новую ".. ORGS_Config.addonName .."у. (Стоимость ".. ORGS_Config.createPrice .."$)" 
 ORGS_Lang.npcgetmoney = "Деньги вперёд. (У вас не достаточно денег)" 
-ORGS_Lang.npccallorg = "Окей, вы хотите создать ".. ORGS_Config.addonName .."у, как вы назовете ".. ORGS_Config.addonName .."у?\n\nТщательно выбирайте название, вы не можете снова изменить имя!" 
+ORGS_Lang.npccallorg = "Добро, мне нужно название вашей организации. Как вы её назовете? \n\nВыбирайте тщательно, мы не предоставляем возможности сменить имя вашей компании." 
 ORGS_Lang.npcnametext = "Введите ".. ORGS_Config.addonName .."е название.." 
-ORGS_Lang.npccreate = "Создать ".. ORGS_Config.addonName .."у."
+ORGS_Lang.npccreate = "Создать ".. ORGS_Config.addonName .."ю."

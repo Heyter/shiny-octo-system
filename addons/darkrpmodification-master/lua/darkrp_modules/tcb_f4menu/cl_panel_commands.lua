@@ -110,7 +110,7 @@ local mayorCommands = {
 	type 	= 3,
 	cmd 	= "/lottery", 
 	text 	= "Начать лотерею", 
-	args 	= { arg1_show = false, arg1_text = "Имя игрока", arg2_show = false, arg2_text = "Причина" }
+	args 	= { arg1_show = true, arg1_text = "30", arg2_show = false, arg2_text = "Причина" }
 	},
 
 {

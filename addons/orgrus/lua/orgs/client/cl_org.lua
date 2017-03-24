@@ -36,7 +36,7 @@ end
 net.Receive("orgchatmsg", function()
 	if orgChat == true then
 		local msgdata = net.ReadTable()
-		chat.AddText(Color(0,255,0), "[".. ORGS_Config.addonName .." Чат] " .. msgdata[1] .." [ " .. msgdata[2]  .. " ]: ", Color(255,255,255), msgdata[3])
+		chat.AddText(Color(0,255,0), "[ Организация] " .. msgdata[1] .." [ " .. msgdata[2]  .. " ]: ", Color(255,255,255), msgdata[3])
 	end
 end)
 
@@ -56,6 +56,7 @@ hook.Add("HUDPaint", "playersorgs", function()
 					    if not pos:isInSight({LocalPlayer(), v}) then return end
 					    pos.z = pos.z + 10
 					    pos = pos:ToScreen()
+					    pos.y = pos.y - 83
 					    draw.DrawNonParsedText(v:GetNWString("orgName"), "DarkRPHUD2", pos.x + 1, pos.y + 10, Color(0,0,0), 1)
 					    draw.DrawNonParsedText(v:GetNWString("orgName"), "DarkRPHUD2", pos.x + 1, pos.y + 9, Color(255,0,0), 1)
 					end

@@ -4,20 +4,20 @@ DBCONNECTED = false
 
 
 local function connect()
-	if not db or not DBCONNECTED then
-		db = mysqloo.connect( "madbay.myarena.ru", "madbay_madbay", dbpass:GetString(), "madbay_madbay", 3306 )
+	if not mysqldb or not DBCONNECTED then
+		mysqldb = mysqloo.connect( "db2.myarena.ru", "madbay_madbay", dbpass:GetString(), "madbay_madbay", 3306 )
 
-		function db:onConnected()
+		function mysqldb:onConnected()
 			print("===DB Connected===")
 			DBCONNECTED = true
 		end
-		function db:onConnectionFailed( err )
+		function mysqldb:onConnectionFailed( err )
 
 		    print( "Connection to database failed!" )
 		    print( "Error:", err )
 
 		end
-		db:connect()
+		mysqldb:connect()
 	end
 end
 

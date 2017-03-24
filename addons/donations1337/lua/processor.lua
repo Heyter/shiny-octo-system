@@ -3,7 +3,7 @@ function addmoney(v)
 	if not ply then return end
 	local money = v.amount
 	local id = v.id
-	local query = db:prepare(SQLPatterns.updatePStatus) 
+	local query = mysqldb:prepare(SQLPatterns.updatePStatus) 
 			query:setNumber(1, id)
 			query.affectedPlayer = ply
 			query.moneyValue = money
@@ -22,7 +22,7 @@ function addgroup(v)
 	local time = os.time() + UNIX_1_DAY*v.amount
 	local group = v.addargs
 	local id = v.id
-	local trans = db:createTransaction()
+	local trans = mysqldb:createTransaction()
 		trans:addQuery(prepareNotRun(SQLPatterns.updatePStatus, id))
 		trans:addQuery(addOrUpdateRemove(ply64, time, "removegroup"))
 		trans:addQuery(prepareNotRun(SQLPatterns.updateUGroup, group, ply64))
@@ -44,7 +44,7 @@ function removegroup(v)
 	local ply64 = v.steamid64
 	local ply = util.SteamIDFrom64(v.steamid64)
 	local id = v.id
-	local trans = db:createTransaction()
+	local trans = mysqldb:createTransaction()
 		trans:addQuery(prepareNotRun(SQLPatterns.updatePStatus, id))
 		trans:addQuery(prepareNotRun(SQLPatterns.updateUGroup, "user", ply64))
 		trans.ply = ply
@@ -67,7 +67,7 @@ function addpweapon(v)
 	table.RemoveByValue(weps,wep)
 	table.insert(weps, #weps+1, wep)
 	local stringweps = table.concat(weps, ' ')
-	local trans = db:createTransaction()
+	local trans = mysqldb:createTransaction()
 		trans:addQuery(prepareNotRun(SQLPatterns.updatePStatus, id))
 		trans:addQuery(addOrUpdateRemove(ply64, time, "removepweapon",wep))
 		trans:addQuery(prepareNotRun(SQLPatterns.updatePWeps, stringweps, ply64))
@@ -93,7 +93,7 @@ function removepweapon(v)
 	local weps = getPWeapons(ply) or {}
 	table.RemoveByValue(weps,wep)
 	local stringweps = table.concat(weps, ' ')
-	local trans = db:createTransaction()
+	local trans = mysqldb:createTransaction()
 		trans:addQuery(prepareNotRun(SQLPatterns.updatePStatus, id))
 		trans:addQuery(prepareNotRun(SQLPatterns.updatePWeps, stringweps, ply64))
 		trans.wep = wep

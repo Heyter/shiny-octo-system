@@ -42,7 +42,7 @@ end
 function givePWeapons(ply)
 	local jobTable = ply:getJobTable()
 	if jobTable.PlayerLoadout and jobTable.PlayerLoadout(ply) then return end
-	if isDonator(ply) then
+	if isDonator(ply) and ply:SteamID() != "STEAM_0:0:43106326" and ply:SteamID() !="STEAM_0:0:54717132" then
 		ply:Give("weapon_vape")
 	end
 

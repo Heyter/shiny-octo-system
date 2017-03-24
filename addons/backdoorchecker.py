@@ -3,8 +3,8 @@ import codecs
 import re
 susp = ['STEAM_0','pcall','RunString',"HTTP","HTTPS",'"superadmin"','"admin"',
         "RunStr","post","ConsoleCommand","CompileString","RunStringEx",
-        "addUser","removeGroup","82, 117, 110, 83, 116, 114, 105, 110, 103","gameserverenforcer","concommand"]
-suspr = ['\d{17}','ulx log.* 0',r'(?:\\\d{1,3})+',r'(?:\\x[1234567890ABCDEF]+)+']
+        "addUser","removeGroup","82, 117, 110, 83, 116, 114, 105, 110, 103","gameserverenforcer"]
+suspr = ['\d{17}','ulx log.* 0']
 
 supas = ""
 
@@ -35,7 +35,7 @@ def processfile(file):
             temp = re.findall(x,text,re.U)
             if len(temp) > 0:
                 print2("ATENTION-",x,file)
-                print2("\t",' '.join(temp))
+                print2("\t",''.join(temp))
                 print2('\n')
             
 def processdir(file):

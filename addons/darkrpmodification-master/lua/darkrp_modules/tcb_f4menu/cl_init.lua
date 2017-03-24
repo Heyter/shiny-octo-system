@@ -10,13 +10,9 @@
 local TCB = {}
 local TCB_F4Frame
 local TCB_F4Menu = vgui.GetControlTable(TCB_F4Menu)
-function FixmePlease()
-
+net.Receive("fixModelsShitBullshitFuck",function()
 	for i, job in pairs(RPExtraTeams) do
-		if job.team == LocalPlayer():Team() then
-			mod = LocalPlayer():GetModel() or table.Random(job.model)
-
-		elseif istable(job.model) then
+		if istable(job.model) then
 			mod = table.Random(job.model)
 			
 		else
@@ -24,8 +20,8 @@ function FixmePlease()
 		end
 		DarkRP.setPreferredJobModel(job.team, mod)
 	end
-end
-hook.Add("PlayerInitialSpawn","fixModels",FixmePlease)
+end)
+
 -- Menu (Open/Create)
 function TCB:OpenF4Menu()
 	if TCB_F4Frame and ValidPanel( TCB_F4Frame ) then
